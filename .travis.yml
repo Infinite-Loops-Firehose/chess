@@ -1,0 +1,21 @@
+language: ruby
+rvm:
+- 2.4.1
+env:
+- DB=postgresql
+script:
+- RAILS_ENV=test bundle exec rake --trace db:create
+- RAILS_ENV=test bundle exec rake --trace db:migrate
+- bundle exec rake db:test:prepare
+- bundle exec rspec spec/
+- bundle exec rubocop --config .rubocop.yml
+deploy:
+  provider: heroku
+  api_key:
+    secure: cc8a87e9-9623-41c4-b83e-81074430ac06
+  app: chess
+  on:
+    repo: Infinite-Loops-Firehose/chess
+  run:
+    - "rake db:migrate"
+    - restart
