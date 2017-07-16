@@ -13,9 +13,10 @@ deploy:
   provider: heroku
   api_key:
     secure: cc8a87e9-9623-41c4-b83e-81074430ac06
-  app: chess
+  app: 
+    dennis: chess
   on:
-    repo: Infinite-Loops-Firehose/chess
+    repo: dennisgit42/chess
   run:
     - "rake db:migrate"
     - restart
