@@ -19,3 +19,6 @@ deploy:
   run:
     - "rake db:migrate"
     - restart
+  branches:
+    only:
+      - dennis
