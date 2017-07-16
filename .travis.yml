@@ -15,7 +15,7 @@ deploy:
     secure: cc8a87e9-9623-41c4-b83e-81074430ac06
   app: chess
   on:
-    repo: dennisgit42/chess
+    repo: Infinite-Loops-Firehose/chess
   run:
     - "rake db:migrate"
     - restart
