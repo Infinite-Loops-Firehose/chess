@@ -1,0 +1,59 @@
+AllCops:
+  Exclude:
+    - db/**/*
+    - Gemfile
+    - vendor/**/*
+    - config/environments/*
+    - bin/**/*
+
+Rails:
+  Enabled: true
+
+Layout/EndOfLine:
+  Enabled: false
+
+Metrics/LineLength:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/FileName:
+    Enabled: false
+
+# Disables "Use nested module/class definitions instead of compact style" warning
+ClassAndModuleChildren:
+  Enabled: false
+
+# Increases "Class definition is too long" warning from 100 to 200
+Metrics/ClassLength:
+  Max: 300
+
+# Increases "Module has too many lines" warning from 100 to 200
+Metrics/ModuleLength:
+  Max: 200
+
+# Increases "Assignment Branch Condition size" warning from 15 to 30
+Metrics/AbcSize:
+  Max: 100
+
+Metrics/BlockLength:
+  Max: 500
+
+# Disables "Missing top-level class documentation comment" warning
+Documentation:
+  Enabled: false
+
+# Disables "Line is too long" warning
+LineLength:
+  Enabled: false
+
+CyclomaticComplexity:
+  Enabled: false
+
+PerceivedComplexity:
+  Enabled: false
+
+# Disables "Method has too many lines" warning
+MethodLength:
+  Enabled: false
