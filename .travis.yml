@@ -21,4 +21,4 @@ deploy:
     - restart
   branches:
     only:
-      - dennis
+      - master
