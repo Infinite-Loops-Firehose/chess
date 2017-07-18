@@ -1,12 +1,7 @@
 class GameController < ApplicationController
+  def new; end
 
-  def new
-  end
+  def create; end
 
-  def create
-  end
-
-  def show
-  end
-
+  def show; end
 end
