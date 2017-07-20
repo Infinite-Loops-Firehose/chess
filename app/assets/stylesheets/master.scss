@@ -1,1 +1,13 @@
 @import "bootstrap";
+
+.white {
+    background: url(chess-blues-white.png);
+    background-size: 100px 100px;
+    background-repeat: no-repeat;
+}
+
+.black {
+    background: url(chess-blues-black.png);
+    background-size: 100px 100px;
+    background-repeat: no-repeat;
+}

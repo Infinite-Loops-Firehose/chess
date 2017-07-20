@@ -1,3 +1,24 @@
-// Place all the styles related to the games controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+#chessboard {
+   width: 700px;
+   height: 700px;
+}
+
+#chessboard tbody, #chessboard tr, #chessboard td {
+   padding: 0;
+   margin: 0;
+}
+
+td {
+}
+
+.white {
+    background: url(chess-blues-white.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.black {
+    background: url(chess-blues-black.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
