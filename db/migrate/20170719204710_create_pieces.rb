@@ -1,7 +1,7 @@
 class CreatePieces < ActiveRecord::Migration[5.0]
   def change
     create_table :pieces do |t|
-      t.integer :game_id
+      t.integer :game_id, index: true
       t.boolean :is_white
       t.string :type
       t.integer :x_position
