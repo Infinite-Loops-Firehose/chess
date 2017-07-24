@@ -1,5 +1,15 @@
 @import "bootstrap";
 
+#chessboard {
+  width: 700px;
+  height: 700px;
+}
+
+#chessboard tbody, #chessboard tr, #chessboard td {
+  padding: 0;
+  margin: 0;
+}
+
 .white {
     background: url(chess-blues-white.png);
     background-size: 100px 100px;
