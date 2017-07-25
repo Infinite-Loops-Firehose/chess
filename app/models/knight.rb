@@ -1,1 +1,2 @@
-class Knight < Piece; end
+class Knight < Piece
+end
