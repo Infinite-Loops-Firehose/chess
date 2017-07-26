@@ -5,7 +5,7 @@ FactoryGirl.define do
     end
     password 'secretPassword'
     password_confirmation 'secretPassword'
-    name "username"
+    name 'username'
     games_played 0
     games_won 0
   end
