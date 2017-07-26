@@ -12,27 +12,48 @@ class Piece < ApplicationRecord
   end
 
   def horizontal?(destination_x, destination_y)
+    obstruction = nil
     if destination_y - self.y_position == 0
-      # check if obstructed
-      # array = []
-
-      
+      if destination_x > x_position
+        obstruction = Piece.where('y_position = ? AND x_position < ? AND x_position > ?, y_position, x_destination, x_position')
+      else
+        obstruction = Piece.where('y_position = ? AND x_position > ? AND x_position < ?, y_position, x_destination, x_position')
+      end
+    end
+    if obstruction != nil
+      return true
+    else
+      return false
     end
   end
 
   def vertical?(destination_x, destination_y)
+    obstruction = nil
     if destination_x - self.x_position == 0
-      # array = []
-      # x_position, y_position +=1 
-      # 1,3 --> 1,6 
-      # 1,4 1,5
-      # if y_position +1(1,4), +2(1,5)
+      if destination_y > y_position
+        obstruction = Piece.where('x_position = ? AND y_position < ? AND y_position > ?, x_position, y_destination, y_position')
+      else
+        obstruction = Piece.where('x_position = ? AND y_position > ? AND y_position < ?, x_position, y_destination, y_position')
+      end
+    end
+    if obstruction != nil
+      return true
+    else
+      return false
     end
   end
 
   def diagonal?(destination_x, destination_y)
-    if (destination_x - x_position).abs == (destination_y - y_position).abs    
-      # check if obstructed
+    obstruction = nil
+    x_distance = (destination_x - x_position).abs
+    y_distance = (destination_y - y_position).abs
+    if x_distance == y_distance    
+      obstruction = 
+      (x_distance - 1).times do 
+        Piece.where('x_position < ? AND y_position < ?, x_destination, y_destination') #right up
+        Piece.where('x_position > ? AND y_position < ?, x_destination, y_destination') #left up
+        Piece.where('x_position < ? AND y_position > ?, x_destination, y_destination') #right down
+        Piece.where('x_position > ? AND y_position > ?, x_destination, y_destination') #left down
     end
   end
 
