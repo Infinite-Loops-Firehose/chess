@@ -14,14 +14,19 @@ class Piece < ApplicationRecord
   def horizontal?(destination_x, destination_y)
     if destination_y - self.y_position == 0
       # check if obstructed
+      # array = []
+
       
     end
   end
 
   def vertical?(destination_x, destination_y)
-    if destination_x - self.x_position == 0   
-      # check if obstructed
-
+    if destination_x - self.x_position == 0
+      # array = []
+      # x_position, y_position +=1 
+      # 1,3 --> 1,6 
+      # 1,4 1,5
+      # if y_position +1(1,4), +2(1,5)
     end
   end
 
