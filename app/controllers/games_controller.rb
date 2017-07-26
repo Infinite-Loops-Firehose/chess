@@ -3,9 +3,11 @@ class GamesController < ApplicationController
 
   def new; end
 
-  def create 
-
-    @game = Game.create(game_params)
+  def create
+    p game_params
+    @game = Game.new(game_params)
+    @game.user_white = current_user
+    @game.save
     redirect_to game_path(@game)
   end
 

@@ -1,0 +1,1 @@
+class King < Piece; end
