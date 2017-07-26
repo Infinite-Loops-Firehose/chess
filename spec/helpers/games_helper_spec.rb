@@ -10,5 +10,5 @@ require 'rails_helper'
 #     end
 #   end
 # end
-RSpec.describe GamesHelper, type: :helper do  
+RSpec.describe GamesHelper, type: :helper do
 end
