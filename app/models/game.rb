@@ -1,6 +1,6 @@
 class Game < ApplicationRecord
-  belongs_to :user_black, class_name: "User", optional: true
-  belongs_to :user_white, class_name: "User"
+  belongs_to :user_black, class_name: 'User', optional: true
+  belongs_to :user_white, class_name: 'User'
   has_many :pieces
 
   def populate_board!
@@ -41,4 +41,3 @@ class Game < ApplicationRecord
     Piece.create(game_id: id, is_white: true, type: QUEEN, x_position: 4, y_position: 8)
   end
 end
-
