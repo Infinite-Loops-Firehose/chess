@@ -14,10 +14,10 @@ class Piece < ApplicationRecord
   def horizontal?(destination_x, destination_y)
     obstruction = nil
     if destination_y - self.y_position == 0
-      if destination_x > x_position
-        obstruction = Piece.where('y_position = ? AND x_position < ? AND x_position > ?, y_position, x_destination, x_position')
+      if destination_x > self.x_position
+        obstruction = Piece.where('y_position = ? AND x_position < ? AND x_position > ?', self.y_position, destination_x, self.x_position)
       else
-        obstruction = Piece.where('y_position = ? AND x_position > ? AND x_position < ?, y_position, x_destination, x_position')
+        obstruction = Piece.where('y_position = ? AND x_position > ? AND x_position < ?', self.y_position, destination_x, self.x_position)
       end
     end
     if obstruction != nil
@@ -30,10 +30,10 @@ class Piece < ApplicationRecord
   def vertical?(destination_x, destination_y)
     obstruction = nil
     if destination_x - self.x_position == 0
-      if destination_y > y_position
-        obstruction = Piece.where('x_position = ? AND y_position < ? AND y_position > ?, x_position, y_destination, y_position')
+      if destination_y > self.y_position
+        obstruction = Piece.where('x_position = ? AND y_position < ? AND y_position > ?', self.x_position, destination_y, self.y_position)
       else
-        obstruction = Piece.where('x_position = ? AND y_position > ? AND y_position < ?, x_position, y_destination, y_position')
+        obstruction = Piece.where('x_position = ? AND y_position > ? AND y_position < ?', self.x_position, destination_y, self.y_position)
       end
     end
     if obstruction != nil
@@ -45,15 +45,33 @@ class Piece < ApplicationRecord
 
   def diagonal?(destination_x, destination_y)
     obstruction = nil
-    x_distance = (destination_x - x_position).abs
-    y_distance = (destination_y - y_position).abs
-    if x_distance == y_distance    
-      obstruction = 
-      (x_distance - 1).times do 
-        Piece.where('x_position < ? AND y_position < ?, x_destination, y_destination') #right up
-        Piece.where('x_position > ? AND y_position < ?, x_destination, y_destination') #left up
-        Piece.where('x_position < ? AND y_position > ?, x_destination, y_destination') #right down
-        Piece.where('x_position > ? AND y_position > ?, x_destination, y_destination') #left down
+    x_vector = destination_x - self.x_position #gets the distance and the direction of the horizontal move.
+    # positive is to the right, negative is to the left.
+    y_vector = destination_y - self.y_position #gets the distance and the direction of the vertical move.
+    # positive is up, negative is down.
+    if x_vector.abs == y_vector.abs #in order for the move to be diagonal, 
+    # the piece must be moving by the same distance both horizontally and vertically.
+      obstruction = nil
+      
+      obstruction = Piece.where('(? - x_position).abs == (? - y_position).abs', x_destination, y_destination)
+#      if x_vector > 0 && y_vector > 0 #right up
+#      elsif x_vector < 0 && y_vector > 0 #left up
+
+#      elsif x_vector > 0 && y_vector < 0 #right down
+
+#      elsif x_vector < 0 && y_vector < 0 #left down
+
+#      else
+        
+      end
+       
+        
+        Piece.where('x_position > ? AND y_position < ?', x_destination, y_destination) #left up
+        Piece.where('x_position < ? AND y_position > ?', x_destination, y_destination) #right down
+        Piece.where('x_position > ? AND y_position > ?', x_destination, y_destination) #left down
+
+#params = ["1", "2"]
+#Model.where("id = ? OR id = ?", *params)
     end
   end
 
