@@ -1,0 +1,16 @@
+<% @available_games = Game.available %>
+<div class="gamelistbox col-12 text-center">
+  <h1>Do you want to play a game of chess? Here is a list of all the games that still need a player.</h1>
+  <br />
+  <% @available_games.each do |game| %>
+    <div class="row">
+      <div class="col-12">
+        The game with id <%= game.id %> was created <%= game.created_at %>
+      </div>  
+      <div class="col-12">
+        <%= game.user_white.name %> is playing White. No one is playing Black.
+      </div>
+    </div>
+    <br />
+  <% end %>
+</div>
