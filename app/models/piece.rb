@@ -34,14 +34,14 @@ class Piece < ApplicationRecord
       x_y_values = [] # is it necessary to declare this array first before pushing to it?
 
       x_values.zip(y_values) do |x_value, y_value| # combines x_value and y_value pairs into a multidimensional array
-        x_y_values << [x_value, y_value]
+        x_y_values << [x_value, y_value] # [ [1, 1], [2, 2], [3, 3] ] for example
       end
 
       coordinates = x_y_values.shift.pop # this is an array of only the in-between squares - not including the start or end squares
 
       sql = coordinates.map do |coordinate|
         "x_position = #{coordinate.first} and y_position = #{coordinate.last}"
-      end.join(" or ")
+      end.join(" or ")  # "x_position = 1 and y_position = 1 or x_position = 2 and y_position = 2 or ..."
 
       obstruction = Piece.where(sql)
       obstruction.present?
@@ -51,9 +51,6 @@ class Piece < ApplicationRecord
   end
 
   def invalid?(destination_x, destination_y)
-#  checking to see if piece is moving enough to even have an obstruction    
-#  if destination_x - x_position <= 1 || destination_y - y_position <= 1?
-#  if not horizontal, vertical, or diagonal?
     
   end
 end
