@@ -1,5 +1,11 @@
 @import "bootstrap";
 
+body{
+  background: image_url("chess-by-water.jpg");
+  color: white;
+  font-family: Helvetica, Times;
+}
+
 #chessboard {
   width: 700px;
   height: 700px;
@@ -27,3 +33,4 @@
   width: 50%;
   padding: 5px;
 }
+

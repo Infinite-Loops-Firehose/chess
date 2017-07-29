@@ -1,1 +1,29 @@
-<p>welcome to our chess app<p>
+<div class="col-12 text-center">
+  <h1>Do you want to play a game of chess? Here is a list of all the games that still need a player.</h1>
+  <br />
+  <% @available_games.each do |game| %>
+    <div class="row .container-fluid">
+      <div class="col-12">
+        The game with id <%= game.id %> was created <%= game.created_at %>
+      </div> 
+
+      <div class="col-12">
+        <% if game.user_white == nil %>
+          No one is playing White.
+        <% else %>
+          <%= game.user_white.name %> is playing white. 
+        <% end %>    
+      </div>
+
+      <div class="col-12">
+        <% if game.user_black == nil %>
+          No one is playing Black.
+        <% else %>
+          <%= game.user_black.name %> is playing white.
+        <% end %>    
+      </div>
+    </div>
+
+    <br />
+  <% end %>
+</div>

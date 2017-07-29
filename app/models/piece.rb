@@ -1,6 +1,13 @@
 class Piece < ApplicationRecord
   belongs_to :game
 
+  PAWN = 'Pawn'.freeze
+  ROOK = 'Rook'.freeze
+  KNIGHT = 'Knight'.freeze
+  BISHOP = 'Bishop'.freeze
+  QUEEN = 'Queen'.freeze
+  KING = 'King'.freeze
+
   def obstructed?(destination_x, destination_y)
     return true if horizontal_or_vertical_obstruction?(destination_x, destination_y)
     return true if diagonal_obstruction?(destination_x, destination_y)
