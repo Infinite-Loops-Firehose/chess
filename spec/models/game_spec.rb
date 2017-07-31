@@ -22,8 +22,8 @@ RSpec.describe Game, type: :model do
       game.populate_board!
       n_white_rooks = game.pieces.where(type: ROOK, is_white: true).count
       expect(n_white_rooks).to eq(2)
-      n_black_pawns = game.pieces.where(type: ROOK, is_white: false).count
-      expect(n_black_pawns).to eq(2)
+      n_black_rooks = game.pieces.where(type: ROOK, is_white: false).count
+      expect(n_black_rooks).to eq(2)
     end
 
     it 'creates correct number of knights' do
