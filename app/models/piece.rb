@@ -21,15 +21,11 @@ class Piece < ApplicationRecord
 
   def diagonal?(destination_x, destination_y)
     # in order for the move to be diagonal, the piece must be moving by the same distance both horizontally and vertically.
-    return false unless (destination_x - self.x_position).abs == (destination_y - self.y_position).abs
+    return true if (destination_x - self.x_position).abs == (destination_y - self.y_position).abs
   end
 
   def invalid?(destination_x, destination_y)
-    return true if !destination_x.is_i? || !destination_y.is_i?
     return true if destination_x < 1 || destination_x > 8 || destination_y < 1 || destination_y > 8
-    return true if !self.horizontal_or_vertical?(destination_x, destination_y)
-    return true if !self.diagonal?(destination_x, destination_y)
-    false
   end
 
   def horizontal_or_vertical_obstruction?(destination_x, destination_y)
@@ -56,7 +52,7 @@ class Piece < ApplicationRecord
       "x_position = #{coordinate.first} AND y_position = #{coordinate.last}"
     end.join(' or ') # "x_position = 1 and y_position = 1 or x_position = 2 and y_position = 2 or ..."
 
-    obstruction = Piece.where(sql)
+    obstruction = game.pieces.where(sql)
     obstruction.present?
   end
 end
