@@ -18,7 +18,7 @@ class Piece < ApplicationRecord
   def square_occupied?(new_x, new_y)
     piece = game.pieces.find_by(x_position: new_x, y_position: new_y)
     return false if piece.nil?
-    return true
+    true
   end
 
   def get_piece_at_coor(x, y)
