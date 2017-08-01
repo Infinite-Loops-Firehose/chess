@@ -19,12 +19,12 @@ class GamesController < ApplicationController
 
   def update
     @game = Game.find(params[:id])
-    if @game.user_black == nil
+    if @game.user_black.nil?
       @game.update(user_black_id: current_user.id)
     else
       @game.update(user_white_id: current_user.id)
     end
-    redirect_to root_path     
+    redirect_to root_path
   end
 
   def game_params

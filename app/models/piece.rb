@@ -1,10 +1,10 @@
 class Piece < ApplicationRecord
   belongs_to :game
 
-  def move_to!(new_x, new_y, white_turn) 
+  def move_to!(new_x, new_y) 
     if (is_square_occupied?(new_x, new_y))
       occupying_piece = get_piece_at_coor(new_x, new_y)
-      if (occupying_piece.is_white && !white_turn) || (!occupying_piece.is_white && white_turn)
+      if (occupying_piece.is_white && !self.is_white?) || (!occupying_piece.is_white && self.is_white?)
         capture_piece(occupying_piece)
         update_attributes(x_position: new_x, y_position: new_y)
       else
@@ -16,12 +16,12 @@ class Piece < ApplicationRecord
   end
 
   def is_square_occupied?(new_x, new_y)
-    Piece.all.each do |piece|
-      if piece.x_position == new_x && piece.y_position == new_y
-        return true
-      end
+    piece = game.pieces.find_by(x_position: new_x, y_position: new_y)
+    if (piece == nil)
+      return false
+    else
+      return true
     end
-    return false
   end
 
   def get_piece_at_coor(x, y)
@@ -34,7 +34,7 @@ class Piece < ApplicationRecord
   end
 
   def capture_piece(piece_captured)
-    piece_captured.update_attributes(x_position: nil, y_position: nil)
+    piece_captured.update(x_position: nil, y_position: nil)
   end
 end
 
