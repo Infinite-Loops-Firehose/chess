@@ -2,16 +2,18 @@ class Piece < ApplicationRecord
   belongs_to :game
 
   def move_to!(new_x, new_y)
+    if !is_square_occupied?(new_x, new_y)
+      update_attributes(x_position: new_x, y_position: new_y)
+      return
+    end
     if is_square_occupied?(new_x, new_y)
       occupying_piece = get_piece_at_coor(new_x, new_y)
-      unless (!occupying_piece.is_white && self.is_white?) || (occupying_piece.is_white && !self.is_white?)
+      if (occupying_piece.is_white && !self.is_white?) || (!occupying_piece.is_white && self.is_white?)
         capture_piece(occupying_piece)
         update_attributes(x_position: new_x, y_position: new_y)
       else
         raise ArgumentError.new("That is an invalid move. Cannot capture your own piece.")
-      end
-    else
-      update_attributes(x_position: new_x, y_position: new_y)
+      end      
     end
   end
 
