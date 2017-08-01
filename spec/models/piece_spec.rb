@@ -2,10 +2,14 @@ require 'rails_helper'
 
 RSpec.describe Piece, type: :model do
   describe '#obstructed?' do
-    it 'checks for diagonal obstruction between A6 and C4' do
-      game = FactoryGirl.create_obstructed_game
-      piece = FactoryGirl.create(:piece, game_id: game.id, :x_position => 1, :y_position => 6)
-      expect(piece.obstructed?(3, 4)).to be_false
+    before do
+      create_obstructed_game
+    end
+    
+    context 'when checking diagonal obstruction' do
+      it 'between A6 and C4' do
+        expect(piece_A6.obstructed?(3, 4)).to be_false
+      end
     end
 
     it 'checks for diagonal obstruction between F1 and D3' do

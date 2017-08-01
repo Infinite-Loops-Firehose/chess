@@ -16,7 +16,7 @@ class Piece < ApplicationRecord
   end
 
   def horizontal_or_vertical?(destination_x, destination_y)
-    return false unless destination_x == self.x_position || destination_y == self.y_position
+    return destination_x == self.x_position || destination_y == self.y_position
   end
 
   def diagonal?(destination_x, destination_y)
@@ -36,7 +36,7 @@ class Piece < ApplicationRecord
     return false unless self.horizontal_or_vertical?(destination_x, destination_y)
     range_x = [destination_x, self.x_position].sort
     range_y = [destination_y, self.y_position].sort
-    obstruction = Piece.where(y_position: ((range_y.first + 1)..(range_y.last - 1)), x_position: ((range_x.first + 1)..(range_x.last - 1))) # will always return something, even if it's an empty query
+    obstruction = game.pieces.where(y_position: ((range_y.first + 1)..(range_y.last - 1)), x_position: ((range_x.first + 1)..(range_x.last - 1))) # will always return something, even if it's an empty query
     obstruction.present? # should return false if the query is empty
   end
 

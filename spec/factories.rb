@@ -21,7 +21,7 @@ FactoryGirl.define do
 end
 
 # I want this method to populate a board with the obstructed pieces that are in Ken's example
-def FactoryGirl.create_obstructed_game
+def create_obstructed_game
   obstructed_game = FactoryGirl.create(:game, id: 1)
   piece_A1 = FactoryGirl.create(:piece, game_id: 1, x_position: 1, y_position: 1)
   piece_A2 = FactoryGirl.create(:piece, game_id: 1, x_position: 1, y_position: 2)
@@ -52,5 +52,5 @@ def FactoryGirl.create_obstructed_game
   piece_H6 = FactoryGirl.create(:piece, game_id: 1, x_position: 8, y_position: 6)
   piece_H7 = FactoryGirl.create(:piece, game_id: 1, x_position: 8, y_position: 7)
   piece_H8 = FactoryGirl.create(:piece, game_id: 1, x_position: 8, y_position: 8)
-
 end
+

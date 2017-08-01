@@ -85,3 +85,6 @@
     </tbody>
   </table>
 </div>
+<% if flash[:invalid] %>
+  <div class="invalid"><%= flash[:invalid] %></div>
+<% end %>
