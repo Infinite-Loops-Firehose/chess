@@ -7,12 +7,12 @@ class Piece < ApplicationRecord
       return
     end
     occupying_piece = get_piece_at_coor(new_x, new_y)
-    if (occupying_piece.is_white && !self.is_white?) || (!occupying_piece.is_white && self.is_white?)
+    unless (occupying_piece.is_white && self.is_white?) || (!occupying_piece.is_white && !is_white?)
       capture_piece(occupying_piece)
       update_attributes(x_position: new_x, y_position: new_y)
-    else
-      raise ArgumentError.new("That is an invalid move. Cannot capture your own piece.")
+      return
     end
+    raise ArgumentError.new("That is an invalid move. Cannot capture your own piece.")
   end
 
   def is_square_occupied?(new_x, new_y)
@@ -30,7 +30,7 @@ class Piece < ApplicationRecord
         return piece
       end
     end
-    return nil
+    nil
   end
 
   def capture_piece(piece_captured)
