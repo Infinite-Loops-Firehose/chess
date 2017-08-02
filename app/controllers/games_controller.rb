@@ -24,8 +24,10 @@ class GamesController < ApplicationController
     else
       @game.update(user_white_id: current_user.id)
     end
-    redirect_to root_path
+    redirect_to game_path(@game)
   end
+
+  private
 
   def game_params
     params.require(:game).permit(:user_white_id, :user_black_id)
