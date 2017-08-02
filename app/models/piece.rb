@@ -22,10 +22,7 @@ class Piece < ApplicationRecord
   end
 
   def get_piece_at_coor(x, y)
-    Piece.all.find_each do |piece|
-      return piece if piece.x_position == x && piece.y_position == y
-    end
-    nil
+    piece = game.pieces.find_by(x_position: x, y_position: y)
   end
 
   def capture_piece(piece_captured)
