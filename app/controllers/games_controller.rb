@@ -17,6 +17,18 @@ class GamesController < ApplicationController
     @game = Game.find(params[:id])
   end
 
+  def update
+    @game = Game.find(params[:id])
+    if @game.user_black.nil?
+      @game.update(user_black_id: current_user.id)
+    else
+      @game.update(user_white_id: current_user.id)
+    end
+    redirect_to game_path(@game)
+  end
+
+  private
+
   def game_params
     params.require(:game).permit(:user_white_id, :user_black_id)
   end
