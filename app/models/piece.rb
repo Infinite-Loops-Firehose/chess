@@ -22,7 +22,7 @@ class Piece < ApplicationRecord
   end
 
   def get_piece_at_coor(x, y)
-    piece = game.pieces.find_by(x_position: x, y_position: y)
+    game.pieces.find_by(x_position: x, y_position: y)
   end
 
   def capture_piece(piece_captured)
