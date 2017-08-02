@@ -9,35 +9,49 @@ class Piece < ApplicationRecord
   KING = 'King'.freeze
 
   def obstructed?(destination_x, destination_y)
-    return true if self.invalid?(destination_x, destination_y)
-    return true if self.horizontal_or_vertical_obstruction?(destination_x, destination_y)
-    return true if self.diagonal_obstruction?(destination_x, destination_y)
+    return true if invalid?(destination_x, destination_y)
+    return true if horizontal_or_vertical_obstruction?(destination_x, destination_y)
+    return true if diagonal_obstruction?(destination_x, destination_y)
     false
   end
 
+  private
+
   def horizontal_or_vertical?(destination_x, destination_y)
-    return destination_x == self.x_position || destination_y == self.y_position
+    destination_x == x_position || destination_y == y_position
   end
 
   def diagonal?(destination_x, destination_y)
     # in order for the move to be diagonal, the piece must be moving by the same distance both horizontally and vertically.
-    return true if (destination_x - self.x_position).abs == (destination_y - self.y_position).abs
+    return true if (destination_x - x_position).abs == (destination_y - y_position).abs
   end
 
   def invalid?(destination_x, destination_y)
     return true if destination_x < 1 || destination_x > 8 || destination_y < 1 || destination_y > 8
   end
 
+  def vertical_obstruction?(range_y)
+    obstruction = game.pieces.where(y_position: ((range_y.first + 1)..(range_y.last - 1)), x_position: x_position) # will always return something, even if it's an empty query
+    obstruction.present?
+  end
+
+  def horizontal_obstruction?(range_x)
+    obstruction = game.pieces.where(y_position: y_position, x_position: (range_x.first + 1)..(range_x.last - 1)) # will always return something, even if it's an empty query
+    obstruction.present?
+  end
+
   def horizontal_or_vertical_obstruction?(destination_x, destination_y)
-    return false unless self.horizontal_or_vertical?(destination_x, destination_y)
-    range_x = [destination_x, self.x_position].sort
-    range_y = [destination_y, self.y_position].sort
-    obstruction = game.pieces.where(y_position: ((range_y.first + 1)..(range_y.last - 1)), x_position: ((range_x.first + 1)..(range_x.last - 1))) # will always return something, even if it's an empty query
-    obstruction.present? # should return false if the query is empty
+    return false unless horizontal_or_vertical?(destination_x, destination_y)
+    range_x = [destination_x, x_position].sort
+    range_y = [destination_y, y_position].sort
+    vertical_obstruction?(range_y) || horizontal_obstruction?(range_x)
+
+    # obstruction = game.pieces.where(y_position: ((range_y.first + 1)..(range_y.last - 1)), x_position: ((range_x.first + 1)..(range_x.last - 1))) # will always return something, even if it's an empty query
+    # obstruction.present? # should return false if the query is empty
   end
 
   def diagonal_obstruction?(destination_x, destination_y)
-    return false unless self.diagonal?(destination_x, destination_y)
+    return false unless diagonal?(destination_x, destination_y)
 
     # [
     #   [1, 6],
@@ -46,17 +60,17 @@ class Piece < ApplicationRecord
     # ]
     #
     # (r.first).downto(r.last).to_a
-    if self.x_position < destination_x
-      x_values = (self.x_position..destination_x).to_a # array of x values, including the starting and ending squares
-    else
-      x_values = (self.x_position).downto(destination_x).to_a
-    end
+    x_values = if x_position < destination_x
+                 (x_position..destination_x).to_a # array of x values, including the starting and ending squares
+               else
+                 x_position.downto(destination_x).to_a
+               end
 
-    if self.y_position < destination_y
-      y_values = (self.y_position..destination_y).to_a # array of y values, including the starting and ending squares
-    else
-      y_values = (self.y_position).downto(destination_y).to_a
-    end
+    y_values = if y_position < destination_y
+                 (y_position..destination_y).to_a # array of y values, including the starting and ending squares
+               else
+                 y_position.downto(destination_y).to_a
+               end
 
     coordinates = []
 

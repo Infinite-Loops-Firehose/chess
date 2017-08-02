@@ -1,10 +1,12 @@
 class PiecesController < ApplicationController
-
   def update
-    if invalid? == true
-      flash[:invalid] = "Invalid Move!"
-      redirect_to @user
-    end
+    # @piece = Piece.find(params[:id])
+    # @piece.update_attributes(piece_params)
+    # if @piece.valid?
+    #   flash[:invalid] = 'Invalid Move!'
+    #   redirect_to @user
+    # end
   end
 
+  def piece_params; end
 end
