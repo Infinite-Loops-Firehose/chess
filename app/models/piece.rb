@@ -38,8 +38,26 @@ class Piece < ApplicationRecord
 
   def diagonal_obstruction?(destination_x, destination_y)
     return false unless self.diagonal?(destination_x, destination_y)
-    x_values = (self.x_position..destination_x).to_a # array of x values, including the starting and ending squares
-    y_values = (self.y_position..destination_y).to_a # array of y values, including the starting and ending squares
+
+    # [
+    #   [1, 6],
+    #   [2, 5],
+    #   [3, 4]
+    # ]
+    #
+    # (r.first).downto(r.last).to_a
+    if self.x_position < destination_x
+      x_values = (self.x_position..destination_x).to_a # array of x values, including the starting and ending squares
+    else
+      x_values = (self.x_position).downto(destination_x).to_a
+    end
+
+    if self.y_position < destination_y
+      y_values = (self.y_position..destination_y).to_a # array of y values, including the starting and ending squares
+    else
+      y_values = (self.y_position).downto(destination_y).to_a
+    end
+
     coordinates = []
 
     x_values.zip(y_values) do |x_value, y_value| # combines x_value and y_value pairs into a multidimensional array
