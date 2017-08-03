@@ -1,4 +1,6 @@
 class Piece < ApplicationRecord
+  # class OffBoardError < StandardError; end   <-- we may want to use this at some point for error messages
+
   belongs_to :game
 
   PAWN = 'Pawn'.freeze
@@ -8,14 +10,23 @@ class Piece < ApplicationRecord
   QUEEN = 'Queen'.freeze
   KING = 'King'.freeze
 
+  # validate :obstructed?
+
   def obstructed?(destination_x, destination_y)
     return true if invalid?(destination_x, destination_y)
     return true if horizontal_or_vertical_obstruction?(destination_x, destination_y)
     return true if diagonal_obstruction?(destination_x, destination_y)
     false
+    # errors.add(:off_board, "Pieces cannot be moved off the board: invalid move") if invalid?(destination_x, destination_y)
+    # errors.add(:horizontal_or_vertical_obstruction, "There is a horizontal or vertical obstruction: invalid move") if horizontal_or_vertical_obstruction?(destination_x, destination_y)
+    # errors.add(:diagonal_obstruction, "There is a diagonal obstruction: invalid move") if diagonal_obstruction?(destination_x, destination_y)
   end
 
   private
+
+  def invalid?(destination_x, destination_y)
+    return true if destination_x < 1 || destination_x > 8 || destination_y < 1 || destination_y > 8
+  end
 
   def horizontal_or_vertical?(destination_x, destination_y)
     destination_x == x_position || destination_y == y_position
@@ -26,9 +37,6 @@ class Piece < ApplicationRecord
     return true if (destination_x - x_position).abs == (destination_y - y_position).abs
   end
 
-  def invalid?(destination_x, destination_y)
-    return true if destination_x < 1 || destination_x > 8 || destination_y < 1 || destination_y > 8
-  end
 
   def vertical_obstruction?(range_y)
     obstruction = game.pieces.where(y_position: ((range_y.first + 1)..(range_y.last - 1)), x_position: x_position) # will always return something, even if it's an empty query
