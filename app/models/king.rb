@@ -1,6 +1,8 @@
 class King < Piece
   def valid_move?(destination_x, destination_y)
-  # return true if the move is valid
-  # return false if the move is invalid
+    x_difference = (destination_x - x_position).abs
+    y_difference = (destination_y - y_position).abs
+
+    (x_difference <= 1) && (y_difference <= 1) ? true : false
   end
 end
