@@ -46,7 +46,8 @@ class Game < ApplicationRecord
 
   def render_piece(x, y)
     @piece = Piece.where(x_position: x, y_position: y)
-    @piece.render if @piece.present?
+    # @piece.render if @piece.present?
+    "Piece" if @piece.present?
    
     # 1. Check if piece is present - position
     # (Put type and color in square - we made that part of the Piece model)
