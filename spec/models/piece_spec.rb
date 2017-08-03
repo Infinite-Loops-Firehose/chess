@@ -28,7 +28,6 @@ RSpec.describe Piece, type: :model do
       it 'checks for vertical obstruction between A1 and A4' do
         game = obstructed_game
         piece = FactoryGirl.create(:piece, game_id: game.id, x_position: 1, y_position: 1)
-        piece2 = FactoryGirl.create(:piece, game_id: game.id, x_position: 1, y_position: 2)
         expect(piece.obstructed?(1, 4)).to eq(true)
       end
 
@@ -41,7 +40,6 @@ RSpec.describe Piece, type: :model do
       it 'checks for horizontal obstruction between A8 and C8' do
         game = obstructed_game
         piece = FactoryGirl.create(:piece, game_id: game.id, x_position: 1, y_position: 8)
-        piece2 = FactoryGirl.create(:piece, game_id: game.id, x_position: 3, y_position: 8)
         expect(piece.obstructed?(5, 8)).to eq(true)
       end
     end
@@ -54,6 +52,42 @@ RSpec.describe Piece, type: :model do
       end
     end
   end
+end
+
+# This method populates a board with the obstructed pieces that are in Ken's example
+# https://gist.github.com/kenmazaika/92b81db9e977578c8d94
+def obstructed_game
+  obstructed_game = FactoryGirl.create(:game)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 1, y_position: 1)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 1, y_position: 2)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 1, y_position: 6)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 1, y_position: 8)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 2, y_position: 1)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 2, y_position: 2)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 2, y_position: 6)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 3, y_position: 4)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 3, y_position: 7)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 4, y_position: 1)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 4, y_position: 4)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 4, y_position: 7)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 4, y_position: 8)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 5, y_position: 2)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 5, y_position: 7)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 5, y_position: 8)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 6, y_position: 1)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 6, y_position: 2)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 6, y_position: 7)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 6, y_position: 8)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 7, y_position: 1)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 7, y_position: 2)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 7, y_position: 7)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 7, y_position: 8)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 8, y_position: 1)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 8, y_position: 2)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 8, y_position: 6)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 8, y_position: 7)
+  FactoryGirl.create(:piece, game_id: obstructed_game.id, x_position: 8, y_position: 8)
+  obstructed_game
 end
 
 # cases to test for:
