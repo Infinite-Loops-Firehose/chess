@@ -43,4 +43,11 @@ class Game < ApplicationRecord
     Piece.create(game_id: id, is_white: true, type: KING, x_position: 5, y_position: 8)
     Piece.create(game_id: id, is_white: true, type: QUEEN, x_position: 4, y_position: 8)
   end
+
+  def render_piece(x_position, y_position)
+    # 1. Check if piece is present - position
+    # 2. Check is_white, type
+    # 3. Put type and color in square
+  end
+
 end
