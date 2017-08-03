@@ -44,10 +44,13 @@ class Game < ApplicationRecord
     Piece.create(game_id: id, is_white: true, type: QUEEN, x_position: 4, y_position: 8)
   end
 
-  def render_piece(x_position, y_position)
+  def render_piece(x, y)
+    @piece = Piece.where(x_position: x, y_position: y)
+    @piece.render if @piece.present?
+   
     # 1. Check if piece is present - position
-    # 2. Check is_white, type
-    # 3. Put type and color in square
+    # (Put type and color in square - we made that part of the Piece model)
   end
+
 
 end
