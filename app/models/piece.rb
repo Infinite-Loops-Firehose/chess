@@ -12,21 +12,21 @@ class Piece < ApplicationRecord
   #   @y_position = y_position
   # end
 
-  def self.color
+  def color
     # needs to be fixed so is_white acts like the attribute it is, and not a method.
-    return "White" if @is_white == true  
-    return "Black" if @is_white == false
+    return "White" if is_white == true  
+    return "Black" if is_white == false
   end
 
-  def self.render
-    "#{self.color} #{@type}"
+  def render
+    "#{self.color} #{type}"
   end
 
 end
 
-  PAWN = 'Pawn'.freeze
-  ROOK = 'Rook'.freeze
-  KNIGHT = 'Knight'.freeze
-  BISHOP = 'Bishop'.freeze
-  QUEEN = 'Queen'.freeze
-  KING = 'King'.freeze
+  # PAWN = 'Pawn'.freeze
+  # ROOK = 'Rook'.freeze
+  # KNIGHT = 'Knight'.freeze
+  # BISHOP = 'Bishop'.freeze
+  # QUEEN = 'Queen'.freeze
+  # KING = 'King'.freeze
