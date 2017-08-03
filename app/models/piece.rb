@@ -10,16 +10,11 @@ class Piece < ApplicationRecord
   QUEEN = 'Queen'.freeze
   KING = 'King'.freeze
 
-  # validate :obstructed?
-
   def obstructed?(destination_x, destination_y)
-    return true if invalid?(destination_x, destination_y)
-    return true if horizontal_or_vertical_obstruction?(destination_x, destination_y)
-    return true if diagonal_obstruction?(destination_x, destination_y)
-    false
-    # errors.add(:off_board, "Pieces cannot be moved off the board: invalid move") if invalid?(destination_x, destination_y)
-    # errors.add(:horizontal_or_vertical_obstruction, "There is a horizontal or vertical obstruction: invalid move") if horizontal_or_vertical_obstruction?(destination_x, destination_y)
-    # errors.add(:diagonal_obstruction, "There is a diagonal obstruction: invalid move") if diagonal_obstruction?(destination_x, destination_y)
+    errors.add(:off_board, "Pieces cannot be moved off the board: invalid move") if invalid?(destination_x, destination_y)
+    errors.add(:horizontal_or_vertical_obstruction, "There is a horizontal or vertical obstruction: invalid move") if horizontal_or_vertical_obstruction?(destination_x, destination_y)
+    errors.add(:diagonal_obstruction, "There is a diagonal obstruction: invalid move") if diagonal_obstruction?(destination_x, destination_y)
+    return errors.present?
   end
 
   private

@@ -23,8 +23,8 @@ class GamesController < ApplicationController
       @game.update(user_black_id: current_user.id)
     else
       @game.update(user_white_id: current_user.id)
-    end
-    redirect_to root_path     
+    end   
+    redirect_to game_path(@game)  
   end
 
   def game_params
