@@ -50,25 +50,8 @@ class Game < ApplicationRecord
     # .first is necessary to narrow the query down to return an actual instance - only one piece, not an array
     @piece.render if @piece.present?
     # "Piece" if @piece.present?
-   
+
     # 1. Check if piece is present - position
     # (Put type and color in square - we made that part of the Piece model)
   end
-
-
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
