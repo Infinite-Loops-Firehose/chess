@@ -11,10 +11,10 @@ class Piece < ApplicationRecord
   KING = 'King'.freeze
 
   def obstructed?(destination_x, destination_y)
-    errors.add(:off_board, "Pieces cannot be moved off the board: invalid move") if invalid?(destination_x, destination_y)
-    errors.add(:horizontal_or_vertical_obstruction, "There is a horizontal or vertical obstruction: invalid move") if horizontal_or_vertical_obstruction?(destination_x, destination_y)
-    errors.add(:diagonal_obstruction, "There is a diagonal obstruction: invalid move") if diagonal_obstruction?(destination_x, destination_y)
-    return errors.present?
+    errors.add(:off_board, 'Pieces cannot be moved off the board: invalid move') if invalid?(destination_x, destination_y)
+    errors.add(:horizontal_or_vertical_obstruction, 'There is a horizontal or vertical obstruction: invalid move') if horizontal_or_vertical_obstruction?(destination_x, destination_y)
+    errors.add(:diagonal_obstruction, 'There is a diagonal obstruction: invalid move') if diagonal_obstruction?(destination_x, destination_y)
+    errors.present?
   end
 
   private
@@ -31,7 +31,6 @@ class Piece < ApplicationRecord
     # in order for the move to be diagonal, the piece must be moving by the same distance both horizontally and vertically.
     return true if (destination_x - x_position).abs == (destination_y - y_position).abs
   end
-
 
   def vertical_obstruction?(range_y)
     obstruction = game.pieces.where(y_position: ((range_y.first + 1)..(range_y.last - 1)), x_position: x_position) # will always return something, even if it's an empty query

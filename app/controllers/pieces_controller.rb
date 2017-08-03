@@ -1,5 +1,4 @@
 class PiecesController < ApplicationController
-
   def update
     @piece = Piece.find(params[:id])
     if @piece.save
@@ -13,8 +12,4 @@ class PiecesController < ApplicationController
     #   redirect_to @user
     # end
   end
-
-  
-
-
 end

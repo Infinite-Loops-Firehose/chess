@@ -49,7 +49,7 @@ RSpec.describe Piece, type: :model do
     context 'invalid' do
       it 'invalid move between D4 and B5' do
         game = obstructed_game
-        piece = FactoryGirl.create(:piece, game_id: game.id, :x_position => 4, :y_position => 4)
+        piece = FactoryGirl.create(:piece, game_id: game.id, x_position: 4, y_position: 4)
         expect(piece.obstructed?(2, 9)).to eq(true)
       end
     end
