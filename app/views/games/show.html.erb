@@ -1,4 +1,9 @@
 <h1 class="text-center">Infinite Loops Chess</h1>
+
+<% if flash[:error].present? %>
+  <div class="alert alert-danger"><%= flash[:error] %></div>
+<% end %>
+
 <div class="col-10 center offset-1">
   <table id="chessboard">
     <tbody>
@@ -85,13 +90,3 @@
     </tbody>
   </table>
 </div>
-      <% if notice.present? %>
-        <p class="alert alert-info"><%= notice %></p>
-      <% end %>
-      <% if alert.present? %>
-        <p class="alert alert-danger"><%= alert %></p>
-      <% end %>
-
-<% if flash[:invalid].present? %>
-  <div class="invalid"><%= flash[:invalid] %></div>
-<% end %>
