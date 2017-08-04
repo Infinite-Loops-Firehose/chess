@@ -4,7 +4,7 @@
     <tbody>
       <tr>
         <td id="18" class="white">
-          <%= piece_image = @game.render_piece(1,8) %>
+          <% piece_image = @game.render_piece(1,8) %>
           <% if piece_image.present? %>
           <% piece = Piece.get_piece_at_coor(1,8) %>
             <%= link_to piece_image, piece_path(piece.id) %>

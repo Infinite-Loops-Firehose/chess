@@ -3,214 +3,217 @@
   <table id="chessboard">
     <tbody>
       <tr>
-        <td id="18" class="white">
-          <%= piece = piece.game.render_piece(1,8) %>
-          <% if piece == @piece %>
-            Selected piece
-          <% end %>
+        <td id=<% if Piece.get_piece_at_coor(@piece.x_position, @piece.y_position) == Piece.get_piece_at_coor(1, 8) %>
+          "selected_square"
+        <% else %>
+          "18"
+        <% end %>
+        class="white">
+          <% piece_image = @piece.game.render_piece(1,8) %>
+          <%= piece_image %>
         </td>
         <td id="28" class="black">
-          <%= @game.render_piece(2,8) %>
+          <%= piece = @piece.game.render_piece(2,8) %>
         </td>
         <td id="38" class="white">
-          <%= @game.render_piece(3,8) %>
+          <%= piece = @piece.game.render_piece(3,8) %>
         </td>
         <td id="48" class="black">
-          <%= @game.render_piece(4,8) %>
+          <%= piece = @piece.game.render_piece(4,8) %>
         </td>
         <td id="58" class="white">
-          <%= @game.render_piece(5,8) %>
+          <%= piece = @piece.game.render_piece(5,8) %>
         </td>
         <td id="68" class="black">
-          <%= @game.render_piece(6,8) %>
+          <%= piece = @piece.game.render_piece(6,8) %>
         </td>
         <td id="78" class="white">
-          <%= @game.render_piece(7,8) %>
+          <%= piece = @piece.game.render_piece(7,8) %>
         </td>
         <td id="88" class="black">
-          <%= @game.render_piece(8,8) %>
+          <%= piece = @piece.game.render_piece(8,8) %>
         </td>
       </tr>
       <tr>
         <td id="17" class="black">
-          <%= @game.render_piece(1,7) %>
+          <%= piece = @piece.game.render_piece(1,7) %>
         </td>
         <td id="27" class="white">
-          <%= @game.render_piece(2,7) %>
+          <%= piece = @piece.game.render_piece(2,7) %>
         </td>
         <td id="37" class="black">
-          <%= @game.render_piece(3,7) %>
+          <%= piece = @piece.game.render_piece(3,7) %>
         </td>
         <td id="47" class="white">
-          <%= @game.render_piece(4,7) %>
+          <%= piece = @piece.game.render_piece(4,7) %>
         </td>
         <td id="57" class="black">
-          <%= @game.render_piece(5,7) %>
+          <%= piece = @piece.game.render_piece(5,7) %>
         </td>
         <td id="67" class="white">
-          <%= @game.render_piece(6,7) %>
+          <%= piece = @piece.game.render_piece(6,7) %>
         </td>
         <td id="77" class="black">
-          <%= @game.render_piece(7,7) %>
+          <%= piece = @piece.game.render_piece(7,7) %>
         </td>
         <td id="87" class="white">
-          <%= @game.render_piece(8,7) %>
+          <%= piece = @piece.game.render_piece(8,7) %>
         </td>
       </tr>
       <tr>
         <td id="16" class="white">
-          <%= @game.render_piece(1,6) %>
+          <%= piece = @piece.game.render_piece(1,6) %>
         </td>
         <td id="26" class="black">
-          <%= @game.render_piece(2,6) %>
+          <%= piece = @piece.game.render_piece(2,6) %>
         </td>
         <td id="36" class="white">
-          <%= @game.render_piece(3,6) %>
+          <%= piece = @piece.game.render_piece(3,6) %>
         </td>
         <td id="46" class="black">
-          <%= @game.render_piece(4,6) %>
+          <%= piece = @piece.game.render_piece(4,6) %>
         </td>
         <td id="56" class="white">
-          <%= @game.render_piece(5,6) %>
+          <%= piece = @piece.game.render_piece(5,6) %>
         </td>
         <td id="66" class="black">
-          <%= @game.render_piece(6,6) %>
+          <%= piece = @piece.game.render_piece(6,6) %>
         </td>
         <td id="76" class="white">
-          <%= @game.render_piece(7,6) %>
+          <%= piece = @piece.game.render_piece(7,6) %>
         </td>
         <td id="86" class="black">
-          <%= @game.render_piece(8,6) %>
+          <%= piece = @piece.game.render_piece(8,6) %>
         </td>
       </tr>
       <tr>
         <td id="15" class="black">
-          <%= @game.render_piece(1,5) %>
+          <%= piece = @piece.game.render_piece(1,5) %>
         </td>
         <td id="25" class="white">
-          <%= @game.render_piece(2,5) %>
+          <%= piece = @piece.game.render_piece(2,5) %>
         </td>
         <td id="35" class="black">
-          <%= @game.render_piece(3,5) %>
+          <%= piece = @piece.game.render_piece(3,5) %>
         </td>
         <td id="45" class="white">
-          <%= @game.render_piece(4,5) %>
+          <%= piece = @piece.game.render_piece(4,5) %>
         </td>
         <td id="55" class="black">
-          <%= @game.render_piece(5,5) %>
+          <%= piece = @piece.game.render_piece(5,5) %>
         </td>
         <td id="65" class="white">
-          <%= @game.render_piece(6,5) %>
+          <%= piece = @piece.game.render_piece(6,5) %>
         </td>
         <td id="75" class="black">
-          <%= @game.render_piece(7,5) %>
+          <%= piece = @piece.game.render_piece(7,5) %>
         </td>
         <td id="85" class="white">
-          <%= @game.render_piece(8,5) %>
+          <%= piece = @piece.game.render_piece(8,5) %>
         </td>
       </tr>
       <tr>
         <td id="14" class="white">
-          <%= @game.render_piece(1,4) %>
+          <%= piece = @piece.game.render_piece(1,4) %>
         </td>
         <td id="24" class="black">
-          <%= @game.render_piece(2,4) %>
+          <%= piece = @piece.game.render_piece(2,4) %>
         </td>
         <td id="34" class="white">
-          <%= @game.render_piece(3,4) %>
+          <%= piece = @piece.game.render_piece(3,4) %>
         </td>
         <td id="44" class="black">
-          <%= @game.render_piece(4,4) %>
+          <%= piece = @piece.game.render_piece(4,4) %>
         </td>
         <td id="54" class="white">
-          <%= @game.render_piece(5,4) %>
+          <%= piece = @piece.game.render_piece(5,4) %>
         </td>
         <td id="64" class="black">
-          <%= @game.render_piece(6,4) %>
+          <%= piece = @piece.game.render_piece(6,4) %>
         </td>
         <td id="74" class="white">
-          <%= @game.render_piece(7,4) %>
+          <%= piece = @piece.game.render_piece(7,4) %>
         </td>
         <td id="84" class="black">
-          <%= @game.render_piece(8,4) %>
+          <%= piece = @piece.game.render_piece(8,4) %>
         </td>
       </tr>                            
       <tr>                             
         <td id="13" class="black">
-          <%= @game.render_piece(1,3) %>
+          <%= piece = @piece.game.render_piece(1,3) %>
         </td>
         <td id="23" class="white">
-          <%= @game.render_piece(2,3) %>
+          <%= piece = @piece.game.render_piece(2,3) %>
         </td>
         <td id="33" class="black">
-          <%= @game.render_piece(3,3) %>
+          <%= piece = @piece.game.render_piece(3,3) %>
         </td>
         <td id="43" class="white">
-          <%= @game.render_piece(4,3) %>
+          <%= piece = @piece.game.render_piece(4,3) %>
         </td>
         <td id="53" class="black">
-          <%= @game.render_piece(5,3) %>
+          <%= piece = @piece.game.render_piece(5,3) %>
         </td>
         <td id="63" class="white">
-          <%= @game.render_piece(6,3) %>
+          <%= piece = @piece.game.render_piece(6,3) %>
         </td>
         <td id="73" class="black">
-          <%= @game.render_piece(7,3) %>
+          <%= piece = @piece.game.render_piece(7,3) %>
         </td>
         <td id="83" class="white">
-          <%= @game.render_piece(8,3) %>
+          <%= piece = @piece.game.render_piece(8,3) %>
         </td>
       </tr>
       <tr>
         <td id="12" class="white">
-          <%= @game.render_piece(1,2) %>
+          <%= piece = @piece.game.render_piece(1,2) %>
         </td>
         <td id="22" class="black">
-          <%= @game.render_piece(2,2) %>
+          <%= piece = @piece.game.render_piece(2,2) %>
         </td>
         <td id="32" class="white">
-          <%= @game.render_piece(3,2) %>
+          <%= piece = @piece.game.render_piece(3,2) %>
         </td>
         <td id="42" class="black">
-          <%= @game.render_piece(4,2) %>
+          <%= piece = @piece.game.render_piece(4,2) %>
         </td>
         <td id="52" class="white">
-          <%= @game.render_piece(5,2) %>
+          <%= piece = @piece.game.render_piece(5,2) %>
         </td>
         <td id="62" class="black">
-          <%= @game.render_piece(6,2) %>
+          <%= piece = @piece.game.render_piece(6,2) %>
         </td>
         <td id="72" class="white">
-          <%= @game.render_piece(7,2) %>
+          <%= piece = @piece.game.render_piece(7,2) %>
         </td>
         <td id="82" class="black">
-          <%= @game.render_piece(8,2) %>
+          <%= piece = @piece.game.render_piece(8,2) %>
         </td>
       </tr>                            
       <tr>                             
         <td id="11" class="black">
-          <%= @game.render_piece(1,1) %>
+          <%= piece = @piece.game.render_piece(1,1) %>
         </td>
         <td id="21" class="white">
-          <%= @game.render_piece(2,1) %>
+          <%= piece = @piece.game.render_piece(2,1) %>
         </td>
         <td id="31" class="black">
-          <%= @game.render_piece(3,1) %>
+          <%= piece = @piece.game.render_piece(3,1) %>
         </td>
         <td id="41" class="white">
-          <%= @game.render_piece(4,1) %>
+          <%= piece = @piece.game.render_piece(4,1) %>
         </td>
         <td id="51" class="black">
-          <%= @game.render_piece(5,1) %>
+          <%= piece = @piece.game.render_piece(5,1) %>
         </td>
         <td id="61" class="white">
-          <%= @game.render_piece(6,1) %>
+          <%= piece = @piece.game.render_piece(6,1) %>
         </td>
         <td id="71" class="black">
-          <%= @game.render_piece(7,1) %>
+          <%= piece = @piece.game.render_piece(7,1) %>
         </td>
         <td id="81" class="white">
-          <%= @game.render_piece(8,1) %>
+          <%= piece = @piece.game.render_piece(8,1) %>
         </td>
       </tr>
     </tbody>
