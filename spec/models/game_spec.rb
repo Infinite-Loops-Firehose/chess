@@ -62,4 +62,17 @@ RSpec.describe Game, type: :model do
       expect(n_black_kings).to eq(1)
     end
   end
+
+  describe '#render_piece' do
+    it 'shows the correct color' do
+      game = FactoryGirl.create(:game)
+
+
+    end
+
+    it 'shows the correct type' do
+      game = FactoryGirl.create(:game)
+
+    end
+  end
 end
