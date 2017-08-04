@@ -13,7 +13,7 @@
           <% if @piece == Piece.get_piece_at_coor(1, 8) %>
             <%= piece_image %>
           <% else %>
-            <%= link_to piece_image, piece_path(@piece.id), method: :put %>
+            <%= link_to piece_image, piece_path(@piece.id, x_position: 1, y_position: 8), method: :put %>
           <% end %>
         </td>
 
@@ -27,7 +27,7 @@
           <% if @piece == Piece.get_piece_at_coor(2, 8) %>
             <%= piece_image %>
           <% else %>
-            <%= link_to piece_image, piece_path(@piece.id), method: :put %>
+            <%= link_to "Move Here", piece_path(@piece.id, x_position: 2, y_position: 8), method: :put %>
           <% end %>
         </td>
         
