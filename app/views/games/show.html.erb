@@ -11,16 +11,32 @@
           <% end %>
         </td>
         <td id="28" class="black">
-          <%= @game.render_piece(2,8) %>
+          <% piece_image = @game.render_piece(2,8) %>
+          <% if piece_image.present? %>
+          <% piece = Piece.get_piece_at_coor(2,8) %>
+            <%= link_to piece_image, piece_path(piece.id) %>
+          <% end %>
         </td>
         <td id="38" class="white">
-          <%= @game.render_piece(3,8) %>
+          <% piece_image = @game.render_piece(3,8) %>
+          <% if piece_image.present? %>
+          <% piece = Piece.get_piece_at_coor(3,8) %>
+            <%= link_to piece_image, piece_path(piece.id) %>
+          <% end %>
         </td>
         <td id="48" class="black">
-          <%= @game.render_piece(4,8) %>
+          <% piece_image = @game.render_piece(4,8) %>
+          <% if piece_image.present? %>
+          <% piece = Piece.get_piece_at_coor(4,8) %>
+            <%= link_to piece_image, piece_path(piece.id) %>
+          <% end %>
         </td>
         <td id="58" class="white">
-          <%= @game.render_piece(5,8) %>
+          <% piece_image = @game.render_piece(5,8) %>
+          <% if piece_image.present? %>
+          <% piece = Piece.get_piece_at_coor(5,8) %>
+            <%= link_to piece_image, piece_path(piece.id) %>
+          <% end %>
         </td>
         <td id="68" class="black">
           <%= @game.render_piece(6,8) %>
