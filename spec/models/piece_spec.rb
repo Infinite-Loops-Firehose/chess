@@ -20,13 +20,13 @@ RSpec.describe Piece, type: :model do
     it 'returns the piece object at given square' do
       game1 = FactoryGirl.create(:game)
       piece1 = Piece.create(game_id: game1.id, is_white: false, type: PAWN, x_position: 1, y_position: 2)
-      piece_found = piece1.get_piece_at_coor(1, 2)
+      piece_found = Piece.get_piece_at_coor(1, 2)
       expect(piece_found).to eq(piece1)
     end
     it 'returns nil if there is no piece at specified square' do
       game1 = FactoryGirl.create(:game)
       piece1 = Piece.create(game_id: game1.id, is_white: false, type: KNIGHT, x_position: 7, y_position: 1)
-      piece_found = piece1.get_piece_at_coor(1, 1)
+      piece_found = Piece.get_piece_at_coor(1, 1)
       expect(piece_found).to eq(nil)
     end
   end

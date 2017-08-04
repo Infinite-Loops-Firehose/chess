@@ -1,12 +1,21 @@
 class Piece < ApplicationRecord
   belongs_to :game
 
+  def color
+    return "white" if is_white == true
+    "black"
+  end
+
+  def render
+    "#{color} #{type}"
+  end
+
   def move_to!(new_x, new_y)
     unless square_occupied?(new_x, new_y)
       update_attributes(x_position: new_x, y_position: new_y)
       return
     end
-    occupying_piece = get_piece_at_coor(new_x, new_y)
+    occupying_piece = Piece.get_piece_at_coor(new_x, new_y)
     unless (occupying_piece.is_white && is_white?) || (!occupying_piece.is_white && !is_white?)
       capture_piece(occupying_piece)
       update_attributes(x_position: new_x, y_position: new_y)
@@ -21,8 +30,8 @@ class Piece < ApplicationRecord
     true
   end
 
-  def get_piece_at_coor(x, y)
-    game.pieces.find_by(x_position: x, y_position: y)
+  def Piece.get_piece_at_coor(x, y)
+    Piece.find_by(x_position: x, y_position: y)
   end
 
   def capture_piece(piece_captured)

@@ -8,8 +8,8 @@ class GamesController < ApplicationController
   def new; end
 
   def create
-    @game = Game.new(game_params)
-    @game.save
+    @game = Game.create(game_params)
+    @game.populate_board!
     redirect_to game_path(@game)
   end
 
@@ -27,7 +27,10 @@ class GamesController < ApplicationController
     redirect_to game_path(@game)
   end
   
+  private
+
   def game_params
     params.require(:game).permit(:user_white_id, :user_black_id)
   end
+
 end
