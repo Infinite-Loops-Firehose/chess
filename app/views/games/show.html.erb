@@ -3,7 +3,7 @@
   <table id="chessboard">
     <tbody>
       <tr>
-        <td id="18" class="white"><%= link_to image_tag("chess-blues-black.png"), piece_path(@piece) %></td>
+        <td id="18" class="white"><%= piece_for(1,1,@game) link_to image_tag("chess-blues-black.png"), piece_path(@piece) %></td>
         <td id="28" class="black"></td>
         <td id="38" class="white"></td>
         <td id="48" class="black"></td>
