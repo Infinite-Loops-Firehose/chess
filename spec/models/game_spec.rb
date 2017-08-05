@@ -67,7 +67,7 @@ RSpec.describe Game, type: :model do
     it 'shows the correct color and type' do
       game = FactoryGirl.create(:game)
       FactoryGirl.create(:piece, game_id: game.id, type: Piece::PAWN, is_white: true, x_position: 1, y_position: 1)
-      expect(game.render_piece(1, 1)).to eq('white pawn')
+      expect(game.render_piece(1, 1)).to eq('White Pawn')
     end
 
     it 'renders nothing if there isn\'t a piece present' do

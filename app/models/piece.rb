@@ -2,8 +2,8 @@ class Piece < ApplicationRecord
   belongs_to :game
 
   def color
-    return 'white' if is_white == true
-    'black'
+    return 'White' if is_white == true
+    'Black'
   end
 
   def render
@@ -39,9 +39,9 @@ class Piece < ApplicationRecord
   end
 end
 
-PAWN = 'pawn'.freeze
-ROOK = 'rook'.freeze
-KNIGHT = 'knight'.freeze
-BISHOP = 'bishop'.freeze
-QUEEN = 'queen'.freeze
-KING = 'king'.freeze
+PAWN = 'Pawn'.freeze
+ROOK = 'Rook'.freeze
+KNIGHT = 'Knight'.freeze
+BISHOP = 'Bishop'.freeze
+QUEEN = 'Queen'.freeze
+KING = 'King'.freeze
