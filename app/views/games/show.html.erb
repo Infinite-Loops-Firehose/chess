@@ -11,6 +11,7 @@
           <% end %>
         </td>
         <td id="28" class="black">
+<<<<<<< HEAD
           <% piece_image = @game.render_piece(2, 8) %>
           <% if piece_image.present? %>
           <% piece = Piece.get_piece_at_coor(2, 8) %>
@@ -21,20 +22,44 @@
           <% piece_image = @game.render_piece(3, 8) %>
           <% if piece_image.present? %>
           <% piece = Piece.get_piece_at_coor(3, 8) %>
+=======
+          <% piece_image = @game.render_piece(2,8) %>
+          <% if piece_image.present? %>
+          <% piece = Piece.get_piece_at_coor(2,8) %>
+            <%= link_to piece_image, piece_path(piece.id) %>
+          <% end %>
+        </td>
+        <td id="38" class="white">
+          <% piece_image = @game.render_piece(3,8) %>
+          <% if piece_image.present? %>
+          <% piece = Piece.get_piece_at_coor(3,8) %>
+>>>>>>> 4a8d154931e1ba0ca7fbe84b05e27e2633576cfc
             <%= link_to piece_image, piece_path(piece.id) %>
           <% end %>
         </td>
         <td id="48" class="black">
+<<<<<<< HEAD
           <% piece_image = @game.render_piece(4, 8) %>
           <% if piece_image.present? %>
           <% piece = Piece.get_piece_at_coor(4, 8) %>
+=======
+          <% piece_image = @game.render_piece(4,8) %>
+          <% if piece_image.present? %>
+          <% piece = Piece.get_piece_at_coor(4,8) %>
+>>>>>>> 4a8d154931e1ba0ca7fbe84b05e27e2633576cfc
             <%= link_to piece_image, piece_path(piece.id) %>
           <% end %>
         </td>
         <td id="58" class="white">
+<<<<<<< HEAD
           <% piece_image = @game.render_piece(5, 8) %>
           <% if piece_image.present? %>
           <% piece = Piece.get_piece_at_coor(5, 8) %>
+=======
+          <% piece_image = @game.render_piece(5,8) %>
+          <% if piece_image.present? %>
+          <% piece = Piece.get_piece_at_coor(5,8) %>
+>>>>>>> 4a8d154931e1ba0ca7fbe84b05e27e2633576cfc
             <%= link_to piece_image, piece_path(piece.id) %>
           <% end %>
         </td>
