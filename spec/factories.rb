@@ -13,4 +13,8 @@ FactoryGirl.define do
   factory :game do
     association :user_white, factory: :user
   end
+
+  factory :king do
+    association :game
+  end
 end
