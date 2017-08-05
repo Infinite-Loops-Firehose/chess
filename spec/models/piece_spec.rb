@@ -19,7 +19,7 @@ RSpec.describe Piece, type: :model do
   describe 'get_piece_at_coor method' do
     it 'returns the piece object at given square' do
       game1 = FactoryGirl.create(:game)
-      piece1 = Piece.create(game_id: game1.id, is_white: false, type: PAWN, x_position: 1, y_position: 2)
+      Piece.create(game_id: game1.id, is_white: false, type: PAWN, x_position: 1, y_position: 2)
       piece_found = Piece.get_piece_at_coor(1, 2)
       expect(piece_found).to eq(piece1)
     end
