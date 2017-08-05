@@ -4,7 +4,7 @@
   <% @available_games.each do |game| %>
     <div class="row .container-fluid">
       <div class="col-12">
-        The game with id <%= game.id %> was created on <%= game.created_at.strftime("%b %d, %Y") %>.
+        The game with id <%= game.id %> was created <%= game.created_at.strftime("%b %d, %Y") %>
       </div> 
 
       <div class="col-12">
@@ -21,7 +21,7 @@
           No one is playing Black.
           <%= link_to "Join game as black", game_path(game.id), method: :put, class: "btn btn-success"%>
         <% else %>
-          <%= game.user_black.name %> is playing white.
+          <%= game.user_black.name %> is playing black.
         <% end %>    
       </div>
     </div>
