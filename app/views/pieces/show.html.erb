@@ -9,7 +9,7 @@
           "18"
         <% end %>
         class="white">
-          <% piece_image = @piece.game.render_piece(1,8) %>
+          <% piece_image = @piece.game.render_piece(1, 8) %>
           <% if @piece == Piece.get_piece_at_coor(1, 8) %>
             <%= piece_image %>
           <% else %>
@@ -22,8 +22,8 @@
         <% else %>
           "28"
         <% end %>
-        class="white">
-          <% piece_image = @piece.game.render_piece(2,8) %>
+        class="black">
+          <% piece_image = @piece.game.render_piece(2, 8) %>
           <% if @piece == Piece.get_piece_at_coor(2, 8) %>
             <%= piece_image %>
           <% else %>
@@ -37,7 +37,7 @@
           "38"
         <% end %>
         class="white">
-          <% piece_image = @piece.game.render_piece(3,8) %>
+          <% piece_image = @piece.game.render_piece(3, 8) %>
           <% if @piece == Piece.get_piece_at_coor(3, 8) %>
             <%= piece_image %>
           <% else %>
@@ -50,8 +50,8 @@
         <% else %>
           "48"
         <% end %>
-        class="white">
-          <% piece_image = @piece.game.render_piece(4,8) %>
+        class="black">
+          <% piece_image = @piece.game.render_piece(4, 8) %>
           <% if @piece == Piece.get_piece_at_coor(4, 8) %>
             <%= piece_image %>
           <% else %>
@@ -65,7 +65,7 @@
           "58"
         <% end %>
         class="white">
-          <% piece_image = @piece.game.render_piece(5,8) %>
+          <% piece_image = @piece.game.render_piece(5, 8) %>
           <% if @piece == Piece.get_piece_at_coor(5, 8) %>
             <%= piece_image %>
           <% else %>
@@ -78,8 +78,8 @@
         <% else %>
           "68"
         <% end %>
-        class="white">
-          <% piece_image = @piece.game.render_piece(6,8) %>
+        class="black">
+          <% piece_image = @piece.game.render_piece(6, 8) %>
           <% if @piece == Piece.get_piece_at_coor(6, 8) %>
             <%= piece_image %>
           <% else %>
@@ -93,7 +93,7 @@
           "78"
         <% end %>
         class="white">
-          <% piece_image = @piece.game.render_piece(7,8) %>
+          <% piece_image = @piece.game.render_piece(7, 8) %>
           <% if @piece == Piece.get_piece_at_coor(7, 8) %>
             <%= piece_image %>
           <% else %>
@@ -106,8 +106,8 @@
         <% else %>
           "88"
         <% end %>
-        class="white">
-          <% piece_image = @piece.game.render_piece(8,8) %>
+        class="black">
+          <% piece_image = @piece.game.render_piece(8, 8) %>
           <% if @piece == Piece.get_piece_at_coor(8, 8) %>
             <%= piece_image %>
           <% else %>
@@ -116,37 +116,137 @@
         </td>
       </tr>
       <tr>
-        <td id="17" class="black">
-          <%= piece = @piece.game.render_piece(1,7) %>
+        <td id=<% if @piece == Piece.get_piece_at_coor(1, 7) %>
+          "selected_square"
+        <% else %>
+          "17"
+        <% end %> 
+        class="black">
+          <% piece_image = @piece.game.render_piece(1, 7) %>
+          <% if @piece == Piece.get_piece_at_coor(1, 7) %>
+            <%= piece_image %>
+          <% else %>
+            <%= link_to piece_image, piece_path(@piece.id, x_position: 1, y_position: 7), method: :put %>
+          <% end %>
         </td>
-        <td id="27" class="white">
-          <%= piece = @piece.game.render_piece(2,7) %>
+        <td id=<% if @piece == Piece.get_piece_at_coor(2, 7) %>
+          "selected_square"
+        <% else %>
+          "27"
+        <% end %> 
+        class="white">
+          <% piece_image = @piece.game.render_piece(2, 7) %>
+          <% if @piece == Piece.get_piece_at_coor(2, 7) %>
+            <%= piece_image %>
+          <% else %>
+            <%= link_to piece_image, piece_path(@piece.id, x_position: 2, y_position: 7), method: :put %>
+          <% end %>
         </td>
-        <td id="37" class="black">
-          <%= piece = @piece.game.render_piece(3,7) %>
+        <td id=<% if @piece == Piece.get_piece_at_coor(3, 7) %>
+          "selected_square"
+        <% else %>
+          "37"
+        <% end %> 
+        class="black">
+          <% piece_image = @piece.game.render_piece(3, 7) %>
+          <% if @piece == Piece.get_piece_at_coor(3, 7) %>
+            <%= piece_image %>
+          <% else %>
+            <%= link_to piece_image, piece_path(@piece.id, x_position: 3, y_position: 7), method: :put %>
+          <% end %>
         </td>
-        <td id="47" class="white">
-          <%= piece = @piece.game.render_piece(4,7) %>
+        <td id=<% if @piece == Piece.get_piece_at_coor(4, 7) %>
+          "selected_square"
+        <% else %>
+          "47"
+        <% end %> 
+        class="white">
+          <% piece_image = @piece.game.render_piece(4, 7) %>
+          <% if @piece == Piece.get_piece_at_coor(4, 7) %>
+            <%= piece_image %>
+          <% else %>
+            <%= link_to piece_image, piece_path(@piece.id, x_position: 4, y_position: 7), method: :put %>
+          <% end %>
         </td>
-        <td id="57" class="black">
-          <%= piece = @piece.game.render_piece(5,7) %>
+        <td id=<% if @piece == Piece.get_piece_at_coor(5, 7) %>
+          "selected_square"
+        <% else %>
+          "57"
+        <% end %> 
+        class="black">
+          <% piece_image = @piece.game.render_piece(5, 7) %>
+          <% if @piece == Piece.get_piece_at_coor(5, 7) %>
+            <%= piece_image %>
+          <% else %>
+            <%= link_to piece_image, piece_path(@piece.id, x_position: 5, y_position: 7), method: :put %>
+          <% end %>
         </td>
-        <td id="67" class="white">
-          <%= piece = @piece.game.render_piece(6,7) %>
+        <td id=<% if @piece == Piece.get_piece_at_coor(6, 7) %>
+          "selected_square"
+        <% else %>
+          "67"
+        <% end %> 
+        class="white">
+          <% piece_image = @piece.game.render_piece(6, 7) %>
+          <% if @piece == Piece.get_piece_at_coor(6, 7) %>
+            <%= piece_image %>
+          <% else %>
+            <%= link_to piece_image, piece_path(@piece.id, x_position: 6, y_position: 7), method: :put %>
+          <% end %>
         </td>
-        <td id="77" class="black">
-          <%= piece = @piece.game.render_piece(7,7) %>
+        <td id=<% if @piece == Piece.get_piece_at_coor(7, 7) %>
+          "selected_square"
+        <% else %>
+          "77"
+        <% end %> 
+        class="black">
+          <% piece_image = @piece.game.render_piece(7, 7) %>
+          <% if @piece == Piece.get_piece_at_coor(7, 7) %>
+            <%= piece_image %>
+          <% else %>
+            <%= link_to piece_image, piece_path(@piece.id, x_position: 7, y_position: 7), method: :put %>
+          <% end %>
         </td>
-        <td id="87" class="white">
-          <%= piece = @piece.game.render_piece(8,7) %>
+        <td id=<% if @piece == Piece.get_piece_at_coor(8, 7) %>
+          "selected_square"
+        <% else %>
+          "87"
+        <% end %> 
+        class="white">
+          <% piece_image = @piece.game.render_piece(8, 7) %>
+          <% if @piece == Piece.get_piece_at_coor(8, 7) %>
+            <%= piece_image %>
+          <% else %>
+            <%= link_to piece_image, piece_path(@piece.id, x_position: 8, y_position: 7), method: :put %>
+          <% end %>
         </td>
       </tr>
       <tr>
-        <td id="16" class="white">
-          <%= piece = @piece.game.render_piece(1,6) %>
+        <td id=<% if @piece == Piece.get_piece_at_coor(1, 6) %>
+          "selected_square"
+        <% else %>
+          "16"
+        <% end %> 
+        class="white">
+          <% piece_image = @piece.game.render_piece(1, 6) %>
+          <% if @piece == Piece.get_piece_at_coor(1, 6) %>
+            <%= piece_image %>
+          <% else %>
+            <%= link_to piece_image, piece_path(@piece.id, x_position: 1, y_position: 6), method: :put %>
+          <% end %>
         </td>
-        <td id="26" class="black">
-          <%= piece = @piece.game.render_piece(2,6) %>
+        <td id=<% if @piece == Piece.get_piece_at_coor(2, 6) %>
+          "selected_square"
+        <% else %>
+          "26"
+        <% end %> 
+        class="white">
+          <% piece_image = @piece.game.render_piece(2, 6) %>
+          <% if @piece == Piece.get_piece_at_coor(2, 6) %>
+            <%= piece_image %>
+          <% else %>
+            <%= link_to piece_image, piece_path(@piece.id, x_position: 2, y_position: 6), method: :put %>
+          <% end %>
         </td>
         <td id="36" class="white">
           <%= piece = @piece.game.render_piece(3,6) %>
