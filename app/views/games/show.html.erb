@@ -2,10 +2,9 @@
 <div class="col-10 center offset-1">
   <table id="chessboard">
     <tbody>
+      <% [8, 7, 6, 5, 4, 3, 2, 1].each do |row| %>
         <tr>
-          <% [8, 7, 6, 5, 4, 3, 2, 1].each do |row| %>
-          <tr>
-            <% (1..8).each do |col| %>
+          <% (1..8).each do |col| %>
             <td
               ' '
               id=<%="#{col}#{row}"%>
@@ -24,7 +23,7 @@
             </td>
           <% end %>
         </tr>
-      <% end %> 
+      <% end %>  
     </tbody>
   </table>
 </div>

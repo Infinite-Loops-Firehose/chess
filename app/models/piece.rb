@@ -2,8 +2,8 @@ class Piece < ApplicationRecord
   belongs_to :game
 
   def color
-    return 'white' if is_white == true
-    'black'
+    return 'White' if is_white == true
+    'Black'
   end
 
   def render
