@@ -14,6 +14,11 @@ FactoryGirl.define do
     association :user_white, factory: :user
   end
 
+  factory :piece do
+    x_position 1
+    y_position 1
+  end
+
   factory :king do
     association :game
   end

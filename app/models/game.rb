@@ -41,4 +41,9 @@ class Game < ApplicationRecord
     Piece.create(game_id: id, is_white: true, type: KING, x_position: 5, y_position: 8)
     Piece.create(game_id: id, is_white: true, type: QUEEN, x_position: 4, y_position: 8)
   end
+
+  def render_piece(x, y)
+    piece = Piece.find_by(game_id: id, x_position: x, y_position: y)
+    piece.render if piece.present?
+  end
 end
