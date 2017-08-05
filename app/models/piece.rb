@@ -2,8 +2,8 @@ class Piece < ApplicationRecord
   belongs_to :game
 
   def color
-    return "white" if is_white == true
-    "black"
+    return 'white' if is_white == true
+    'black'
   end
 
   def render
@@ -30,7 +30,7 @@ class Piece < ApplicationRecord
     true
   end
 
-  def Piece.get_piece_at_coor(x, y)
+  def self.get_piece_at_coor(x, y)
     Piece.find_by(x_position: x, y_position: y)
   end
 
@@ -39,9 +39,9 @@ class Piece < ApplicationRecord
   end
 end
 
-PAWN = 'Pawn'.freeze
-ROOK = 'Rook'.freeze
-KNIGHT = 'Knight'.freeze
-BISHOP = 'Bishop'.freeze
-QUEEN = 'Queen'.freeze
-KING = 'King'.freeze
+PAWN = 'pawn'.freeze
+ROOK = 'rook'.freeze
+KNIGHT = 'knight'.freeze
+BISHOP = 'bishop'.freeze
+QUEEN = 'queen'.freeze
+KING = 'king'.freeze
