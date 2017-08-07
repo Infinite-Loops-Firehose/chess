@@ -29,7 +29,7 @@ table td {
 
 .black {
     background: url(chess-blues-black.png);
-    background-size: 90px 90px;
+    background-size: 100% 100%;
     background-repeat: no-repeat;
 }
 
@@ -39,3 +39,6 @@ table td {
   padding: 5px;
 }
 
+#selected_square {
+  border: 3px solid red;
+}
