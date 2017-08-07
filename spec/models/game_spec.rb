@@ -22,8 +22,8 @@ RSpec.describe Game, type: :model do
       game.populate_board!
       n_white_rooks = game.pieces.where(type: ROOK, is_white: true).count
       expect(n_white_rooks).to eq(2)
-      n_black_pawns = game.pieces.where(type: ROOK, is_white: false).count
-      expect(n_black_pawns).to eq(2)
+      n_black_rooks = game.pieces.where(type: ROOK, is_white: false).count
+      expect(n_black_rooks).to eq(2)
     end
 
     it 'creates correct number of knights' do
@@ -66,7 +66,7 @@ RSpec.describe Game, type: :model do
   describe '#render_piece' do
     it 'shows the correct color and type' do
       game = FactoryGirl.create(:game)
-      FactoryGirl.create(:piece, game_id: game.id, type: Piece::PAWN, is_white: true, x_position: 1, y_position: 1)
+      FactoryGirl.create(:piece, game_id: game.id, type: PAWN, is_white: true, x_position: 1, y_position: 1)
       expect(game.render_piece(1, 1)).to eq('White Pawn')
     end
 
