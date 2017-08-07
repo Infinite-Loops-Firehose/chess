@@ -7,24 +7,24 @@ body{
 }
 
 #chessboard {
-  width: 700px;
-  height: 700px;
-  margin: auto;
+    width: 720px;
+    height: 720px;
+    margin: auto;
 }
 
 table td {
-  width: 90px;
-  height: 90px;
-  overflow: hidden;
-  vertical-align: middle;
-  text-align: center;
-  padding: 8px;
+    width: 90px;
+    height: 90px;
+    overflow: hidden;
+    vertical-align: middle;
+    text-align: center;
+    padding: 8px;
 }
 
 .white {
-  background: url(chess-blues-white.png);
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
+    background: url(chess-blues-white.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
 }
 
 .black {
