@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Piece, type: :model do
-
   describe '#obstructed?' do
     let(:game) { create :obstructed_game }
 
@@ -52,7 +51,7 @@ RSpec.describe Piece, type: :model do
         expect(piece.obstructed?(2, 9)).to eq(true)
       end
     end
-  end  
+  end
 
   describe 'square_occupied? method' do
     it 'returns true if the square your piece is moving to is occupied by another piece' do
