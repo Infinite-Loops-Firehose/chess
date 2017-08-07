@@ -9,86 +9,28 @@
 <div class="col-10 center offset-1">
   <table id="chessboard">
     <tbody>
-      <tr>
-        <td id="18" class="white"></td>
-        <td id="28" class="black"></td>
-        <td id="38" class="white"></td>
-        <td id="48" class="black"></td>
-        <td id="58" class="white"></td>
-        <td id="68" class="black"></td>
-        <td id="78" class="white"></td>
-        <td id="88" class="black"></td>
-      </tr>
-      <tr>
-        <td id="17" class="black"></td>
-        <td id="27" class="white"></td>
-        <td id="37" class="black"></td>
-        <td id="47" class="white"></td>
-        <td id="57" class="black"></td>
-        <td id="67" class="white"></td>
-        <td id="77" class="black"></td>
-        <td id="87" class="white"></td>
-      </tr>
-      <tr>
-        <td id="16" class="white"></td>
-        <td id="26" class="black"></td>
-        <td id="36" class="white"></td>
-        <td id="46" class="black"></td>
-        <td id="56" class="white"></td>
-        <td id="66" class="black"></td>
-        <td id="76" class="white"></td>
-        <td id="86" class="black"></td>
-      </tr>
-      <tr>
-        <td id="15" class="black"></td>
-        <td id="25" class="white"></td>
-        <td id="35" class="black"></td>
-        <td id="45" class="white"></td>
-        <td id="55" class="black"></td>
-        <td id="65" class="white"></td>
-        <td id="75" class="black"></td>
-        <td id="85" class="white"></td>
-      </tr>
-      <tr>
-        <td id="14" class="white"></td>
-        <td id="24" class="black"></td>
-        <td id="34" class="white"></td>
-        <td id="44" class="black"></td>
-        <td id="54" class="white"></td>
-        <td id="64" class="black"></td>
-        <td id="74" class="white"></td>
-        <td id="84" class="black"></td>
-      </tr>                            
-      <tr>                             
-        <td id="13" class="black"></td>
-        <td id="23" class="white"></td>
-        <td id="33" class="black"></td>
-        <td id="43" class="white"></td>
-        <td id="53" class="black"></td>
-        <td id="63" class="white"></td>
-        <td id="73" class="black"></td>
-        <td id="83" class="white"></td>
-      </tr>
-      <tr>
-        <td id="12" class="white"></td>
-        <td id="22" class="black"></td>
-        <td id="32" class="white"></td>
-        <td id="42" class="black"></td>
-        <td id="52" class="white"></td>
-        <td id="62" class="black"></td>
-        <td id="72" class="white"></td>
-        <td id="82" class="black"></td>
-      </tr>                            
-      <tr>                             
-        <td id="11" class="black"></td>
-        <td id="21" class="white"></td>
-        <td id="31" class="black"></td>
-        <td id="41" class="white"></td>
-        <td id="51" class="black"></td>
-        <td id="61" class="white"></td>
-        <td id="71" class="black"></td>
-        <td id="81" class="white"></td>
-    </tr>
+      <% [8, 7, 6, 5, 4, 3, 2, 1].each do |row| %>
+        <tr>
+          <% (1..8).each do |col| %>
+            <td
+              ' '
+              id=<%="#{col}#{row}"%>
+              ' '
+            <% if (col + row).odd? %>
+              class="white"
+            <% else %>
+              class="black"
+            <% end %>   
+            >
+              <% piece_image = @game.render_piece(col, row) %>
+              <% if piece_image.present? %>
+                <% piece = Piece.get_piece_at_coor(col, row) %>
+                <%= link_to piece_image, piece_path(piece.id) %>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>  
     </tbody>
   </table>
 </div>

@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-  before_action :authenticate_user!, only: %i[new create show]
+  before_action :authenticate_user!, only: %i[new create show update]
 
   def index
     @available_games = Game.available
@@ -8,8 +8,8 @@ class GamesController < ApplicationController
   def new; end
 
   def create
-    @game = Game.new(game_params)
-    @game.save
+    @game = Game.create(game_params)
+    @game.populate_board!
     redirect_to game_path(@game)
   end
 
