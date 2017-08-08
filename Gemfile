@@ -67,7 +67,3 @@ end
 gem 'simple_form'
 
 gem 'devise'
-
-gem 'pry-rails'
-
-
