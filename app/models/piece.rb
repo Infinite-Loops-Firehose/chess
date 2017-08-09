@@ -99,9 +99,9 @@ class Piece < ApplicationRecord
     #
     # (r.first).downto(r.last).to_a
     x_values = if x_position.to_i < destination_x.to_i
-                  (x_position.to_i..destination_x.to_i).to_a # array of x values, including the starting and ending squares
+                 (x_position.to_i..destination_x.to_i).to_a # array of x values, including the starting and ending squares
                else
-                  x_position.to_i.downto(destination_x.to_i).to_a
+                 x_position.to_i.downto(destination_x.to_i).to_a
                end
 
     y_values = if y_position.to_i < destination_y.to_i

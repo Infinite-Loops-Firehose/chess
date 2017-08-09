@@ -7,7 +7,7 @@ RSpec.describe 'Bishop', type: :model do
       @white_pawn = @game.pieces.create(is_white: true, type: PAWN, x_position: 4, y_position: 3)
       @black_rook = @game.pieces.create(is_white: false, type: ROOK, x_position: 6, y_position: 5)
     end
-    
+
     it 'returns false when bishop move is obstructed' do
       expect(@white_bishop.valid_move?(7, 6)).to eq(false)
     end
