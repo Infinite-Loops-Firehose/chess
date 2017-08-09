@@ -1,3 +1,5 @@
+require 'pry'
+
 class Piece < ApplicationRecord
   # class OffBoardError < StandardError; end   <-- we may want to use this at some point for error messages
 
@@ -13,6 +15,9 @@ class Piece < ApplicationRecord
   end
 
   def move_to!(new_x, new_y)
+    if type == QUEEN && !valid_move?(new_x, new_y)
+      raise ArgumentError, "That is an invalid move for #{type}"
+    end
     unless square_occupied?(new_x, new_y)
       update_attributes(x_position: new_x, y_position: new_y)
       return
@@ -41,16 +46,25 @@ class Piece < ApplicationRecord
   end
 
   def obstructed?(destination_x, destination_y)
-    errors.add(:off_board, 'Pieces cannot be moved off the board: invalid move') if invalid?(destination_x, destination_y)
-    errors.add(:horizontal_or_vertical_obstruction, 'There is a horizontal or vertical obstruction: invalid move') if horizontal_or_vertical_obstruction?(destination_x, destination_y)
-    errors.add(:diagonal_obstruction, 'There is a diagonal obstruction: invalid move') if diagonal_obstruction?(destination_x, destination_y)
-    errors.present?
+    #errors.add(:base, 'Pieces cannot be moved off the board: invalid move') 
+    if invalid?(destination_x.to_i, destination_y.to_i) 
+      return true
+    end
+    #errors.add(:base, 'There is a horizontal or vertical obstruction: invalid move') 
+    if horizontal_or_vertical_obstruction?(destination_x, destination_y) 
+      return true
+    end
+    #errors.add(:base, 'There is a diagonal obstruction: invalid move') 
+    if diagonal_obstruction?(destination_x, destination_y) 
+      return true
+    end
+    false
   end
 
   private
 
   def invalid?(destination_x, destination_y)
-    return true if destination_x < 1 || destination_x > 8 || destination_y < 1 || destination_y > 8
+    return destination_x < 1 || destination_x > 8 || destination_y < 1 || destination_y > 8
   end
 
   def horizontal_or_vertical?(destination_x, destination_y)
@@ -59,7 +73,7 @@ class Piece < ApplicationRecord
 
   def diagonal?(destination_x, destination_y)
     # in order for the move to be diagonal, the piece must be moving by the same distance both horizontally and vertically.
-    return true if (destination_x - x_position).abs == (destination_y - y_position).abs
+    return true if (destination_x.to_i - x_position).abs == (destination_y.to_i - y_position).abs
   end
 
   def vertical_obstruction?(range_y)
@@ -92,16 +106,17 @@ class Piece < ApplicationRecord
     # ]
     #
     # (r.first).downto(r.last).to_a
-    x_values = if x_position < destination_x
-                 (x_position..destination_x).to_a # array of x values, including the starting and ending squares
-               else
-                 x_position.downto(destination_x).to_a
-               end
+    x_values = []
+    if x_position.to_i < destination_x.to_i
+      x_values = (x_position.to_i..destination_x.to_i).to_a # array of x values, including the starting and ending squares
+    else
+      x_values = x_position.to_i.downto(destination_x.to_i).to_a
+    end
 
-    y_values = if y_position < destination_y
-                 (y_position..destination_y).to_a # array of y values, including the starting and ending squares
+    y_values = if y_position.to_i < destination_y.to_i
+                 (y_position.to_i..destination_y.to_i).to_a # array of y values, including the starting and ending squares
                else
-                 y_position.downto(destination_y).to_a
+                 y_position.to_i.downto(destination_y.to_i).to_a
                end
 
     coordinates = []
@@ -112,12 +127,13 @@ class Piece < ApplicationRecord
 
     coordinates.shift
     coordinates.pop # this is an array of only the in-between squares - not including the start or end squares
-    sql = coordinates.map do |coordinate| # sql = [[2,2],[3,3]]
-      "x_position = #{coordinate.first} AND y_position = #{coordinate.last}"
-    end.join(' or ') # "x_position = 1 and y_position = 1 or x_position = 2 and y_position = 2 or ..."
-
-    obstruction = game.pieces.where(sql)
-    obstruction.present?
+    coordinates.each do |coor|
+      obstructing_piece = Piece.get_piece_at_coor(coor.first, coor.last)
+      if obstructing_piece.present? 
+        return true
+      end
+    end
+    return false
   end
 end
 
