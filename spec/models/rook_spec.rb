@@ -39,4 +39,3 @@ RSpec.describe Rook, type: :model do
     end
   end
 end
-
