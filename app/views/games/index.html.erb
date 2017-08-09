@@ -1,5 +1,10 @@
 <div class="col-12 text-center">
   <h1>Do you want to play a game of chess? Here is a list of all the games that still need a player.</h1>
+
+  <% if !user_signed_in? %>
+    <%= link_to "Sign in with Facebook", user_facebook_omniauth_authorize_path, class:'btn btn-success' %>
+  <% end %>
+
   <br />
   <% @available_games.each do |game| %>
     <div class="row .container-fluid">
