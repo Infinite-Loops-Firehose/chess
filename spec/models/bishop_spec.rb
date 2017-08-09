@@ -16,6 +16,10 @@ RSpec.describe 'Bishop', type: :model do
       expect(@white_bishop.valid_move?(5, 7)).to eq(false)
     end
 
+    it 'returns false when bishop move horizontally' do
+      expect(@white_bishop.valid_move?(7, 8)).to eq(false)
+    end
+
     it 'returns true when bishop move diagonally' do
       expect(@white_bishop.valid_move?(2, 7)).to eq(true)
     end
