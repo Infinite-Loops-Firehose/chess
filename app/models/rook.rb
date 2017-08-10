@@ -3,6 +3,8 @@ class Rook < Piece
     (vertical(x_destination, y_destination) || horizontal(x_destination, y_destination)) && !obstructed?(x_destination, y_destination)
   end
 
+  private
+
   def vertical(x_destination, y_destination)
     (x_position == x_destination) && (y_position != y_destination)
   end
