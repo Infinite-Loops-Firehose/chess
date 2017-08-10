@@ -55,7 +55,6 @@ class Piece < ApplicationRecord
   private
 
   def invalid?(destination_x, destination_y)
-    return destination_x < 1 || destination_x > 8 || destination_y < 1 || destination_y > 8
     destination_x < 1 || destination_x > 8 || destination_y < 1 || destination_y > 8
   end
 

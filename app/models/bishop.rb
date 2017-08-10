@@ -7,11 +7,10 @@ class Bishop < Piece
   end
 
   def move_to!(new_x, new_y)
-    if !valid_move?(new_x, new_y)
+    unless valid_move?(new_x, new_y)
       raise ArgumentError, "That is an invalid move for #{type}"
     end
 
-    super(new_x, new_y) #way to call the parent class which should run the rest of the shared code
+    super(new_x, new_y) # way to call the parent class which should run the rest of the shared code
   end
-
 end
