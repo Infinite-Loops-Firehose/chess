@@ -15,9 +15,6 @@ class Piece < ApplicationRecord
   end
 
   def move_to!(new_x, new_y)
-    if type == QUEEN && !valid_move?(new_x, new_y)
-      raise ArgumentError, "That is an invalid move for #{type}"
-    end
     unless square_occupied?(new_x, new_y)
       update_attributes(x_position: new_x, y_position: new_y)
       return
@@ -46,18 +43,12 @@ class Piece < ApplicationRecord
   end
 
   def obstructed?(destination_x, destination_y)
-    #errors.add(:base, 'Pieces cannot be moved off the board: invalid move') 
-    if invalid?(destination_x.to_i, destination_y.to_i) 
-      return true
-    end
-    #errors.add(:base, 'There is a horizontal or vertical obstruction: invalid move') 
-    if horizontal_or_vertical_obstruction?(destination_x, destination_y) 
-      return true
-    end
-    #errors.add(:base, 'There is a diagonal obstruction: invalid move') 
-    if diagonal_obstruction?(destination_x, destination_y) 
-      return true
-    end
+    # errors.add(:base, 'Pieces cannot be moved off the board: invalid move')
+    return true if invalid?(destination_x.to_i, destination_y.to_i)
+    # errors.add(:base, 'There is a horizontal or vertical obstruction: invalid move')
+    return true if horizontal_or_vertical_obstruction?(destination_x, destination_y)
+    # errors.add(:base, 'There is a diagonal obstruction: invalid move')
+    return true if diagonal_obstruction?(destination_x, destination_y)
     false
   end
 
@@ -65,6 +56,7 @@ class Piece < ApplicationRecord
 
   def invalid?(destination_x, destination_y)
     return destination_x < 1 || destination_x > 8 || destination_y < 1 || destination_y > 8
+    destination_x < 1 || destination_x > 8 || destination_y < 1 || destination_y > 8
   end
 
   def horizontal_or_vertical?(destination_x, destination_y)
@@ -106,12 +98,11 @@ class Piece < ApplicationRecord
     # ]
     #
     # (r.first).downto(r.last).to_a
-    x_values = []
-    if x_position.to_i < destination_x.to_i
-      x_values = (x_position.to_i..destination_x.to_i).to_a # array of x values, including the starting and ending squares
-    else
-      x_values = x_position.to_i.downto(destination_x.to_i).to_a
-    end
+    x_values = if x_position.to_i < destination_x.to_i
+                 (x_position.to_i..destination_x.to_i).to_a # array of x values, including the starting and ending squares
+               else
+                 x_position.to_i.downto(destination_x.to_i).to_a
+               end
 
     y_values = if y_position.to_i < destination_y.to_i
                  (y_position.to_i..destination_y.to_i).to_a # array of y values, including the starting and ending squares
@@ -129,11 +120,9 @@ class Piece < ApplicationRecord
     coordinates.pop # this is an array of only the in-between squares - not including the start or end squares
     coordinates.each do |coor|
       obstructing_piece = Piece.get_piece_at_coor(coor.first, coor.last)
-      if obstructing_piece.present? 
-        return true
-      end
+      return true if obstructing_piece.present?
     end
-    return false
+    false
   end
 end
 
