@@ -83,7 +83,6 @@ class Piece < ApplicationRecord
     range_x = [destination_x, x_position].sort
     range_y = [destination_y, y_position].sort
     vertical_obstruction?(range_y) || horizontal_obstruction?(range_x)
-
     # obstruction = game.pieces.where(y_position: ((range_y.first + 1)..(range_y.last - 1)), x_position: ((range_x.first + 1)..(range_x.last - 1))) # will always return something, even if it's an empty query
     # obstruction.present? # should return false if the query is empty
   end
