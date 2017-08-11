@@ -17,7 +17,7 @@ RSpec.describe 'Queen', type: :model do
     end
 
     it 'returns true when Queen moves horizontally' do
-      expect(@white_queen.valid_move?(5, 8)).to eq(true)
+      expect(@white_queen.valid_move?(8, 4)).to eq(true)
     end
 
     it 'returns true when Queen moves diagonally' do

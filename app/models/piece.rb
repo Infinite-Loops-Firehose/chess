@@ -1,5 +1,3 @@
-require 'pry'
-
 class Piece < ApplicationRecord
   # class OffBoardError < StandardError; end   <-- we may want to use this at some point for error messages
 
