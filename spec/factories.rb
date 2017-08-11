@@ -20,4 +20,8 @@ FactoryGirl.define do
   factory :king do
     association :game
   end
+
+  factory :rook do
+    association :game
+  end
 end
