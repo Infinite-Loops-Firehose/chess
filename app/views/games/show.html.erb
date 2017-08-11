@@ -9,6 +9,8 @@
 <div class="col-10 center offset-1">
   <table id="chessboard">
     <tbody>
+    <div class="col-4">
+      <%= image_tag gravatar_url("bbb5483@yahoo.com", 64), alt: "" %>
       <% [8, 7, 6, 5, 4, 3, 2, 1].each do |row| %>
         <tr>
           <% (1..8).each do |col| %>
