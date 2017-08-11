@@ -53,7 +53,11 @@
   <% end %>
 
   <div class="col-12">
-    <h1>Or you can create a new game and ask someone else to join you.</h1>
-    <%= link_to "Create new game", games_path(game: {user_white_id: current_user} ), method: :post, class: "btn btn-success" %>
+    <% if user_signed_in? %>
+      <h1>Or you can create a new game and ask someone else to join you.</h1>
+      <%= link_to "Create new game", games_path(game: {user_white_id: current_user} ), method: :post, class: "btn btn-success" %>
+    <% else %>
+      <h1>Sign in if you want to create a new game.</h1>
+    <% end %>
   </div>
 </div>
