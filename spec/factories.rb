@@ -1,8 +1,10 @@
 FactoryGirl.define do
   factory :user do
+
     sequence :email do |n|
       "fakeemail#{n}@something.com"
     end
+
     password 'secretPassword'
     password_confirmation 'secretPassword'
     name 'username'
@@ -22,6 +24,12 @@ FactoryGirl.define do
   factory :king do
     association :game
   end
+
+
+  factory :knight do
+    association :game
+  end
+
 
   factory :rook do
     association :game
