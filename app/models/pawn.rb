@@ -27,6 +27,7 @@ class Pawn < Piece
   end
 
   def capture_move?(destination_x, destination_y)
+    # debugger
     x_difference = (destination_x - x_position).abs
     y_difference = (destination_y - y_position).abs
     capture_piece = Piece.exists?(x_position: destination_x, y_position: destination_y, is_white: !is_white, game: game)
