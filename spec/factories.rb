@@ -7,7 +7,7 @@ FactoryGirl.define do
     games_played 0
     games_won 0
   end
-
+  # ran rubocop -a to fix rubocop errors on master branch
   factory :game do
     association :user_white, factory: :user
   end
@@ -18,6 +18,10 @@ FactoryGirl.define do
   end
 
   factory :king do
+    association :game
+  end
+
+  factory :knight do
     association :game
   end
 
