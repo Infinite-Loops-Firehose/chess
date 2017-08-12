@@ -22,31 +22,31 @@ class Pawn < Piece
 
   private
 
-    def allowed_to_move?(destination_x, destination_y)
-      x_difference = (destination_x - x_position).abs
-      y_difference = (destination_y - y_position).abs
+  def allowed_to_move?(destination_x, destination_y)
+    x_difference = (destination_x - x_position).abs
+    y_difference = (destination_y - y_position).abs
 
-      if has_moved
-        x_difference == 0 && y_difference == 1
-      else
-        x_difference == 0 && y_difference == 1 || x_difference == 0 && y_difference == 2
-      end
+    if has_moved
+      x_difference.zero? && y_difference == 1
+    else
+      x_difference.zero? && y_difference == 1 || x_difference.zero? && y_difference == 2
     end
+  end
 
-    def backwards_move?(destination_y)
-      if is_white
-        destination_y > y_position
-      else
-        destination_y < y_position
-      end
+  def backwards_move?(destination_y)
+    if is_white
+      destination_y > y_position
+    else
+      destination_y < y_position
     end
+  end
 
-    def current_position?(destination_x, destination_y)
-      x_position == destination_x && y_position == destination_y
-    end
+  def current_position?(destination_x, destination_y)
+    x_position == destination_x && y_position == destination_y
+  end
 
-    def horizontal_move?(destination_x, destination_y)
-      x_difference = (x_position - destination_x).abs
-      x_difference != 0 && destination_y == y_position
-    end
+  def horizontal_move?(destination_x, destination_y)
+    x_difference = (x_position - destination_x).abs
+    x_difference != 0 && destination_y == y_position
+  end
 end
