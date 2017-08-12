@@ -52,6 +52,8 @@ ActiveRecord::Schema.define(version: 20170808193243) do
     t.string   "name"
     t.integer  "games_played"
     t.integer  "games_won"
+    t.string   "provider"
+    t.string   "uid"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
