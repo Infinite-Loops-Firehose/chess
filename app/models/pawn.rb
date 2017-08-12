@@ -14,8 +14,7 @@ class Pawn < Piece
   end
 
   def capture_move?(destination_x, destination_y)
-    capture_piece = Piece.find_by(x_position: destination_x, y_position: destination_y)
-    capture_piece.is_white != is_white
+    Piece.exists?(x_position: destination_x, y_position: destination_y, is_white: !is_white)
   end
 
   private
