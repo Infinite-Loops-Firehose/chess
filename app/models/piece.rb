@@ -13,9 +13,6 @@ class Piece < ApplicationRecord
   end
 
   def move_to!(new_x, new_y)
-    if type == BISHOP && !valid_move?(new_x, new_y)
-      raise ArgumentError, "That is an invalid move for #{type}"
-    end
     unless square_occupied?(new_x, new_y)
       update_attributes(x_position: new_x, y_position: new_y)
       return
