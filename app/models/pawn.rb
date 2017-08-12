@@ -11,6 +11,12 @@ class Pawn < Piece
     allowed_to_move?(destination_x, destination_y) && !square_occupied?(destination_x, destination_y)
   end
 
+  def capture_move?(destination_x, destination_y)
+    capture_piece = Piece.find_by(x_position: destination_x, y_position: destination_y)
+    return false if capture_piece.is_white == is_white
+    square_occupied?(destination_x, destination_y) && capture_piece(destination_x, destination_y)
+  end
+
   private
 
     def allowed_to_move?(destination_x, destination_y)
@@ -22,15 +28,6 @@ class Pawn < Piece
       else
         x_difference == 0 && y_difference == 1 || x_difference == 0 && y_difference == 2
       end
-    end
-
-    def capture_move?(destination_x, destination_y)
-      # if x difference and y difference == 1 && occupying_piece is opposite color
-      # move and capture piece
-      captured_piece = Piece.where(x_position: destination_x, y_position: destination_y)
-      return false if captured_piece.nil?
-      return false if captured_piece.color == color
-      diagonal?(destination_x, destination_y) && captured_piece
     end
 
     def backwards_move?(destination_y)
