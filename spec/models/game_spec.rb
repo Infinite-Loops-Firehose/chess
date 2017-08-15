@@ -81,7 +81,14 @@ RSpec.describe Game, type: :model do
       game = FactoryGirl.create(:game)
       white_king = FactoryGirl.create(:king, is_white: true, game: game, x_position: 3, y_position: 8)
       black_bishop = FactoryGirl.create(:bishop, is_white: false, game: game, x_position: 6, y_position: 5)
-      expect(game.check?).to eq(true)
+      expect(game.check?(true)).to eq(true)
+    end
+
+    it 'should return false if king in check' do
+      game = FactoryGirl.create(:game)
+      white_king = FactoryGirl.create(:king, is_white: true, game: game, x_position: 3, y_position: 8)
+      black_bishop = FactoryGirl.create(:bishop, is_white: false, game: game, x_position: 7, y_position: 5)
+      expect(game.check?(true)).to eq(false)
     end
   end
 end

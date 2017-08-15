@@ -47,9 +47,6 @@ class Game < ApplicationRecord
     piece.render if piece.present?
   end
 
-  # Determine whether or not the current state of the game is in check (true/false)
-  # When the King is being attacked directly by an opponent's piece or
-  # when a piece moves to directly attack the opposing king
   def check?(is_white)
     king = Piece.find_by(game_id: id, type: KING, is_white: is_white)
     Piece.where(game_id: id, is_white: !is_white).each do |piece|
