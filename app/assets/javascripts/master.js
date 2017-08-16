@@ -28,10 +28,8 @@ $(function(){
       console.log('y will be:' + destSqY )
       $.ajax({
         url: '/pieces/' + pieceId,
-        type: 'PUT',
-        data: {
-          piece: { x_position: destSqX, y_position: destSqY }
-        }
+        type: "PUT",
+        data: {_method:'PUT', piece: { x_position: 2, y_position: 4, has_moved: true } }
       }) 
     }}
   )
