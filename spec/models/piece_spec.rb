@@ -124,26 +124,34 @@ RSpec.describe Piece, type: :model do
       expect(black_knight.y_position).to eq(6)
     end
 
-    it 'raises argument error if the move is not valid for pawn' do
-      game1 = FactoryGirl.create(:game)
-      white_pawn = game1.pieces.create(game_id: game1.id, is_white: true, type: PAWN, x_position: 4, y_position: 2)
-      expect { white_pawn.move_to!(4, 5) }.to raise_error(ArgumentError)
-    end
+    context 'valid_move?' do
+      it 'raises argument error if the move is not valid for bishop' do
+        game1 = FactoryGirl.create(:game)
+        white_bishop = game1.pieces.create(game_id: game1.id, is_white: true, type: BISHOP, x_position: 5, y_position: 4)
+        game1.pieces.create(game_id: game1.id, is_white: true, type: PAWN, x_position: 4, y_position: 3)
+        game1.pieces.create(game_id: game1.id, is_white: false, type: ROOK, x_position: 6, y_position: 5)
+        expect { white_bishop.move_to!(5, 7) }.to raise_error(ArgumentError)
+      end
 
-    it 'raises argument error if the move is not valid for queen' do
-      game1 = FactoryGirl.create(:game)
-      white_queen = game1.pieces.create(game_id: game1.id, is_white: true, type: QUEEN, x_position: 5, y_position: 4)
-      game1.pieces.create(game_id: game1.id, is_white: true, type: PAWN, x_position: 4, y_position: 3)
-      game1.pieces.create(game_id: game1.id, is_white: false, type: ROOK, x_position: 6, y_position: 5)
-      expect { white_queen.move_to!(7, 6) }.to raise_error(ArgumentError)
-    end
+      it 'raises argument error if the move is not valid for pawn' do
+        game1 = FactoryGirl.create(:game)
+        white_pawn = game1.pieces.create(game_id: game1.id, is_white: true, type: PAWN, x_position: 4, y_position: 2)
+        expect { white_pawn.move_to!(4, 5) }.to raise_error(ArgumentError)
+      end
 
-    it 'raises argument error if the move is not valid for bishop' do
-      game1 = FactoryGirl.create(:game)
-      white_bishop = game1.pieces.create(game_id: game1.id, is_white: true, type: BISHOP, x_position: 5, y_position: 4)
-      game1.pieces.create(game_id: game1.id, is_white: true, type: PAWN, x_position: 4, y_position: 3)
-      game1.pieces.create(game_id: game1.id, is_white: false, type: ROOK, x_position: 6, y_position: 5)
-      expect { white_bishop.move_to!(5, 7) }.to raise_error(ArgumentError)
+      it 'raises argument error if the move is not valid for queen' do
+        game1 = FactoryGirl.create(:game)
+        white_queen = game1.pieces.create(game_id: game1.id, is_white: true, type: QUEEN, x_position: 5, y_position: 4)
+        game1.pieces.create(game_id: game1.id, is_white: true, type: PAWN, x_position: 4, y_position: 3)
+        game1.pieces.create(game_id: game1.id, is_white: false, type: ROOK, x_position: 6, y_position: 5)
+        expect { white_queen.move_to!(7, 6) }.to raise_error(ArgumentError)
+      end
+
+      it 'raises argument error if the move is not valid for rook' do
+        game1 = FactoryGirl.create(:game)
+        white_rook = game1.pieces.create(game_id: game1.id, is_white: true, type: ROOK, x_position: 3, y_position: 3)
+        expect { white_rook.move_to!(5, 5) }.to raise_error(ArgumentError)
+      end
     end
   end
 end
