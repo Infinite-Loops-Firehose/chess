@@ -12,9 +12,14 @@ class PiecesController < ApplicationController
     # 1,1
     # 8, 8
     piece_to_move = Piece.find(params[:id])
-    piece_to_move.move_to!(params[:x_position], params[:y_position])
+    puts piece_to_move.inspect
+    # params = {piece: {x_position: 5, y_position: 4}}
+    # params[:piece] #{x_position: 5, y_position: 4}
+    # params[:piece][:x_position] = #5
+    piece_to_move.move_to!(params[:piece][:x_position], params[:piece][:y_position])
+    piece_to_move.update(has_moved: true)
     # flash[:error] = 'That is an invalid move.' if piece_to_move.errors.present?
     # redirect_to game_path(piece_to_move.game)
-    # render json: piece
+    render json: piece_to_move
   end
 end

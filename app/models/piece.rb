@@ -13,6 +13,7 @@ class Piece < ApplicationRecord
   end
 
   def move_to!(new_x, new_y)
+    puts "square_occupied?#{new_x} #{new_y} " 
     unless square_occupied?(new_x, new_y)
       update_attributes(x_position: new_x, y_position: new_y)
       return
@@ -28,6 +29,7 @@ class Piece < ApplicationRecord
 
   def square_occupied?(new_x, new_y)
     piece = game.pieces.find_by(x_position: new_x, y_position: new_y)
+    puts "current piece: #{piece.inspect}"
     return false if piece.nil?
     true
   end
