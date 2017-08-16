@@ -12,8 +12,13 @@ class Piece < ApplicationRecord
     "#{color} #{type}"
   end
 
+  def valid_move?(new_x, new_y)
+    return false if square_occupied?(new_x, new_y)
+    return false if obstructed?(new_x, new_y)
+  end
+
   def move_to!(new_x, new_y)
-    unless square_occupied?(new_x, new_y)
+    unless !valid_move?(new_x, new_y)
       update_attributes(x_position: new_x, y_position: new_y)
       return
     end
@@ -23,7 +28,8 @@ class Piece < ApplicationRecord
       update_attributes(x_position: new_x, y_position: new_y)
       return
     end
-    raise ArgumentError, 'That is an invalid move. Cannot capture your own piece.'
+    raise ArgumentError, "That is an invalid move for #{type}"
+    false
   end
 
   def square_occupied?(new_x, new_y)
