@@ -40,29 +40,29 @@ class Piece < ApplicationRecord
     piece_captured.update(x_position: nil, y_position: nil)
   end
 
-  def obstructed?(destination_x, destination_y)
+  def obstructed?(new_x, new_y)
     # errors.add(:base, 'Pieces cannot be moved off the board: invalid move')
-    return true if invalid?(destination_x.to_i, destination_y.to_i)
+    return true if invalid?(new_x.to_i, new_y.to_i)
     # errors.add(:base, 'There is a horizontal or vertical obstruction: invalid move')
-    return true if horizontal_or_vertical_obstruction?(destination_x, destination_y)
+    return true if horizontal_or_vertical_obstruction?(new_x, new_y)
     # errors.add(:base, 'There is a diagonal obstruction: invalid move')
-    return true if diagonal_obstruction?(destination_x, destination_y)
+    return true if diagonal_obstruction?(new_x, new_y)
     false
   end
 
   private
 
-  def invalid?(destination_x, destination_y)
-    destination_x < 1 || destination_x > 8 || destination_y < 1 || destination_y > 8
+  def invalid?(new_x, new_y)
+    new_x < 1 || new_x > 8 || new_y < 1 || new_y > 8
   end
 
-  def horizontal_or_vertical?(destination_x, destination_y)
-    destination_x == x_position || destination_y == y_position
+  def horizontal_or_vertical?(new_x, new_y)
+    new_x == x_position || new_y == y_position
   end
 
-  def diagonal?(destination_x, destination_y)
+  def diagonal?(new_x, new_y)
     # in order for the move to be diagonal, the piece must be moving by the same distance both horizontally and vertically.
-    return true if (destination_x.to_i - x_position).abs == (destination_y.to_i - y_position).abs
+    return true if (new_x.to_i - x_position).abs == (new_y.to_i - y_position).abs
   end
 
   def vertical_obstruction?(range_y)
@@ -75,17 +75,17 @@ class Piece < ApplicationRecord
     obstruction.present?
   end
 
-  def horizontal_or_vertical_obstruction?(destination_x, destination_y)
-    return false unless horizontal_or_vertical?(destination_x, destination_y)
-    range_x = [destination_x, x_position].sort
-    range_y = [destination_y, y_position].sort
+  def horizontal_or_vertical_obstruction?(new_x, new_y)
+    return false unless horizontal_or_vertical?(new_x, new_y)
+    range_x = [new_x, x_position].sort
+    range_y = [new_y, y_position].sort
     vertical_obstruction?(range_y) || horizontal_obstruction?(range_x)
     # obstruction = game.pieces.where(y_position: ((range_y.first + 1)..(range_y.last - 1)), x_position: ((range_x.first + 1)..(range_x.last - 1))) # will always return something, even if it's an empty query
     # obstruction.present? # should return false if the query is empty
   end
 
-  def diagonal_obstruction?(destination_x, destination_y)
-    return false unless diagonal?(destination_x, destination_y)
+  def diagonal_obstruction?(new_x, new_y)
+    return false unless diagonal?(new_x, new_y)
 
     # [
     #   [1, 6],
@@ -94,16 +94,16 @@ class Piece < ApplicationRecord
     # ]
     #
     # (r.first).downto(r.last).to_a
-    x_values = if x_position.to_i < destination_x.to_i
-                 (x_position.to_i..destination_x.to_i).to_a # array of x values, including the starting and ending squares
+    x_values = if x_position.to_i < new_x.to_i
+                 (x_position.to_i..new_x.to_i).to_a # array of x values, including the starting and ending squares
                else
-                 x_position.to_i.downto(destination_x.to_i).to_a
+                 x_position.to_i.downto(new_x.to_i).to_a
                end
 
-    y_values = if y_position.to_i < destination_y.to_i
-                 (y_position.to_i..destination_y.to_i).to_a # array of y values, including the starting and ending squares
+    y_values = if y_position.to_i < new_y.to_i
+                 (y_position.to_i..new_y.to_i).to_a # array of y values, including the starting and ending squares
                else
-                 y_position.to_i.downto(destination_y.to_i).to_a
+                 y_position.to_i.downto(new_y.to_i).to_a
                end
 
     coordinates = []
