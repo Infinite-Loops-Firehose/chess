@@ -43,13 +43,10 @@ table td {
   border: 3px solid red;
 }
 
-#player_one .col {
-  position: absolute; 
-  left: 0;
+.one {
+  float: right;
 }
 
-#player_two .col {
-  position: relative;
-  right: 0;
+.two {
+  float: left;
 }
-

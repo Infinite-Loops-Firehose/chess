@@ -5,10 +5,9 @@
   <div class="alert alert-danger"><%# flash[:error] %></div>
 <%# end %>
 -->
-<div id="player_one">
-  <div class="col">
-    <p><%= image_tag gravatar_url("you@yahoo.com", 64), alt: "" %></p>
-  </div>
+<div class="container">
+  <a class="one"><%= image_tag avatar_url(@user, 64), alt: "" %></a>
+  <a class="two"><%= image_tag avatar_url(@user, 64), alt: "" %></a>
 </div>
 <br />
 <div class="col-10 center offset-1">

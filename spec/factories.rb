@@ -1,6 +1,5 @@
 FactoryGirl.define do
   factory :user do
-
     sequence :email do |n|
       "fakeemail#{n}@something.com"
     end
@@ -25,11 +24,9 @@ FactoryGirl.define do
     association :game
   end
 
-
   factory :knight do
     association :game
   end
-
 
   factory :rook do
     association :game
