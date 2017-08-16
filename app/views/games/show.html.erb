@@ -32,7 +32,7 @@
                 <% piece_image = @game.render_piece(col, row) %>
                 <% if piece_image.present? %>
                   <% piece = Piece.get_piece_at_coor(col, row) %>
-                  <span id='piece' data-id=2>
+                  <span id='piece' data-id=<%= piece.id %>>
                     <%= piece_image %>
                   </span>
                 <% end %>

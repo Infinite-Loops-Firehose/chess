@@ -25,9 +25,13 @@ $(function(){
   $('td').droppable(
     { accept: pieceMoved },
     {drop: function(e){
-      $.ajax({
-        // url: '/pieces/' + pieceMoved.id
-      }) }
+      console.log(this.id);
+      test = $.ajax({
+       type: "PUT",
+       url: "/pieces/" + pieceId,
+       data: {coordinates: this.id}
+     })
+       }
     }
   )
 
