@@ -133,6 +133,18 @@ RSpec.describe Piece, type: :model do
         expect { white_bishop.move_to!(5, 7) }.to raise_error(ArgumentError)
       end
 
+      it 'raises argument error if the move is not valid for king' do
+        game1 = FactoryGirl.create(:game)
+        white_king = game1.pieces.create(game_id: game1.id, is_white: true, type: KING, x_position: 6, y_position: 3)
+        expect { white_king.move_to!(6, 5) }.to raise_error(ArgumentError)
+      end
+
+      it 'raises argument error if the move is not valid for knight' do
+        game1 = FactoryGirl.create(:game)
+        white_knight = game1.pieces.create(game_id: game1.id, is_white: true, type: KNIGHT, x_position: 3, y_position: 3)
+        expect { white_knight.move_to!(5, 5) }.to raise_error(ArgumentError)
+      end
+
       it 'raises argument error if the move is not valid for pawn' do
         game1 = FactoryGirl.create(:game)
         white_pawn = game1.pieces.create(game_id: game1.id, is_white: true, type: PAWN, x_position: 4, y_position: 2)
