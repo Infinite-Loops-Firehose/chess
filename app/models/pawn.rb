@@ -11,6 +11,7 @@ class Pawn < Piece
     return false if sideways_move?(destination_x, destination_y)
     return true if capture_move?(destination_x, destination_y)
     allowed_to_move?(destination_x, destination_y) && !square_occupied?(destination_x, destination_y)
+    super(new_x, new_y) # way to call the parent class which should run the rest of the shared code
   end
 
   private
