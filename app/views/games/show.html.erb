@@ -1,36 +1,44 @@
-<h1 class="text-center">Infinite Loops Chess</h1>
+<head>
+<script
+  src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+  integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+  crossorigin="anonymous"></script>
+</head>
 
-<!--
-<%# if flash[:error].present? %>
-  <div class="alert alert-danger"><%# flash[:error] %></div>
-<%# end %>
--->
+<body>
 
-<div class="col-10 center offset-1">
-  <table id="chessboard">
-    <tbody>
-      <% [8, 7, 6, 5, 4, 3, 2, 1].each do |row| %>
-        <tr>
-          <% (1..8).each do |col| %>
-            <td
-              ' '
-              id=<%="#{col}#{row}"%>
-              ' '
-            <% if (col + row).odd? %>
-              class="white"
-            <% else %>
-              class="black"
-            <% end %>   
-            >
-              <% piece_image = @game.render_piece(col, row) %>
-              <% if piece_image.present? %>
-                <% piece = Piece.get_piece_at_coor(col, row) %>
-                <%= link_to piece_image, piece_path(piece.id) %>
-              <% end %>
-            </td>
-          <% end %>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
+  <h1 class="text-center">Infinite Loops Chess</h1>
+
+  <!--
+  <%# if flash[:error].present? %>
+    <div class="alert alert-danger"><%# flash[:error] %></div>
+  <%# end %>
+  -->
+
+  <div class="col-10 center offset-1">
+    <table id="chessboard">
+      <tbody>
+        <% [8, 7, 6, 5, 4, 3, 2, 1].each do |row| %>
+          <tr>
+            <% (1..8).each do |col| %>
+              <td
+                id=<%="#{col}#{row}"%>
+              <% if (col + row).odd? %>
+                class="white"
+              <% else %>
+                class="black"
+              <% end %>   
+              >
+                <% piece_image = @game.render_piece(col, row) %>
+                <% if piece_image.present? %>
+                  <% piece = Piece.get_piece_at_coor(col, row) %>
+                  <span id='piece'><%= piece_image %></span>
+                <% end %>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</body>
