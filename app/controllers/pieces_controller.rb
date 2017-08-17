@@ -12,7 +12,6 @@ class PiecesController < ApplicationController
     # 1,1
     # 8, 8
     piece_to_move = Piece.find(params[:id])
-    puts piece_to_move.inspect
     # params = {piece: {x_position: 5, y_position: 4}}
     # params[:piece] #{x_position: 5, y_position: 4}
     # params[:piece][:x_position] = #5
@@ -21,5 +20,7 @@ class PiecesController < ApplicationController
     # flash[:error] = 'That is an invalid move.' if piece_to_move.errors.present?
     # redirect_to game_path(piece_to_move.game)
     render json: piece_to_move
+  rescue ArgumentError => e
+    render json: { error: e.message }, status: :bad_request
   end
 end

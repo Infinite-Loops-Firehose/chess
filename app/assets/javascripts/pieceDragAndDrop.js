@@ -11,7 +11,8 @@ $(".games.show").ready(function(){
   })
 
   pieces.draggable({
-    containment: '#chessboard tbody'
+    containment: '#chessboard tbody',
+    cursor: 'move',
   });
 
   $('td').droppable(
@@ -28,7 +29,12 @@ $(".games.show").ready(function(){
           $(e.target).empty();
           e.target.append( pieceHTML );
           $(pieceHTML).css({"top":"initial", "left":"initial"});
-        }
+        },
+        error: function(jqXHR){
+          alert(jqXHR.responseJSON.error);
+          $(pieceHTML).css({"top":"initial", "left":"initial"});
+          $(pieceHTML).addClass('ui-draggable ui-draggable-handle')
+        },
       })
     }}
   )

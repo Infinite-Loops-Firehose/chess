@@ -18,6 +18,9 @@ class Piece < ApplicationRecord
       return
     end
     occupying_piece = Piece.get_piece_at_coor(new_x, new_y)
+    unless self.id != occupying_piece.id
+      raise ArgumentError, 'That is an invalid move. Piece is still in starting square.'
+    end
     unless (occupying_piece.is_white && is_white?) || (!occupying_piece.is_white && !is_white?)
       capture_piece(occupying_piece)
       update_attributes(x_position: new_x, y_position: new_y)
