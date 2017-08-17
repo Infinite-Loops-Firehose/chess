@@ -24,7 +24,8 @@ $(".games.show").ready(function(){
         method: "PUT",
         data: { piece: { x_position: destSqX, y_position: destSqY } },
         success: function(){
-          console.log( pieceHTML );
+          console.log( e.target );
+          $(e.target).empty();
           e.target.append( pieceHTML );
           $(pieceHTML).css({"top":"initial", "left":"initial"});
         }
