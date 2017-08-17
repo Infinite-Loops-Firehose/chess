@@ -10,8 +10,9 @@ $(".games.show").ready(function(){
     pieceId = $(e.target).data('id');
   })
 
-  pieces.draggable(
-  );
+  pieces.draggable({
+    containment: '#chessboard tbody'
+  });
 
   $('td').droppable(
     { accept: pieces },
@@ -24,7 +25,6 @@ $(".games.show").ready(function(){
         method: "PUT",
         data: { piece: { x_position: destSqX, y_position: destSqY } },
         success: function(){
-          console.log( e.target );
           $(e.target).empty();
           e.target.append( pieceHTML );
           $(pieceHTML).css({"top":"initial", "left":"initial"});
@@ -32,5 +32,4 @@ $(".games.show").ready(function(){
       })
     }}
   )
-
 });
