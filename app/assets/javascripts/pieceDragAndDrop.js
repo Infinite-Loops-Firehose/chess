@@ -10,7 +10,8 @@ $(".games.show").ready(function(){
     pieceId = $(e.target).data('id');
   })
 
-  pieces.draggable();
+  pieces.draggable(
+  );
 
   $('td').droppable(
     { accept: pieces },
@@ -25,6 +26,7 @@ $(".games.show").ready(function(){
         success: function(){
           console.log( pieceHTML );
           e.target.append( pieceHTML );
+          $(pieceHTML).css({"top":"initial", "left":"initial"});
         }
       })
     }}
