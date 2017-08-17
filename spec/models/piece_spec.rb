@@ -124,13 +124,6 @@ RSpec.describe Piece, type: :model do
       expect(black_knight.y_position).to eq(6)
     end
   end
-
-  describe "piece#update" do
-    it 'should pass through new coordinates with jquery' do
-    piece_one = FactoryGirl.create(:pawn, x_position: 1, y_position: 1)
-    put :update, 
-    end
-  end
 end
 
 # This method populates a board with the obstructed pieces that are in Ken's example

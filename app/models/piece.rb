@@ -18,7 +18,7 @@ class Piece < ApplicationRecord
       return
     end
     occupying_piece = Piece.get_piece_at_coor(new_x, new_y)
-    unless self.id != occupying_piece.id
+    unless id != occupying_piece.id
       raise ArgumentError, 'That is an invalid move. Piece is still in starting square.'
     end
     unless (occupying_piece.is_white && is_white?) || (!occupying_piece.is_white && !is_white?)
@@ -31,7 +31,6 @@ class Piece < ApplicationRecord
 
   def square_occupied?(new_x, new_y)
     piece = game.pieces.find_by(x_position: new_x, y_position: new_y)
-    puts "current piece: #{piece.inspect}"
     return false if piece.nil?
     true
   end
