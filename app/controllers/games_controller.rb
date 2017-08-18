@@ -1,5 +1,6 @@
 class GamesController < ApplicationController
   before_action :authenticate_user!, only: %i[new create show update]
+  helper_method :game
 
   def index
     @available_games = Game.available
@@ -24,6 +25,14 @@ class GamesController < ApplicationController
     else
       @game.update(user_white_id: current_user.id)
     end
+    redirect_to game_path(@game)
+  end
+
+
+  def forfeit
+    binding.pry
+    @game = Game.find(params[:id])
+    # @game.update(params[games_won: current_user.one])
     redirect_to game_path(@game)
   end
 

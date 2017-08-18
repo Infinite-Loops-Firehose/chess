@@ -10,4 +10,30 @@ RSpec.describe GamesController, type: :controller do
       expect(Game.last.user_white_id).to eq(user_white.id)
     end
   end
+
+  describe 'game#forfeit action' do
+    let(:user) { FactoryGirl.create :user }
+    it 'should forfeit the game' do
+      sign_in user
+      post :forfeit, params: { game: { games_won: 1 } }
+      expect(response).to redirect_to game_path(@game)
+    end
+
+    it 'should redirect to the home page' do
+    end
+
+    it 'should assign a winner' do
+    end
+
+  end
 end
+
+
+
+# 1. create forfeit method
+# 2. Forfeit method will
+#   a. End game
+#   b. Assign other player as winner
+# 3. Create button
+# 4. Link button to gameforfeit method
+# 4. link to index page
