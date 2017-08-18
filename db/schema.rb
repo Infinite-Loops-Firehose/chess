@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 20170809213025) do
     t.integer  "y_position"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
-    t.boolean  "has_moved",  default: false
+    t.boolean  "has_moved",  default: false # to be used differently by individual piece types.
     t.index ["game_id"], name: "index_pieces_on_game_id", using: :btree
   end
 

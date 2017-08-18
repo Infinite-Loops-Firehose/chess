@@ -65,5 +65,11 @@ RSpec.describe Pawn, type: :model do
       FactoryGirl.create(:rook, x_position: 4, y_position: 5, is_white: false)
       expect(pawn.valid_move?(4, 5)).to eq false
     end
+
+    it 'should return true when capturing piece using en passant' do
+      pawn_captured = FactoryGirl.create(:pawn, x_position: 5, y_position: 5, is_white: true)
+      pawn_moved = FactoryGirl.create(:pawn, x_position: 4, y_position: 5, is_white: false)
+      expect(pawn_moved.valid_move?(5, 6)).to eq true
+    end
   end
 end
