@@ -2,6 +2,7 @@
 
 body{
   background: image_url("chess-by-water.jpg");
+  background-repeat: no-repeat;
   color: white;
   font-family: Helvetica, Times;
 }
@@ -15,7 +16,6 @@ body{
 table td {
     width: 90px;
     height: 90px;
-    overflow: hidden;
     vertical-align: middle;
     text-align: center;
     padding: 8px;
@@ -42,3 +42,12 @@ table td {
 #selected_square {
   border: 3px solid red;
 }
+
+.selected_square {
+  border: 3px solid red;
+}
+
+span#piece {
+  margin: auto;
+}
+
