@@ -46,4 +46,12 @@ class Game < ApplicationRecord
     piece = Piece.find_by(game_id: id, x_position: x, y_position: y)
     piece.render if piece.present?
   end
+
+  def check?(is_white)
+    king = pieces.find_by(type: KING, is_white: is_white)
+    pieces.where(game_id: id, is_white: !is_white).find_each do |piece|
+      return true if piece.valid_move?(king.x_position, king.y_position)
+    end
+    false
+  end
 end
