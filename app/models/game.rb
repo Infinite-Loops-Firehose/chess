@@ -48,8 +48,8 @@ class Game < ApplicationRecord
   end
 
   def check?(is_white)
-    king = Piece.find_by(game_id: id, type: KING, is_white: is_white)
-    Piece.where(game_id: id, is_white: !is_white).find_each do |piece|
+    king = pieces.find_by(type: KING, is_white: is_white)
+    pieces.where(game_id: id, is_white: !is_white).find_each do |piece|
       return true if piece.valid_move?(king.x_position, king.y_position)
     end
     false
