@@ -10,12 +10,13 @@ class Pawn < Piece
     return false if backwards_move?(new_y)
     return false if sideways_move?(new_x, new_y)
     return true if capture_move?(new_x, new_y)
+    return true if en_passant_capture?(new_x, new_y)
     allowed_to_move?(new_x, new_y) && !square_occupied?(new_x, new_y)
   end
 
-  def en_passant?(new_y)
+  def vul_to_en_passant?(new_y)
     y_difference = (new_y - y_position).abs
-    first_move?(new_y) ? y_difference == 2 : false
+    first_move? ? y_difference == 2 : false
   end
 
   private
@@ -35,8 +36,17 @@ class Pawn < Piece
     x_difference = (new_x - x_position).abs
     y_difference = (new_y - y_position).abs
     capture_piece = Piece.exists?(x_position: new_x, y_position: new_y, is_white: !is_white, game: game)
-    capture_en_passant_pawn = Piece.exists?(x_position: new_x, y_position: y_position, is_white: !is_white, game: game)
-    ( capture_piece || capture_en_passant_pawn.en_passant?(y_position) ) && x_difference == 1 && y_difference == 1
+    capture_piece && x_difference == 1 && y_difference == 1
+  end
+
+  def en_passant_capture?(new_x, new_y)
+    adjacent_enemy_pawn = Pawn.find_by(x_position: new_x, y_position: y_position, is_white: !is_white, game: game)
+    return false if adjacent_enemy_pawn.nil?
+    if adjacent_enemy_pawn.vul_to_en_passant? && (y_position == 5 || y_position == 4)
+      capture_piece(adjacent_enemy_pawn)
+      return true
+    end
+    false
   end
 
   def backwards_move?(new_y)
@@ -53,7 +63,7 @@ class Pawn < Piece
     x_difference != 0 && new_y == y_position
   end
 
-  def first_move?(_new_y)
-    (y_position == 7 && is_white) || (y_position == 2 && !is_white)
+  def first_move?
+    (y_position == 7 && is_white == true) || (y_position == 2 && is_white == false)
   end
 end
