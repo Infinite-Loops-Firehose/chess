@@ -39,7 +39,7 @@ class Pawn < Piece
     capture_piece && x_difference == 1 && y_difference == 1
   end
 
-  def en_passant_capture?(new_x, new_y)
+  def en_passant_capture?(new_x, _new_y)
     adjacent_enemy_pawn = Pawn.find_by(x_position: new_x, y_position: y_position, is_white: !is_white, game: game)
     return false if adjacent_enemy_pawn.nil?
     if adjacent_enemy_pawn.vul_to_en_passant? && (y_position == 5 || y_position == 4)
