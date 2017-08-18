@@ -14,11 +14,6 @@ class Pawn < Piece
     allowed_to_move?(new_x, new_y) && !square_occupied?(new_x, new_y)
   end
 
-  def vul_to_en_passant?(new_y)
-    y_difference = (new_y - y_position).abs
-    first_move? ? y_difference == 2 : false
-  end
-
   private
 
   def allowed_to_move?(new_x, new_y)
@@ -65,5 +60,10 @@ class Pawn < Piece
 
   def first_move?
     (y_position == 7 && is_white == true) || (y_position == 2 && is_white == false)
+  end
+
+  def vul_to_en_passant?(new_y)
+    y_difference = (new_y - y_position).abs
+    first_move? ? y_difference == 2 : false
   end
 end
