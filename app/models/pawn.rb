@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # may only move one square forward unless first move
 # if first move, can choose to move one square or two
 # can never move backwards
