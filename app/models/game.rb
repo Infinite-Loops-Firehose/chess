@@ -62,6 +62,5 @@ class Game < ApplicationRecord
     else
       @game.update_attributes(player_win: @game.user_white_id, player_lose: @game.user_black_id)
     end
-    redirect_to game_path(@game)
   end
 end
