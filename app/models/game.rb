@@ -54,4 +54,14 @@ class Game < ApplicationRecord
     end
     false
   end
+
+  def forfeit(is_white)
+    @game = Game.find(params[:id])
+    if is_white
+      @game.update_attributes(player_win: @game.user_black_id, player_lose: @game.user_white_id)
+    else
+      @game.update_attributes(player_win: @game.user_white_id, player_lose: @game.user_black_id)
+    end
+    redirect_to game_path(@game)
+  end
 end

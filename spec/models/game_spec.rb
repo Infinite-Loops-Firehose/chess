@@ -91,4 +91,20 @@ RSpec.describe Game, type: :model do
       expect(game.check?(true)).to eq(false)
     end
   end
+
+  describe 'game#forfeit action' do
+    let(:user_white) { FactoryGirl.create :user, is_white: true }
+    let(:user_black) { FactoryGirl.create :user, is_white: false }
+    let(:game) { FactoryGirl.create :game }
+
+    it 'should forfeit the game' do
+      expect(response).to redirect_to game_path(@game)
+    end
+
+    it 'should redirect to the home page' do
+    end
+
+    it 'should assign a winner' do
+    end
+  end
 end

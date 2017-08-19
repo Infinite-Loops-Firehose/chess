@@ -30,9 +30,12 @@ class GamesController < ApplicationController
 
 
   def forfeit
-    binding.pry
     @game = Game.find(params[:id])
-    # @game.update(params[games_won: current_user.one])
+    if @game.current_user.id == user_white_id
+      @game.update_attributes(player_win: @game.user_black_id, player_lose: @game.user_white_id)
+    else
+      @game.update_attributes(player_win: @game.user_white_id, player_lose: @game.user_black_id)
+    end
     redirect_to game_path(@game)
   end
 
