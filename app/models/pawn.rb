@@ -10,6 +10,7 @@ class Pawn < Piece
     return false if backwards_move?(new_y.to_i)
     return false if sideways_move?(new_x.to_i, new_y.to_i)
     return true if capture_move?(new_x.to_i, new_y.to_i)
+    return true if en_passant_capture?(new_x, new_y)
     allowed_to_move?(new_x.to_i, new_y.to_i) && !square_occupied?(new_x.to_i, new_y.to_i)
   end
 
@@ -19,11 +20,19 @@ class Pawn < Piece
     x_difference.zero? && y_difference == 2
   end
 
+  def vul_to_en_passant?
+    game_move_number == turn_pawn_moved_twice + 1 && piece_move_number == 1 && (y_position == 4 || y_position == 5)
+    binding.pry
+  end
+
   private
 
   def allowed_to_move?(new_x, new_y)
     x_difference = (new_x - x_position).abs
     y_difference = (new_y - y_position).abs
+    if x_difference == 0 && y_difference == 2
+      update_attributes(turn_pawn_moved_twice: game.move_number) 
+    end
     if has_moved
       x_difference.zero? && y_difference == 1
     else
@@ -39,18 +48,30 @@ class Pawn < Piece
     if enemy_in_dest && x_difference == 1 && y_difference == 1
       return true
     end
+    # adjacent_enemy_pawn = Pawn.find_by(x_position: new_x, y_position: y_position, is_white: !is_white, game: game)
+    # unless adjacent_enemy_pawn.present?
+    #   return false
+    # end
+    # unless adjacent_enemy_pawn.turn_pawn_moved_twice == game_move_number - 1
+    #   return false
+    # end
+    # unless y_position == 5 || y_position == 4
+    #   return false
+    # end
+    # unless x_difference == 1 && y_difference == 1
+    #   return false
+    # end
+    false
+  end
+
+  def en_passant_capture?(new_x, _new_y)
     adjacent_enemy_pawn = Pawn.find_by(x_position: new_x, y_position: y_position, is_white: !is_white, game: game)
-    unless adjacent_enemy_pawn.present?
-      return false
+    return false if adjacent_enemy_pawn.nil?
+    if adjacent_enemy_pawn.vul_to_en_passant?
+      capture_piece(adjacent_enemy_pawn)
+      return true
     end
-    unless adjacent_enemy_pawn.turn_pawn_moved_twice == game_move_number - 1
-      return false
-    end
-    unless y_position == 5 || y_position == 4
-      return false
-    end
-    capture_piece(adjacent_enemy_pawn)
-    return true
+    false
   end
 
   def backwards_move?(new_y)
