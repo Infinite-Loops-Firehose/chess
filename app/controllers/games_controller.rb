@@ -36,6 +36,7 @@ class GamesController < ApplicationController
     else
       @game.update_attributes(player_win: @game.user_white_id, player_lose: @game.user_black_id)
     end
+    flash[:alert] = "You forfeited the game :("
     redirect_to game_path(@game)
   end
 
