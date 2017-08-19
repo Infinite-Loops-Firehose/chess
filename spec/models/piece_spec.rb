@@ -166,6 +166,24 @@ RSpec.describe Piece, type: :model do
       end
     end
   end
+
+  describe 'increment_move' do
+    it 'successfully increments the move_number of the game every turn' do
+
+    end
+
+    it 'successfully increments the game_move_number of the piece every turn' do
+
+    end
+
+    it 'increments the move_number of the game and the game_move_number of the piece to be exactly the same' do
+
+    end
+
+    it 'successfully increments the piece_move_number of the piece every turn for that piece' do
+
+    end
+  end
 end
 
 # This method populates a board with the obstructed pieces that are in Ken's example
