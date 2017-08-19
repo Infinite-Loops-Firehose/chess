@@ -65,5 +65,11 @@ RSpec.describe Pawn, type: :model do
       FactoryGirl.create(:rook, x_position: 4, y_position: 5, is_white: false)
       expect(pawn.valid_move?(4, 5)).to eq false
     end
+    
+    context 'en-passant?' do
+      it 'should return true if there is an enemy pawn sharing the same y_position and in an adjacent x_position that has just moved 2 spaces last turn' do
+    
+      end
+    end
   end
 end

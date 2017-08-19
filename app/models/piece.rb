@@ -18,6 +18,7 @@ class Piece < ApplicationRecord
     end
     unless square_occupied?(new_x, new_y)
       update_attributes(x_position: new_x, y_position: new_y)
+      increment_move
       return
     end
     occupying_piece = Piece.get_piece_at_coor(new_x, new_y)
@@ -27,6 +28,7 @@ class Piece < ApplicationRecord
     unless (occupying_piece.is_white && is_white?) || (!occupying_piece.is_white && !is_white?)
       capture_piece(occupying_piece)
       update_attributes(x_position: new_x, y_position: new_y)
+      increment_move
       return
     end
     raise ArgumentError, 'That is an invalid move. Cannot capture your own piece.'
@@ -57,6 +59,12 @@ class Piece < ApplicationRecord
   end
 
   private
+
+  def increment_move
+    game.update_attributes(move_number: game.move_number + 1)
+    update_attributes(game_move_number: game.move_number)
+    update_attributes(piece_move_number: piece_move_number + 1)
+  end
 
   def invalid?(new_x, new_y)
     new_x < 1 || new_x > 8 || new_y < 1 || new_y > 8
