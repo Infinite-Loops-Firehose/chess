@@ -31,11 +31,7 @@ class GamesController < ApplicationController
 
   def forfeit
     @game = Game.find(params[:id])
-    if @game.current_user.id == user_white_id
-      @game.update_attributes(player_win: @game.user_black_id, player_lose: @game.user_white_id)
-    else
-      @game.update_attributes(player_win: @game.user_white_id, player_lose: @game.user_black_id)
-    end
+    @game.forfeit_game
     flash[:alert] = "You forfeited the game :("
     redirect_to game_path(@game)
   end
