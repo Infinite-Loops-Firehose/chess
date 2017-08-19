@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170818201159) do
+ActiveRecord::Schema.define(version: 20170819003346) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,11 +31,12 @@ ActiveRecord::Schema.define(version: 20170818201159) do
     t.string   "type"
     t.integer  "x_position"
     t.integer  "y_position"
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
-    t.boolean  "has_moved",         default: false
-    t.integer  "game_move_number",  default: 0,     null: false
-    t.integer  "piece_move_number", default: 0,     null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.boolean  "has_moved",             default: false
+    t.integer  "game_move_number",      default: 0,     null: false
+    t.integer  "piece_move_number",     default: 0,     null: false
+    t.integer  "turn_pawn_moved_twice"
     t.index ["game_id"], name: "index_pieces_on_game_id", using: :btree
   end
 

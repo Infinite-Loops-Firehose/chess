@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # may only move one square forward unless first move
 # if first move, can choose to move one square or two
 # can never move backwards
@@ -7,16 +6,17 @@
 
 class Pawn < Piece
   def valid_move?(new_x, new_y)
-    return false if current_position?(new_x, new_y)
-    return false if backwards_move?(new_y)
-    return false if sideways_move?(new_x, new_y)
-    return true if capture_move?(new_x, new_y)
-    return true if en_passant_capture?(new_x, new_y)
-    allowed_to_move?(new_x, new_y) && !square_occupied?(new_x, new_y)
+    return false if current_position?(new_x.to_i, new_y.to_i)
+    return false if backwards_move?(new_y.to_i)
+    return false if sideways_move?(new_x.to_i, new_y.to_i)
+    return true if capture_move?(new_x.to_i, new_y.to_i)
+    allowed_to_move?(new_x.to_i, new_y.to_i) && !square_occupied?(new_x.to_i, new_y.to_i)
   end
 
-  def vul_to_en_passant?
-    return false unless (y_position == 5  && is_white == true) || (y_position == 4 && is_white == false)
+  def moving_two_squares?(new_x, new_y)
+    x_difference = (new_x.to_i - x_position).abs
+    y_difference = (new_y.to_i - y_position).abs
+    x_difference.zero? && y_difference == 2
   end
 
   private
@@ -27,23 +27,30 @@ class Pawn < Piece
     if has_moved
       x_difference.zero? && y_difference == 1
     else
-      x_difference.zero? && y_difference == 1 || x_difference.zero? && y_difference == 2
+      (x_difference.zero? && y_difference == 1) || (x_difference.zero? && y_difference == 2)
     end
+    
   end
 
   def capture_move?(new_x, new_y)
     x_difference = (new_x - x_position).abs
     y_difference = (new_y - y_position).abs
-    capture_piece = Piece.exists?(x_position: new_x, y_position: new_y, is_white: !is_white, game: game)
-    capture_piece && x_difference == 1 && y_difference == 1
-  end
-
-  def en_passant_capture?(new_x, new_y)
+    enemy_in_dest = Piece.exists?(x_position: new_x, y_position: new_y, is_white: !is_white, game: game)
+    if enemy_in_dest && x_difference == 1 && y_difference == 1
+      return true
+    end
     adjacent_enemy_pawn = Pawn.find_by(x_position: new_x, y_position: y_position, is_white: !is_white, game: game)
-    # return false if adjacent_enemy_pawn.nil?
-    # capture_piece(adjacent_enemy_pawn)
-    # return true
-    false
+    unless adjacent_enemy_pawn.present?
+      return false
+    end
+    unless adjacent_enemy_pawn.turn_pawn_moved_twice == game_move_number - 1
+      return false
+    end
+    unless y_position == 5 || y_position == 4
+      return false
+    end
+    capture_piece(adjacent_enemy_pawn)
+    return true
   end
 
   def backwards_move?(new_y)
