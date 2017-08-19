@@ -45,7 +45,7 @@ class Piece < ApplicationRecord
   end
 
   def capture_piece(piece_captured)
-    piece_captured.update(x_position: nil, y_position: nil)
+    piece_captured.update_attributes(x_position: nil, y_position: nil)
   end
 
   def obstructed?(new_x, new_y)

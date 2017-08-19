@@ -3,12 +3,12 @@ require 'rails_helper'
 RSpec.describe Pawn, type: :model do
   describe 'valid_move?' do
     it 'should return true when moving one space forward' do
-      pawn = FactoryGirl.create(:pawn, x_position: 4, y_position: 2)
+      pawn = FactoryGirl.create(:pawn, x_position: 4, y_position: 2, is_white: false)
       expect(pawn.valid_move?(4, 3)).to eq true
     end
 
     it 'should return true when moving two spaces forward on first move' do
-      pawn = FactoryGirl.create(:pawn, x_position: 4, y_position: 2, has_moved: false)
+      pawn = FactoryGirl.create(:pawn, x_position: 4, y_position: 2, has_moved: false, is_white: false)
       expect(pawn.valid_move?(4, 4)).to eq true
     end
 
@@ -67,9 +67,33 @@ RSpec.describe Pawn, type: :model do
     end
 
     it 'should return true when capturing piece using en passant' do
-      pawn_captured = FactoryGirl.create(:pawn, x_position: 5, y_position: 5, is_white: true)
-      pawn_moved = FactoryGirl.create(:pawn, x_position: 4, y_position: 5, is_white: false)
+      game = FactoryGirl.create(:game)
+      pawn_captured = FactoryGirl.create(:pawn, x_position: 5, y_position: 7, is_white: true, game: game)
+      pawn_captured.move_to!(5, 5)
+      pawn_moved = FactoryGirl.create(:pawn, x_position: 4, y_position: 5, is_white: false, game: game)
       expect(pawn_moved.valid_move?(5, 6)).to eq true
+    end
+  end
+
+  describe 'en_passant_capture?' do
+    it 'should set database coordinates of captured piece to nil' do
+      game = FactoryGirl.create(:game)
+      pawn_captured = FactoryGirl.create(:pawn, x_position: 5, y_position: 7, is_white: true, game: game)
+      pawn_captured.move_to!(5, 5)
+      pawn_moved = FactoryGirl.create(:pawn, x_position: 4, y_position: 5, is_white: false, game: game)
+      pawn_moved.move_to!(5, 6)
+      expect(pawn_captured.x_position).to eq nil
+      expect(pawn_captured.y_position).to eq nil
+    end
+
+    it 'should set coordinates of the capturing piece to behind captured piece' do
+      game = FactoryGirl.create(:game)
+      pawn_captured = FactoryGirl.create(:pawn, x_position: 5, y_position: 7, is_white: true, game: game)
+      pawn_captured.move_to!(5, 5)
+      pawn_moved = FactoryGirl.create(:pawn, x_position: 4, y_position: 5, is_white: false, game: game)
+      pawn_moved.move_to!(5, 6)
+      expect(pawn_moved.x_position).to eq 5
+      expect(pawn_moved.y_position).to eq 6
     end
   end
 end

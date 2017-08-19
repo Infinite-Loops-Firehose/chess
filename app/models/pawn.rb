@@ -10,7 +10,7 @@ class Pawn < Piece
     return false if backwards_move?(new_y.to_i)
     return false if sideways_move?(new_x.to_i, new_y.to_i)
     return true if capture_move?(new_x.to_i, new_y.to_i)
-    return true if en_passant_capture?(new_x, new_y)
+    return true if en_passant_capture?(new_x.to_i, new_y.to_i)
     if allowed_to_move?(new_x.to_i, new_y.to_i) && !square_occupied?(new_x.to_i, new_y.to_i)
       update_attributes(turn_pawn_moved_twice: game.move_number + 1) if moving_two_squares?(new_x.to_i, new_y.to_i)
       return true
@@ -18,17 +18,28 @@ class Pawn < Piece
     false
   end
 
+  def vul_to_en_passant?
+    game.move_number == turn_pawn_moved_twice && piece_move_number == 1 && (y_position == 4 || y_position == 5)
+  end
+
+  private
+
   def moving_two_squares?(new_x, new_y)
     x_difference = (new_x - x_position).abs
     y_difference = (new_y - y_position).abs
     x_difference.zero? && y_difference == 2
   end
 
-  def vul_to_en_passant?
-    game_move_number == turn_pawn_moved_twice && piece_move_number == 1 && (y_position == 4 || y_position == 5)
+  def en_passant_capture?(new_x, new_y)
+    adjacent_enemy_pawn = Pawn.find_by(x_position: new_x, y_position: y_position, is_white: !is_white, game: game)
+    return false if adjacent_enemy_pawn.nil?
+    if adjacent_enemy_pawn.vul_to_en_passant? && !square_occupied?(new_x, new_y)
+      capture_piece(adjacent_enemy_pawn)
+      binding.pry
+      return true
+    end
+    false
   end
-
-  private
 
   def allowed_to_move?(new_x, new_y)
     x_difference = (new_x - x_position).abs
@@ -60,16 +71,6 @@ class Pawn < Piece
     # unless x_difference == 1 && y_difference == 1
     #   return false
     # end
-    false
-  end
-
-  def en_passant_capture?(new_x, _new_y)
-    adjacent_enemy_pawn = Pawn.find_by(x_position: new_x, y_position: y_position, is_white: !is_white, game: game)
-    return false if adjacent_enemy_pawn.nil?
-    if adjacent_enemy_pawn.vul_to_en_passant?
-      capture_piece(adjacent_enemy_pawn)
-      return true
-    end
     false
   end
 
