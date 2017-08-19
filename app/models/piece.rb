@@ -18,7 +18,7 @@ class Piece < ApplicationRecord
     end
     unless square_occupied?(new_x, new_y)
       if type == "Pawn" && moving_two_squares?(new_x, new_y)
-        update_attributes(turn_pawn_moved_twice: game_move_number) 
+        update_attributes(turn_pawn_moved_twice: game.move_number) #game_move_number is the issue
       end
       update_attributes(x_position: new_x, y_position: new_y)
       increment_move
@@ -64,7 +64,6 @@ class Piece < ApplicationRecord
   private
 
   def increment_move
-    game.update_attributes(move_number: game.move_number + 1)
     update_attributes(game_move_number: game.move_number)
     update_attributes(piece_move_number: piece_move_number + 1)
     update_attributes(has_moved: true)

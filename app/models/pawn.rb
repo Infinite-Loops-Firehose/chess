@@ -59,6 +59,10 @@ class Pawn < Piece
   end
 
   def current_position?(new_x, new_y)
+    puts new_x
+    puts new_y
+    puts x_position
+    puts y_position
     x_position == new_x && y_position == new_y
   end
 
