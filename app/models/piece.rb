@@ -61,7 +61,7 @@ class Piece < ApplicationRecord
   private
 
   def increment_move
-    game.update_attributes(move_number: move_number + 1)
+    game.update_attributes(move_number: game.move_number + 1)
     update_attributes(game_move_number: game.move_number)
     update_attributes(piece_move_number: piece_move_number + 1)
   end
