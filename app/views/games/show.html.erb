@@ -2,7 +2,7 @@
 <script
   src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
   integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
-  crossorigin="anonymous">    
+  crossorigin="anonymous">
 </script>
 </head>
 
@@ -28,7 +28,7 @@
                 class="white"
               <% else %>
                 class="black"
-              <% end %>   
+              <% end %>
               >
                 <% piece_image = @game.render_piece(col, row) %>
                 <% if piece_image.present? %>
@@ -43,5 +43,6 @@
         <% end %>
       </tbody>
     </table>
+    <% button_to 'Forfeit', forfeit_game_path(@game.id), { action: :forfeit, method: :patch }, class: 'btn btn-danger' %>
   </div>
 </body>
