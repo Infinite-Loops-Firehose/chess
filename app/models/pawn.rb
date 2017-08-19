@@ -11,18 +11,21 @@ class Pawn < Piece
     return false if sideways_move?(new_x.to_i, new_y.to_i)
     return true if capture_move?(new_x.to_i, new_y.to_i)
     return true if en_passant_capture?(new_x, new_y)
-    allowed_to_move?(new_x.to_i, new_y.to_i) && !square_occupied?(new_x.to_i, new_y.to_i)
+    if allowed_to_move?(new_x.to_i, new_y.to_i) && !square_occupied?(new_x.to_i, new_y.to_i)
+      update_attributes(turn_pawn_moved_twice: game.move_number + 1) if moving_two_squares?(new_x.to_i, new_y.to_i)
+      return true
+    end
+    false
   end
 
   def moving_two_squares?(new_x, new_y)
-    x_difference = (new_x.to_i - x_position).abs
-    y_difference = (new_y.to_i - y_position).abs
+    x_difference = (new_x - x_position).abs
+    y_difference = (new_y - y_position).abs
     x_difference.zero? && y_difference == 2
   end
 
   def vul_to_en_passant?
-    game_move_number == turn_pawn_moved_twice + 1 && piece_move_number == 1 && (y_position == 4 || y_position == 5)
-    binding.pry
+    game_move_number == turn_pawn_moved_twice && piece_move_number == 1 && (y_position == 4 || y_position == 5)
   end
 
   private
@@ -30,15 +33,11 @@ class Pawn < Piece
   def allowed_to_move?(new_x, new_y)
     x_difference = (new_x - x_position).abs
     y_difference = (new_y - y_position).abs
-    if x_difference == 0 && y_difference == 2
-      update_attributes(turn_pawn_moved_twice: game.move_number) 
-    end
     if has_moved
       x_difference.zero? && y_difference == 1
     else
-      (x_difference.zero? && y_difference == 1) || (x_difference.zero? && y_difference == 2)
+      x_difference.zero? && y_difference == 1 || x_difference.zero? && y_difference == 2
     end
-    
   end
 
   def capture_move?(new_x, new_y)
@@ -80,10 +79,6 @@ class Pawn < Piece
   end
 
   def current_position?(new_x, new_y)
-    puts new_x
-    puts new_y
-    puts x_position
-    puts y_position
     x_position == new_x && y_position == new_y
   end
 
