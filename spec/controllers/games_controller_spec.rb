@@ -11,25 +11,25 @@ RSpec.describe GamesController, type: :controller do
     end
   end
 
-  # describe 'game#forfeit action' do
-  #   let(:user_white) { FactoryGirl.create :user }
-  #   let(:user_black) { FactoryGirl.create :user }
-  #   it 'should forfeit the game' do
-  #     sign_in user_white
-  #     sign_in user_black
-  #     post :forfeit, params: { game: { player_win: user_white.id } }
-  #     expect(response).to redirect_to game_path(@game)
-  #   end
+  describe 'game#forfeit action' do
+    let(:game) { FactoryGirl.create :game, user_white_id: 1, user_black_id: 2 }
+    let(:user_white) { FactoryGirl.create :user, id: 1 }
+    let(:user_black) { FactoryGirl.create :user, id: 3 }
 
-  #   it 'should redirect to the home page' do
-  #   end
+    it 'should forfeit the game' do
+      sign_in user_white
+      sign_in user_black
+      patch :forfeit, params: { game: { user_white_id: user_white.id } }
+      expect(response).to redirect_to game_path(@game)
+    end
 
-  #   it 'should assign a winner' do
-  #   end
-  # end
+    it 'should redirect to the home page' do
+    end
+
+    it 'should assign a winner' do
+    end
+  end
 end
-
-
 
 # 1. create forfeit method
 # 2. Forfeit method will
