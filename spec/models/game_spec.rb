@@ -93,12 +93,11 @@ RSpec.describe Game, type: :model do
   end
 
   describe 'game#forfeit action' do
-    let(:user_white) { FactoryGirl.create :user, id: 1, is_white: true }
-    let(:user_black) { FactoryGirl.create :user, id: 2, is_white: false }
+    
     let(:game) { FactoryGirl.create :game }
 
     it 'should forfeit the game' do
-      expect(player_win).to eq(2)
+      expect(game.forfeit(user_white)).to eq(2)
     end
 
     it 'should redirect to the home page' do

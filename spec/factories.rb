@@ -6,8 +6,6 @@ FactoryGirl.define do
     name 'username'
     games_played 0
     games_won 0
-    player_win 0
-    player_lose 0
   end
   # ran rubocop -a to fix rubocop errors on master branch
   factory :game do
