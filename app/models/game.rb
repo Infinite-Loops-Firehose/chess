@@ -55,20 +55,14 @@ class Game < ApplicationRecord
     false
   end
 
-  def forfeit_game(is_white)
-    @game = Game.find(params[:id])
-    games_won = @user.games_won
-    games_won_update = games_won + 1
-    games_played = @user.games_played
-    games_played_update = games_played + 1
-    binding.pry
-    if is_white
-      @game.update_attributes(player_win: @game.user_black_id, player_lose: @game.user_white_id) &&
-      @user.update_attributes(games_won: games_won_update, games_played: games_played_update)
-    else
-      @game.update_attributes(player_win: @game.user_white_id, player_lose: @game.user_black_id) &&
-      @user.update_attributes(games_played: games_played_update)
+  def forfeit
+    game = Game.find(params[:id])
+    if current_user.id == game.user_white_id
+      game.update_attributes(player_win: game.user_black_id)
     end
 
+    if current_user.id == game.user_white_id
+      game.update_attributes(player_win: game.user_white_id)
+    end
   end
 end
