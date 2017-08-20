@@ -35,7 +35,6 @@ class Pawn < Piece
     return false if adjacent_enemy_pawn.nil?
     if adjacent_enemy_pawn.vul_to_en_passant? && !square_occupied?(new_x, new_y)
       capture_piece(adjacent_enemy_pawn)
-      binding.pry
       return true
     end
     false
