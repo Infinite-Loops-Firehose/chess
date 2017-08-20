@@ -22,14 +22,6 @@ class Pawn < Piece
     game.move_number == turn_pawn_moved_twice && piece_move_number == 1 && (y_position == 4 || y_position == 5)
   end
 
-  private
-
-  def moving_two_squares?(new_x, new_y)
-    x_difference = (new_x - x_position).abs
-    y_difference = (new_y - y_position).abs
-    x_difference.zero? && y_difference == 2
-  end
-
   def en_passant_capture?(new_x, new_y)
     adjacent_enemy_pawn = Pawn.find_by(x_position: new_x, y_position: y_position, is_white: !is_white, game: game)
     return false if adjacent_enemy_pawn.nil?
@@ -38,6 +30,15 @@ class Pawn < Piece
       return true
     end
     false
+  end
+
+
+  private
+
+  def moving_two_squares?(new_x, new_y)
+    x_difference = (new_x - x_position).abs
+    y_difference = (new_y - y_position).abs
+    x_difference.zero? && y_difference == 2
   end
 
   def allowed_to_move?(new_x, new_y)
