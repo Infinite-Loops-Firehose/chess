@@ -95,20 +95,10 @@ class Piece < ApplicationRecord
     range_x = [new_x, x_position].sort
     range_y = [new_y, y_position].sort
     vertical_obstruction?(range_y) || horizontal_obstruction?(range_x)
-    # obstruction = game.pieces.where(y_position: ((range_y.first + 1)..(range_y.last - 1)), x_position: ((range_x.first + 1)..(range_x.last - 1))) # will always return something, even if it's an empty query
-    # obstruction.present? # should return false if the query is empty
   end
 
   def diagonal_obstruction?(new_x, new_y)
     return false unless diagonal?(new_x, new_y)
-
-    # [
-    #   [1, 6],
-    #   [2, 5],
-    #   [3, 4]
-    # ]
-    #
-    # (r.first).downto(r.last).to_a
     x_values = if x_position.to_i < new_x.to_i
                  (x_position.to_i..new_x.to_i).to_a # array of x values, including the starting and ending squares
                else

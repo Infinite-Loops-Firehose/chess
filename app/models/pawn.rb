@@ -32,7 +32,6 @@ class Pawn < Piece
     false
   end
 
-
   private
 
   def moving_two_squares?(new_x, new_y)
@@ -55,22 +54,7 @@ class Pawn < Piece
     x_difference = (new_x - x_position).abs
     y_difference = (new_y - y_position).abs
     enemy_in_dest = Piece.exists?(x_position: new_x, y_position: new_y, is_white: !is_white, game: game)
-    if enemy_in_dest && x_difference == 1 && y_difference == 1
-      return true
-    end
-    # adjacent_enemy_pawn = Pawn.find_by(x_position: new_x, y_position: y_position, is_white: !is_white, game: game)
-    # unless adjacent_enemy_pawn.present?
-    #   return false
-    # end
-    # unless adjacent_enemy_pawn.turn_pawn_moved_twice == game_move_number - 1
-    #   return false
-    # end
-    # unless y_position == 5 || y_position == 4
-    #   return false
-    # end
-    # unless x_difference == 1 && y_difference == 1
-    #   return false
-    # end
+    return true if enemy_in_dest && x_difference == 1 && y_difference == 1
     false
   end
 
