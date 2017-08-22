@@ -56,6 +56,15 @@ class Piece < ApplicationRecord
     false
   end
 
+  def can_be_captured?
+    enemy_piece = pieces.find_by(is_white: !is_white, x_position: x_position, y_position: y_position)
+    # now we'll search for friendy pieces that can capture this enemy piece
+    pieces.where(game_id: id, is_white: is_white).find_each do |piece|
+      return true if piece.valid_move?(enemy_piece.x_position, enemy_piece.y_position)
+    end
+    false
+  end
+
   private
 
   def invalid?(new_x, new_y)

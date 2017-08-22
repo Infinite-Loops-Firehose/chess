@@ -50,11 +50,13 @@ class Game < ApplicationRecord
   def check?(is_white)
     king = pieces.find_by(type: KING, is_white: is_white)
     pieces.where(game_id: id, is_white: !is_white).find_each do |piece|
+      @enemy_piece_causing_check = piece
       return true if piece.valid_move?(king.x_position, king.y_position)
     end
     false
   end
 
+<<<<<<< HEAD
   def forfeit(is_white)
     @game = Game.find(params[:id])
     if is_white
@@ -63,4 +65,26 @@ class Game < ApplicationRecord
       @game.update_attributes(player_win: @game.user_white_id, player_lose: @game.user_black_id)
     end
   end
+=======
+  def checkmate?(is_white)
+    king = pieces.find_by(type: KING, is_white: is_white)
+    return false unless check?(is_white)
+    # is a friendly piece able to capture the attacking piece?
+      # look at the attacking piece and see if it is under attack by any friendly pieces
+    return false if @enemy_piece_causing_check.can_be_captured?
+    # is the king able to move elsewhere?
+      # check all possible unobstructed moves to see if the king would be in check if it moved there
+    return false if king.can_move_out_of_check?  
+    # is a friendly piece able to block the check?
+      # we need to make an obstruction with a friendly piece that blocks the check threat
+    # we want to take our piece, where valid move will obstruct check from the enemy piece
+    # use square_occupied method to build the array to find potential obstruction squares, also filter by is_white
+      # for the whole obstruction array that we will build, check each square. if it were occupied, then it would block check.
+
+    # we want to look at potential moves, not at the current state of the board.
+
+  end
+
+
+>>>>>>> ae4502699a99e754abda764bb8e2432a0dda70c0
 end
