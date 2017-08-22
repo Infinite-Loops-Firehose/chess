@@ -65,6 +65,8 @@ class Piece < ApplicationRecord
     false
   end
 
+  def can_be_blocked?(king); end
+
   private
 
   def invalid?(new_x, new_y)

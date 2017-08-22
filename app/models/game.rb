@@ -70,7 +70,7 @@ class Game < ApplicationRecord
     # we want to take our piece, where valid move will obstruct check from the enemy piece
     # use square_occupied method to build the array to find potential obstruction squares, also filter by is_white
       # for the whole obstruction array that we will build, check each square. if it were occupied, then it would block check.
-
+    return false if @enemy_piece_causing_check.can_be_blocked?(king)
     # we want to look at potential moves, not at the current state of the board.
 
   end
