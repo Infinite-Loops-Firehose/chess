@@ -103,9 +103,9 @@ RSpec.describe Pawn, type: :model do
       pawn_captured.move_to!(5, 5)
       pawn_moved = FactoryGirl.create(:pawn, x_position: 4, y_position: 4, is_white: false, game: game)
       pawn_moved.move_to!(4, 5)
-      pawn_moved.reload
       pawn_captured.reload
-      expect(pawn_moved.en_passant_capture?(5, 6)).to eq(false)
+      pawn_moved.reload
+      expect(pawn_captured.vul_to_en_passant?).to eq(false)
     end
   end
 end

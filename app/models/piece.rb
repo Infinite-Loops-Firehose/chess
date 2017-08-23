@@ -62,9 +62,7 @@ class Piece < ApplicationRecord
 
   def increment_move
     game.update_attributes(move_number: game.move_number + 1)
-    update_attributes(game_move_number: game.move_number)
-    update_attributes(piece_move_number: piece_move_number + 1)
-    update_attributes(has_moved: true)
+    update_attributes(game_move_number: game.move_number, piece_move_number: piece_move_number + 1, has_moved: true)
   end
 
   def invalid?(new_x, new_y)
