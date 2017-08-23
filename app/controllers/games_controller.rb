@@ -31,7 +31,7 @@ class GamesController < ApplicationController
   def forfeit
     current_game.forfeit(current_user)
     flash[:alert] = 'You forfeited the game :('
-    redirect_to games_path
+    redirect_to root_path
   end
 
   private

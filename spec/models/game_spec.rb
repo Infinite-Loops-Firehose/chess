@@ -92,17 +92,20 @@ RSpec.describe Game, type: :model do
     end
   end
 
-  # describe 'game#forfeit action' do
-  #   let(:game) { FactoryGirl.create :game }
-  #   let(:user) { FactoryGirl.create :user }
-  #   it 'should forfeit the game' do
-  #     expect(game.forfeit_game(2)).to eq(2)
-  #   end
+  describe '#forfeit' do
+    let(:user) { FactoryGirl.create :user }
+    let(:user_two) { FactoryGirl.create :user }
+    let(:game) { FactoryGirl.create :game, user_white_id: user.id, user_black_id: user_two.id }
+    
+    it 'should assign a winner' do
+      game.forfeit(user)
+      expect(game.player_win).to eq(user_two.id)
+    end
 
-  #   it 'should redirect to the home page' do
-  #   end
-
-  #   it 'should assign a winner' do
-  #   end
-  # end
+    it 'should assign a loser' do
+      game.forfeit(user)
+      expect(game.player_lose).to eq(user.id)
+    end
+  
+  end
 end

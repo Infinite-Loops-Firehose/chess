@@ -55,14 +55,13 @@ class Game < ApplicationRecord
     false
   end
 
-  def forfeit
-    game = Game.find(params[:id])
-    if current_user.id == game.user_white_id
-      game.update_attributes(player_win: game.user_black_id)
+  def forfeit(current_user)
+    if current_user.id == user_white_id
+      self.update_attributes(player_win: user_black_id, player_lose: user_white_id)
     end
 
-    if current_user.id == game.user_white_id
-      game.update_attributes(player_win: game.user_white_id)
+    if current_user.id == user_white_id
+      self.update_attributes(player_win: user_white_id, player_lose: user_black_id)
     end
   end
 end
