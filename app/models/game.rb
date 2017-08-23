@@ -54,4 +54,33 @@ class Game < ApplicationRecord
     end
     false
   end
+
+  def stalemate?(is_white) # is_white is true if white king is stalemated
+    king = pieces.find_by(type: KING, is_white: is_white)
+    pieces.where(game_id: id, is_white: is_white).each do |piece|
+      check_moves_stalemate(piece, king)
+    end
+    false  
+  end
+
+  def check_moves_stalemate(piece, king)
+    1..8.each do |x|
+      1..8.each do |y|
+        if piece.valid_move?(x, y)
+          # store original piece coordinates in startX and startY
+          next if check_argument_error?(piece, x, y)
+          king.check?(king.is_white)
+          # code to move piece back to original startX and startY
+        end
+      end
+    end
+  end
+
+  def check_argument_error?(piece, x, y)
+    begin
+      piece.move_to!(x, y)
+    rescue ArgumentError
+      return true
+    end
+  end
 end
