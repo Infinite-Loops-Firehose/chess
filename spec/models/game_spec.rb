@@ -91,4 +91,15 @@ RSpec.describe Game, type: :model do
       expect(game.check?(true)).to eq(false)
     end
   end
+
+  describe '#stalemate?' do
+    it 'should return true if king is trapped in corner' do
+      game = FactoryGirl.create(:game)
+      white_king = FactoryGirl.create(:king, is_white: true, game: game, x_position: 8, y_position: 1)
+      FactoryGirl.create(:rook, is_white: false, game: game, x_position: 5, y_position: 2)
+      FactoryGirl.create(:bishop, is_white: false, game: game, x_position: 7, y_position: 1)
+      FactoryGirl.create(:knight, is_white: false, game: game, x_position: 6, y_position: 3)
+      expect(game.stalemate?(white_king.is_white)).to eq(true)
+    end
+  end
 end

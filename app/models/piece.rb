@@ -27,7 +27,7 @@ class Piece < ApplicationRecord
     unless (occupying_piece.is_white && is_white?) || (!occupying_piece.is_white && !is_white?)
       capture_piece(occupying_piece)
       update_attributes(x_position: new_x, y_position: new_y)
-      return
+      return occupying_piece
     end
     raise ArgumentError, 'That is an invalid move. Cannot capture your own piece.'
   end
