@@ -38,13 +38,9 @@ $(".games.show").ready(function(){
         method: "PUT",
         data: { piece: { x_position: destSqX, y_position: destSqY } },
         success: function(){
-          // console.log(pieceMovedType);
-          // console.log(startX);
-          // console.log(startY);
           $(pieceHTML).attr('data-x-pos', destSqX);
           $(pieceHTML).attr('data-y-pos', destSqY);
           if (isEnPassantCapture()){
-            console.log($("td#" + destSqX + startY));
             $("td#" + destSqX + startY).empty();
           }
           $(e.target).empty();
