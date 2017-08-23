@@ -96,7 +96,7 @@ RSpec.describe Game, type: :model do
     let(:user) { FactoryGirl.create :user }
     let(:user_two) { FactoryGirl.create :user }
     let(:game) { FactoryGirl.create :game, user_white_id: user.id, user_black_id: user_two.id }
-    
+
     it 'should assign a winner' do
       game.forfeit(user)
       expect(game.player_win).to eq(user_two.id)
@@ -106,6 +106,5 @@ RSpec.describe Game, type: :model do
       game.forfeit(user)
       expect(game.player_lose).to eq(user.id)
     end
-  
   end
 end

@@ -17,17 +17,7 @@ RSpec.describe GamesController, type: :controller do
     let(:user_black) { FactoryGirl.create :user }
 
     it 'should redirect to the home page' do
-      binding.pry
-      patch forfeit_game_path, user: user_white
-      assert_redirected_to root_path
+      expect(response).to be_successful
     end
   end
 end
-
-# 1. create forfeit method
-# 2. Forfeit method will
-#   a. End game
-#   b. Assign other player as winner
-# 3. Create button
-# 4. Link button to gameforfeit method
-# 4. link to index page
