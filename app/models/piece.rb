@@ -18,6 +18,7 @@ class Piece < ApplicationRecord
     end
     unless square_occupied?(new_x, new_y)
       update_attributes(x_position: new_x, y_position: new_y)
+      increment_move
       return
     end
     occupying_piece = Piece.get_piece_at_coor(new_x, new_y)
@@ -27,6 +28,7 @@ class Piece < ApplicationRecord
     unless (occupying_piece.is_white && is_white?) || (!occupying_piece.is_white && !is_white?)
       capture_piece(occupying_piece)
       update_attributes(x_position: new_x, y_position: new_y)
+      increment_move
       return
     end
     raise ArgumentError, 'That is an invalid move. Cannot capture your own piece.'
@@ -43,7 +45,7 @@ class Piece < ApplicationRecord
   end
 
   def capture_piece(piece_captured)
-    piece_captured.update(x_position: nil, y_position: nil)
+    piece_captured.update_attributes(x_position: nil, y_position: nil)
   end
 
   def obstructed?(new_x, new_y)
@@ -57,6 +59,11 @@ class Piece < ApplicationRecord
   end
 
   private
+
+  def increment_move
+    game.update_attributes(move_number: game.move_number + 1)
+    update_attributes(game_move_number: game.move_number, piece_move_number: piece_move_number + 1, has_moved: true)
+  end
 
   def invalid?(new_x, new_y)
     new_x < 1 || new_x > 8 || new_y < 1 || new_y > 8
@@ -86,20 +93,10 @@ class Piece < ApplicationRecord
     range_x = [new_x, x_position].sort
     range_y = [new_y, y_position].sort
     vertical_obstruction?(range_y) || horizontal_obstruction?(range_x)
-    # obstruction = game.pieces.where(y_position: ((range_y.first + 1)..(range_y.last - 1)), x_position: ((range_x.first + 1)..(range_x.last - 1))) # will always return something, even if it's an empty query
-    # obstruction.present? # should return false if the query is empty
   end
 
   def diagonal_obstruction?(new_x, new_y)
     return false unless diagonal?(new_x, new_y)
-
-    # [
-    #   [1, 6],
-    #   [2, 5],
-    #   [3, 4]
-    # ]
-    #
-    # (r.first).downto(r.last).to_a
     x_values = if x_position.to_i < new_x.to_i
                  (x_position.to_i..new_x.to_i).to_a # array of x values, including the starting and ending squares
                else

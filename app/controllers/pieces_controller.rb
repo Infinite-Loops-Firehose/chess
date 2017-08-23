@@ -16,7 +16,6 @@ class PiecesController < ApplicationController
     # params[:piece] #{x_position: 5, y_position: 4}
     # params[:piece][:x_position] = #5
     piece_to_move.move_to!(params[:piece][:x_position], params[:piece][:y_position])
-    piece_to_move.update(has_moved: true)
     # flash[:error] = 'That is an invalid move.' if piece_to_move.errors.present?
     # redirect_to game_path(piece_to_move.game)
     render json: piece_to_move
