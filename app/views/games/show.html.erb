@@ -43,6 +43,9 @@
         <% end %>
       </tbody>
     </table>
-    <%= button_to 'Forfeit', forfeit_game_path(@game.id), { action: :forfeit, method: :patch } %>
+    <%= button_to "Forfeit", forfeit_game_path, :class => "btn btn-success", :method => :patch %>
+
+      <!-- forfeit_game_path(@game.id), 
+      { action: :forfeit, method: :patch } -->
   </div>
 </body>
