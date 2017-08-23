@@ -60,7 +60,7 @@ class Game < ApplicationRecord
       self.update_attributes(player_win: user_black_id, player_lose: user_white_id)
     end
 
-    if current_user.id == user_white_id
+    if current_user.id == user_black_id
       self.update_attributes(player_win: user_white_id, player_lose: user_black_id)
     end
   end
