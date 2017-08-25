@@ -123,7 +123,20 @@ RSpec.describe Game, type: :model do
     end
 
     it 'returns false if valid move can be made that does not put king in check' do
-      
+      game = FactoryGirl.create(:game)
+      black_king = FactoryGirl.create(:king, is_white: false, game: game, x_position: 5, y_position: 4)
+      FactoryGirl.create(:rook, is_white: false, game: game, x_position: 2, y_position: 5)
+      FactoryGirl.create(:king, is_white: true, game: game, x_position: 1, y_position: 8)
+      FactoryGirl.create(:rook, is_white: true, game: game, x_position: 2, y_position: 6)
+      expect(game.stalemate?(black_king.is_white)).to eq(false)
+    end
+
+    it 'returns false if king is currently in check' do
+      game = FactoryGirl.create(:game)
+      white_king = FactoryGirl.create(:king, is_white: true, game: game, x_position: 4, y_position: 7)
+      FactoryGirl.create(:rook, is_white: false, game: game, x_position: 4, y_position: 8)
+      FactoryGirl.create(:king, is_white: false, game: game, x_position: 5, y_position: 2)
+      expect(game.stalemate?(white_king.is_white)).to eq(false)
     end
   end
 end

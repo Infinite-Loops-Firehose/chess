@@ -58,17 +58,29 @@ class Game < ApplicationRecord
   end
 
   def stalemate?(is_white)
+    return false if check?(is_white)
     (1..8).each do |new_x|
       (1..8).each do |new_y|
-        begin 
-          pieces.where(is_white: is_white).each do |piece|
+        pieces.where(is_white: is_white).each do |piece|         
+          begin
             piece.move_to!(new_x, new_y)
+          #   next unless piece.actual_move?(new_x, new_y)
+          #   next unless piece.valid_move?(new_x, new_y)
+          #   if square_occupied?(new_x, new_y)
+          #     occupying_piece = Piece.get_piece_at_coor(new_x, new_y)
+          #     if (occupying_piece.is_white && is_white?) || (!occupying_piece.is_white && !is_white?)
+          #       next
+          #     else
+          #       capture_piece(occupying_piece)
+          #     end
+          #   elsif piece.type == PAWN 
+          rescue ArgumentError
+            next
+          else
+            binding.pry
+            return false
+            raise ActiveRecord::Rollback
           end
-        rescue ArgumentError
-          next
-        else
-          raise ActiveRecord::Rollback
-          return false
         end
       end
     end

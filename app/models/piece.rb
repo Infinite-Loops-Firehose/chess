@@ -33,6 +33,9 @@ class Piece < ApplicationRecord
       if game.check?(is_white)
         raise ArgumentError, 'That is an invalid move that leaves your king in check.'
       end
+      # if game.stalemate?(!is_white)
+        
+      # end
     end
   end
 
