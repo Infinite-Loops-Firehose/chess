@@ -13,26 +13,57 @@ class Piece < ApplicationRecord
   end
 
   def move_to!(new_x, new_y)
-    unless valid_move?(new_x, new_y)
-      raise ArgumentError, "That is an invalid move for #{type}"
-    end
-    unless square_occupied?(new_x, new_y)
+    self.transaction do
+      if !actual_move?(new_x, new_y)
+        raise ArgumentError, 'That is an invalid move. Piece is still in starting square.'
+      end
+      if !valid_move?(new_x, new_y)
+        raise ArgumentError, "That is an invalid move for #{type}"
+      end
+      if square_occupied?(new_x, new_y)
+        occupying_piece = Piece.get_piece_at_coor(new_x, new_y)
+        if (occupying_piece.is_white && is_white?) || (!occupying_piece.is_white && !is_white?)
+          raise ArgumentError, 'That is an invalid move. Cannot capture your own piece.'
+        else
+          capture_piece(occupying_piece)
+        end
+      end
       update_attributes(x_position: new_x, y_position: new_y)
       increment_move
-      return
+      if game.check?(is_white)
+        raise ArgumentError, 'That is an invalid move that leaves your king in check.'
+      end
     end
-    occupying_piece = Piece.get_piece_at_coor(new_x, new_y)
-    unless id != occupying_piece.id
-      raise ArgumentError, 'That is an invalid move. Piece is still in starting square.'
-    end
-    unless (occupying_piece.is_white && is_white?) || (!occupying_piece.is_white && !is_white?)
-      capture_piece(occupying_piece)
-      update_attributes(x_position: new_x, y_position: new_y)
-      increment_move
-      return occupying_piece
-    end
-    raise ArgumentError, 'That is an invalid move. Cannot capture your own piece.'
   end
+
+  def actual_move?(new_x, new_y)
+    piece_found = Piece.get_piece_at_coor(new_x, new_y)
+    return true if piece_found == nil
+    return false if piece_found.id == id
+    return true
+  end
+
+  # def move_to!(new_x, new_y)
+  #   if !valid_move?(new_x, new_y)
+  #     raise ArgumentError, "That is an invalid move for #{type}"
+  #   end
+  #   if !square_occupied?(new_x, new_y)
+  #     update_attributes(x_position: new_x, y_position: new_y)
+  #     increment_move
+  #     return
+  #   end
+  #   occupying_piece = Piece.get_piece_at_coor(new_x, new_y)
+  #   unless id != occupying_piece.id
+  #     raise ArgumentError, 'That is an invalid move. Piece is still in starting square.'
+  #   end
+  #   unless (occupying_piece.is_white && is_white?) || (!occupying_piece.is_white && !is_white?)
+  #     capture_piece(occupying_piece)
+  #     update_attributes(x_position: new_x, y_position: new_y)
+  #     increment_move
+  #     return occupying_piece
+  #   end
+  #   raise ArgumentError, 'That is an invalid move. Cannot capture your own piece.'
+  # end
 
   def square_occupied?(new_x, new_y)
     piece = game.pieces.find_by(x_position: new_x, y_position: new_y)
@@ -75,7 +106,7 @@ class Piece < ApplicationRecord
 
   def diagonal?(new_x, new_y)
     # in order for the move to be diagonal, the piece must be moving by the same distance both horizontally and vertically.
-    return true if (new_x.to_i - x_position).abs == (new_y.to_i - y_position).abs
+    return true if (new_x - x_position).abs == (new_y - y_position).abs
   end
 
   def vertical_obstruction?(range_y)
