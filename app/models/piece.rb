@@ -81,7 +81,7 @@ class Piece < ApplicationRecord
 
   def obstructed?(new_x, new_y)
     # errors.add(:base, 'Pieces cannot be moved off the board: invalid move')
-    return true if invalid?(new_x.to_i, new_y.to_i)
+    return true if invalid?(new_x, new_y)
     # errors.add(:base, 'There is a horizontal or vertical obstruction: invalid move')
     return true if horizontal_or_vertical_obstruction?(new_x, new_y)
     # errors.add(:base, 'There is a diagonal obstruction: invalid move')

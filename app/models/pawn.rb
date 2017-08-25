@@ -9,6 +9,7 @@ class Pawn < Piece
     return false if current_position?(new_x.to_i, new_y.to_i)
     return false if backwards_move?(new_y.to_i)
     return false if sideways_move?(new_x.to_i, new_y.to_i)
+    return false if obstructed?(new_x.to_i, new_y.to_i)
     return true if capture_move?(new_x.to_i, new_y.to_i)
     return true if en_passant_capture?(new_x.to_i, new_y.to_i)
     if allowed_to_move?(new_x.to_i, new_y.to_i) && !square_occupied?(new_x.to_i, new_y.to_i)

@@ -58,12 +58,21 @@ class Game < ApplicationRecord
   end
 
   def stalemate?(is_white)
-    pieces.where(is_white: is_white).each do |piece|
-      piece.possible_moves.each do |move|
-        return true if move.check?
+    (1..8).each do |new_x|
+      (1..8).each do |new_y|
+        begin 
+          pieces.where(is_white: is_white).each do |piece|
+            piece.move_to!(new_x, new_y)
+          end
+        rescue ArgumentError
+          next
+        else
+          raise ActiveRecord::Rollback
+          return false
+        end
       end
     end
-    false
+    true
   end
 
 end
