@@ -68,18 +68,17 @@ class Game < ApplicationRecord
     king = pieces.find_by(type: KING, is_white: is_white)
     return false unless check?(is_white)
     # is a friendly piece able to capture the attacking piece?
-      # look at the attacking piece and see if it is under attack by any friendly pieces
+    # look at the attacking piece and see if it is under attack by any friendly pieces
     return false if @enemy_piece_causing_check.can_be_captured?
     # is the king able to move elsewhere?
-      # check all possible unobstructed moves to see if the king would be in check if it moved there
+    # check all possible unobstructed moves to see if the king would be in check if it moved there
     return false if king.can_move_out_of_check?
     # is a friendly piece able to block the check?
-      # we need to make an obstruction with a friendly piece that blocks the check threat
+    # we need to make an obstruction with a friendly piece that blocks the check threat
     # we want to take our piece, where valid move will obstruct check from the enemy piece
     # use square_occupied method to build the array to find potential obstruction squares, also filter by is_white
-      # for the whole obstruction array that we will build, check each square. if it were occupied, then it would block check.
+    # for the whole obstruction array that we will build, check each square. if it were occupied, then it would block check.
 
     # we want to look at potential moves, not at the current state of the board.
-
   end
 end

@@ -6,5 +6,4 @@ class Knight < Piece
 
   # this method can replace the piece obstructed? method when a knight is moved
   def obstructed?(new_x, new_y); end
-
 end
