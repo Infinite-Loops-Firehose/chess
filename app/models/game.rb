@@ -109,9 +109,9 @@ class Game < ApplicationRecord
   end
 end
 
-IN_PLAY = 0.freeze
-FORFEIT = 1.freeze
-CHECKMATE = 2.freeze
-STALEMATE = 3.freeze
-AGREED_DRAW = 4.freeze
+IN_PLAY = 0
+FORFEIT = 1
+CHECKMATE = 2
+STALEMATE = 3
+AGREED_DRAW = 4
 
