@@ -40,28 +40,6 @@ class Piece < ApplicationRecord
     true
   end
 
-  # def move_to!(new_x, new_y)
-  #   if !valid_move?(new_x, new_y)
-  #     raise ArgumentError, "That is an invalid move for #{type}"
-  #   end
-  #   if !square_occupied?(new_x, new_y)
-  #     update_attributes(x_position: new_x, y_position: new_y)
-  #     increment_move
-  #     return
-  #   end
-  #   occupying_piece = Piece.get_piece_at_coor(new_x, new_y)
-  #   unless id != occupying_piece.id
-  #     raise ArgumentError, 'That is an invalid move. Piece is still in starting square.'
-  #   end
-  #   unless (occupying_piece.is_white && is_white?) || (!occupying_piece.is_white && !is_white?)
-  #     capture_piece(occupying_piece)
-  #     update_attributes(x_position: new_x, y_position: new_y)
-  #     increment_move
-  #     return occupying_piece
-  #   end
-  #   raise ArgumentError, 'That is an invalid move. Cannot capture your own piece.'
-  # end
-
   def square_occupied?(new_x, new_y)
     piece = game.pieces.find_by(x_position: new_x, y_position: new_y)
     return false if piece.nil?
@@ -89,12 +67,13 @@ class Piece < ApplicationRecord
   def increment_move
     game.update_attributes(move_number: game.move_number + 1)
     update_attributes(game_move_number: game.move_number, piece_move_number: piece_move_number + 1)
-    update_attributes(has_moved: true) unless has_moved == true
+    update_attributes(has_moved: true)
   end
 
   def decrement_move
     game.update_attributes(move_number: game.move_number - 1)
     update_attributes(game_move_number: game.move_number, piece_move_number: piece_move_number - 1)
+    update_attributes(has_moved: false) if piece_move_number.zero?
   end
 
   private
