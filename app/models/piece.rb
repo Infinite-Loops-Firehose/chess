@@ -21,7 +21,7 @@ class Piece < ApplicationRecord
         raise ArgumentError, "That is an invalid move for #{type}"
       end
       if square_occupied?(new_x, new_y)
-        occupying_piece = Piece.get_piece_at_coor(new_x, new_y)
+        occupying_piece = game.get_piece_at_coor(new_x, new_y)
         raise ArgumentError, 'That is an invalid move. Cannot capture your own piece.' if (occupying_piece.is_white && is_white?) || (!occupying_piece.is_white && !is_white?)
         capture_piece(occupying_piece)
       end
@@ -34,7 +34,7 @@ class Piece < ApplicationRecord
   end
 
   def actual_move?(new_x, new_y)
-    piece_found = Piece.get_piece_at_coor(new_x, new_y)
+    piece_found = game.get_piece_at_coor(new_x, new_y)
     return true if piece_found.nil?
     return false if piece_found.id == id
     true
@@ -44,10 +44,6 @@ class Piece < ApplicationRecord
     piece = game.pieces.find_by(x_position: new_x, y_position: new_y)
     return false if piece.nil?
     true
-  end
-
-  def self.get_piece_at_coor(x, y)
-    Piece.find_by(x_position: x, y_position: y)
   end
 
   def capture_piece(piece_captured)
@@ -131,7 +127,7 @@ class Piece < ApplicationRecord
     coordinates.shift
     coordinates.pop # this is an array of only the in-between squares - not including the start or end squares
     coordinates.each do |coor|
-      obstructing_piece = Piece.get_piece_at_coor(coor.first, coor.last)
+      obstructing_piece = game.get_piece_at_coor(coor.first, coor.last)
       return true if obstructing_piece.present?
     end
     false

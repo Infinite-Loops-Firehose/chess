@@ -43,7 +43,7 @@ class Game < ApplicationRecord
   end
 
   def render_piece(x, y)
-    piece = Piece.find_by(game_id: id, x_position: x, y_position: y)
+    piece = get_piece_at_coor(x, y)
     piece.render if piece.present?
   end
 
@@ -80,7 +80,7 @@ class Game < ApplicationRecord
     # check if you are moving pawn in en passant capture of enemy pawn
     if piece.type == PAWN && !piece.square_occupied?(new_x, new_y)
       if (new_x - piece_moved_start_x).abs == 1 && (new_y - piece_moved_start_y).abs == 1
-        piece_captured = Piece.get_piece_at_coor(new_x, piece_moved_start_y)
+        piece_captured = get_piece_at_coor(new_x, piece_moved_start_y)
         piece_captured_x = new_x
         piece_captured_y = piece_moved_start_y
       end
@@ -89,7 +89,7 @@ class Game < ApplicationRecord
     return false unless piece.valid_move?(new_x, new_y)
     # If square is occupied, respond according to whether piece is occupied by friend or foe
     if piece.square_occupied?(new_x, new_y)
-      occupying_piece = Piece.get_piece_at_coor(new_x, new_y)
+      occupying_piece = get_piece_at_coor(new_x, new_y)
       return false if (occupying_piece.is_white && piece.is_white?) || (!occupying_piece.is_white && !piece.is_white?)
       # since player is trying to capture a friendly piece
       piece_captured = occupying_piece
@@ -106,5 +106,9 @@ class Game < ApplicationRecord
     piece_captured.update_attributes(x_position: piece_captured_x, y_position: piece_captured_y) unless piece_captured.nil?
     piece.decrement_move
     return_val
+  end
+
+  def get_piece_at_coor(x, y)
+    pieces.find_by(x_position: x, y_position: y)
   end
 end
