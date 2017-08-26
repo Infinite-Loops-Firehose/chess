@@ -13,37 +13,31 @@ class Piece < ApplicationRecord
   end
 
   def move_to!(new_x, new_y)
-    self.transaction do
-      if !actual_move?(new_x, new_y)
+    transaction do
+      unless actual_move?(new_x, new_y)
         raise ArgumentError, 'That is an invalid move. Piece is still in starting square.'
       end
-      if !valid_move?(new_x, new_y)
+      unless valid_move?(new_x, new_y)
         raise ArgumentError, "That is an invalid move for #{type}"
       end
       if square_occupied?(new_x, new_y)
         occupying_piece = Piece.get_piece_at_coor(new_x, new_y)
-        if (occupying_piece.is_white && is_white?) || (!occupying_piece.is_white && !is_white?)
-          raise ArgumentError, 'That is an invalid move. Cannot capture your own piece.'
-        else
-          capture_piece(occupying_piece)
-        end
+        raise ArgumentError, 'That is an invalid move. Cannot capture your own piece.' if (occupying_piece.is_white && is_white?) || (!occupying_piece.is_white && !is_white?)
+        capture_piece(occupying_piece)
       end
       update_attributes(x_position: new_x, y_position: new_y)
       increment_move
-      if game.check?(is_white)
-        raise ArgumentError, 'That is an invalid move that leaves your king in check.'
-      end
+      raise ArgumentError, 'That is an invalid move that leaves your king in check.' if game.check?(is_white)
       # if game.stalemate?(!is_white)
-        
       # end
     end
   end
 
   def actual_move?(new_x, new_y)
     piece_found = Piece.get_piece_at_coor(new_x, new_y)
-    return true if piece_found == nil
+    return true if piece_found.nil?
     return false if piece_found.id == id
-    return true
+    true
   end
 
   # def move_to!(new_x, new_y)

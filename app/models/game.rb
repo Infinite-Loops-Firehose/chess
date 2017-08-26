@@ -100,15 +100,11 @@ class Game < ApplicationRecord
     # only here do we update coordinates of piece moved, once we have saved all starting coordinates of piece moved and any piece it captured
     piece.update_attributes(x_position: new_x, y_position: new_y)
     piece.increment_move
-    if check?(piece.is_white)
-      return_val = false # since the preceding move will leave the player's king in check
-    else
-      return_val = true
-    end
+    return_val = false if check?(piece.is_white) # since the preceding move will leave the player's king in check
+    return_val = true unless check?(piece.is_white)
     piece.update_attributes(x_position: piece_moved_start_x, y_position: piece_moved_start_y)
     piece_captured.update_attributes(x_position: piece_captured_x, y_position: piece_captured_y) unless piece_captured.nil?
     piece.decrement_move
     return_val
   end
-
 end
