@@ -32,7 +32,7 @@
               >
                 <% piece_image = @game.render_piece(col, row) %>
                 <% if piece_image.present? %>
-                  <% piece = Piece.get_piece_at_coor(col, row) %>
+                  <% piece = @game.get_piece_at_coor(col, row) %>
                   <span id='piece' data-id=<%= piece.id %> data-type=<%= piece.type %> data-color=<%= piece.is_white ? "white" : "black" %> data-x-pos=<%= piece.x_position
                   %> data-y-pos=<%= piece.y_position %>>
                     <%= piece_image %>

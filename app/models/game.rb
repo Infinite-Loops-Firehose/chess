@@ -43,12 +43,13 @@ class Game < ApplicationRecord
   end
 
   def render_piece(x, y)
-    piece = Piece.find_by(game_id: id, x_position: x, y_position: y)
+    piece = get_piece_at_coor(x, y)
     piece.render if piece.present?
   end
 
   def check?(is_white)
     king = pieces.find_by(type: KING, is_white: is_white)
+    return false if king.nil?
     pieces.where(game_id: id, is_white: !is_white).find_each do |piece|
       @enemy_piece_causing_check = piece
       return true if piece.valid_move?(king.x_position, king.y_position)
@@ -66,25 +67,59 @@ class Game < ApplicationRecord
     end
   end
 =======
-  def checkmate?(is_white)
-    king = pieces.find_by(type: KING, is_white: is_white)
-    return false unless check?(is_white)
-    # is a friendly piece able to capture the attacking piece?
-      # look at the attacking piece and see if it is under attack by any friendly pieces
-    return false if @enemy_piece_causing_check.can_be_captured?
-    # is the king able to move elsewhere?
-      # check all possible unobstructed moves to see if the king would be in check if it moved there
-    return false if king.can_move_out_of_check?  
-    # is a friendly piece able to block the check?
-      # we need to make an obstruction with a friendly piece that blocks the check threat
-    # we want to take our piece, where valid move will obstruct check from the enemy piece
-    # use square_occupied method to build the array to find potential obstruction squares, also filter by is_white
-      # for the whole obstruction array that we will build, check each square. if it were occupied, then it would block check.
-
-    # we want to look at potential moves, not at the current state of the board.
-
+  def stalemate?(is_white)
+    return false if check?(is_white)
+    (1..8).each do |new_x|
+      (1..8).each do |new_y|
+        pieces.where(is_white: is_white).find_each do |piece|
+          return false if legal_move?(piece, new_x, new_y)
+        end
+      end
+    end
+    true
   end
 
+  def legal_move?(piece, new_x, new_y)
+    return false unless piece.actual_move?(new_x, new_y)
+    return_val = false
+    piece_moved_start_x = piece.x_position
+    piece_moved_start_y = piece.y_position
+    piece_captured = nil
+    piece_captured_x = nil
+    piece_captured_y = nil
+    # check if you are moving pawn in en passant capture of enemy pawn
+    if piece.type == PAWN && !piece.square_occupied?(new_x, new_y)
+      if (new_x - piece_moved_start_x).abs == 1 && (new_y - piece_moved_start_y).abs == 1
+        piece_captured = get_piece_at_coor(new_x, piece_moved_start_y)
+        piece_captured_x = new_x
+        piece_captured_y = piece_moved_start_y
+      end
+    end
+    # return false if move is invalid for this piece for any of the reasons checked in piece #valid_move?
+    return false unless piece.valid_move?(new_x, new_y)
+    # If square is occupied, respond according to whether piece is occupied by friend or foe
+    if piece.square_occupied?(new_x, new_y)
+      occupying_piece = get_piece_at_coor(new_x, new_y)
+      return false if (occupying_piece.is_white && piece.is_white?) || (!occupying_piece.is_white && !piece.is_white?)
+      # since player is trying to capture a friendly piece
+      piece_captured = occupying_piece
+      piece_captured_x = occupying_piece.x_position
+      piece_captured_y = occupying_piece.y_position
+      piece.capture_piece(occupying_piece)
+    end
+    # only here do we update coordinates of piece moved, once we have saved all starting coordinates of piece moved and any piece it captured
+    piece.update_attributes(x_position: new_x, y_position: new_y)
+    piece.increment_move
+    return_val = false if check?(piece.is_white) # since the preceding move will leave the player's king in check
+    return_val = true unless check?(piece.is_white)
+    piece.update_attributes(x_position: piece_moved_start_x, y_position: piece_moved_start_y)
+    piece_captured.update_attributes(x_position: piece_captured_x, y_position: piece_captured_y) unless piece_captured.nil?
+    piece.decrement_move
+    return_val
+  end
 
->>>>>>> ae4502699a99e754abda764bb8e2432a0dda70c0
+  def get_piece_at_coor(x, y)
+    pieces.find_by(x_position: x, y_position: y)
+  end
+>>>>>>> a3e0f165e21d4838ab92758ab7f1310a5501d70f
 end
