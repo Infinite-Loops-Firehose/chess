@@ -16,6 +16,11 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find(params[:id])
+    if @game.check?(true)
+      flash[:alert] = 'White King is in check!'
+    elsif @game.check?(false)
+      flash[:alert] = 'Black King is in check!'
+    end
   end
 
   def update
