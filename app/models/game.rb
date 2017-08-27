@@ -51,22 +51,12 @@ class Game < ApplicationRecord
     king = pieces.find_by(type: KING, is_white: is_white)
     return false if king.nil?
     pieces.where(game_id: id, is_white: !is_white).find_each do |piece|
-      @enemy_piece_causing_check = piece
+      next if piece.x_position.nil? || piece.y_position.nil?
       return true if piece.valid_move?(king.x_position, king.y_position)
     end
     false
   end
 
-<<<<<<< HEAD
-  def forfeit(is_white)
-    @game = Game.find(params[:id])
-    if is_white
-      @game.update_attributes(player_win: @game.user_black_id, player_lose: @game.user_white_id)
-    else
-      @game.update_attributes(player_win: @game.user_white_id, player_lose: @game.user_black_id)
-    end
-  end
-=======
   def stalemate?(is_white)
     return false if check?(is_white)
     (1..8).each do |new_x|
@@ -121,5 +111,4 @@ class Game < ApplicationRecord
   def get_piece_at_coor(x, y)
     pieces.find_by(x_position: x, y_position: y)
   end
->>>>>>> a3e0f165e21d4838ab92758ab7f1310a5501d70f
 end
