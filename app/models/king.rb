@@ -5,4 +5,12 @@ class King < Piece
 
     (x_difference <= 1) && (y_difference <= 1)
   end
+
+  def can_move_out_of_check?
+    ((x_position - 1)..(x_position + 1)).each do |x|
+      ((y_position - 1)..(y_position + 1)).each do |y|
+        return true if valid_move?(x, y)
+      end
+    end
+  end
 end
