@@ -51,7 +51,7 @@ class Game < ApplicationRecord
     king = pieces.find_by(type: KING, is_white: is_white)
     return false if king.nil?
     pieces.where(game_id: id, is_white: !is_white).find_each do |piece|
-      @enemy_piece_causing_check = piece
+      next if piece.x_position.nil? || piece.y_position.nil?
       return true if piece.valid_move?(king.x_position, king.y_position)
     end
     false
