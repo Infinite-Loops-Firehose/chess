@@ -64,7 +64,7 @@ class Game < ApplicationRecord
       update_attributes!(player_win: user_white_id, player_lose: user_black_id)
     end
   end
-=======
+
   def stalemate?(is_white)
     return false if check?(is_white)
     (1..8).each do |new_x|
@@ -119,5 +119,4 @@ class Game < ApplicationRecord
   def get_piece_at_coor(x, y)
     pieces.find_by(x_position: x, y_position: y)
   end
->>>>>>> master
 end
