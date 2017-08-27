@@ -49,8 +49,8 @@ class Game < ApplicationRecord
 
   def check?(is_white)
     king = pieces.find_by(type: KING, is_white: is_white)
-    return false if king.nil?
-    pieces.where(game_id: id, is_white: !is_white).find_each do |piece|
+    return false if king.nil? # used for tests where there is no king generated
+    pieces.where(game_id: id, is_white: !is_white).where.not(x_position: nil, y_position: nil).find_each do |piece|
       next if piece.x_position.nil? || piece.y_position.nil?
       return true if piece.valid_move?(king.x_position, king.y_position)
     end
@@ -61,7 +61,7 @@ class Game < ApplicationRecord
     return false if check?(is_white)
     (1..8).each do |new_x|
       (1..8).each do |new_y|
-        pieces.where(is_white: is_white).find_each do |piece|
+        pieces.where(is_white: is_white).where.not(x_position: nil, y_position: nil).find_each do |piece|
           return false if legal_move?(piece, new_x, new_y)
         end
       end

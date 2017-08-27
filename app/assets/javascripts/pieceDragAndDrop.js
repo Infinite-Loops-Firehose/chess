@@ -56,3 +56,8 @@ $(".games.show").ready(function(){
     }}
   )
 });
+
+// stops all drag and drop piece movement once game is marked as over.
+$('span#gameover').ready(function(){
+  $('span#piece').draggable("destroy");
+})

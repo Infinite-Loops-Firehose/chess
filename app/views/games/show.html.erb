@@ -44,5 +44,15 @@
         <% end %>
       </tbody>
     </table>
+    <div class="gameover">
+      <% if @game.state != IN_PLAY %>
+        <span id="gameover">The game is now over.</span> 
+      <% end %>
+      <br/>
+      <% case @game.state %>
+      <% when 3 %>
+        The game has ended in stalemate. 
+      <% end %>
+    </div>
   </div>
 </body>
