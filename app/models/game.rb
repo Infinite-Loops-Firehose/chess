@@ -73,10 +73,9 @@ class Game < ApplicationRecord
     true
   end
 
+  IN_PLAY = 0
+  FORFEIT = 1
+  CHECKMATE = 2
+  STALEMATE = 3
+  AGREED_DRAW = 4
 end
-
-IN_PLAY = 0
-FORFEIT = 1
-CHECKMATE = 2
-STALEMATE = 3
-AGREED_DRAW = 4

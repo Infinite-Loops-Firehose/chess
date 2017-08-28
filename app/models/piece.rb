@@ -28,12 +28,12 @@ class Piece < ApplicationRecord
       update_attributes(x_position: new_x, y_position: new_y)
       increment_move
       raise ArgumentError, 'That is an invalid move that leaves your king in check.' if game.check?(is_white)
-      if game.stalemate?(!is_white)
-        game.state == STALEMATE
-      end
-      if game.state != IN_PLAY
-        # prevent all moves, print game over message
-      end
+      # if game.stalemate?(!is_white)
+      game.update_attributes(state: Game::STALEMATE)
+
+      # if game.state != IN_PLAY
+      #   # prevent all moves, print game over message
+      # end
     end
   end
 
