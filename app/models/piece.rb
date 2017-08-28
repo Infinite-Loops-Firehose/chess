@@ -28,9 +28,6 @@ class Piece < ApplicationRecord
       update_attributes(x_position: new_x, y_position: new_y)
       increment_move
       raise ArgumentError, 'That is an invalid move that leaves your king in check.' if game.check?(is_white)
-      # if game.stalemate?(!is_white)
-      game.update_attributes(state: Game::STALEMATE)
-
       # if game.state != IN_PLAY
       #   # prevent all moves, print game over message
       # end
@@ -107,7 +104,6 @@ class Piece < ApplicationRecord
     # only here do we update coordinates of piece moved, once we have saved all starting coordinates of piece moved and any piece it captured
     update_attributes(x_position: new_x, y_position: new_y)
     increment_move
-    return_val = false if game.check?(is_white) # since the preceding move will leave the player's king in check
     return_val = true unless game.check?(is_white)
     update_attributes(x_position: piece_moved_start_x, y_position: piece_moved_start_y)
     piece_captured.update_attributes(x_position: piece_captured_x, y_position: piece_captured_y) unless piece_captured.nil?
