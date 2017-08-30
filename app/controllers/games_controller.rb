@@ -16,6 +16,8 @@ class GamesController < ApplicationController
   def show
     @game = Game.find(params[:id])
     @user = current_user
+    opponent_id = (@user.id == @game.user_black.id) ? @game.user_white.id : @game.user_black.id
+    @opponent_user = User.find(opponent_id)
   end
 
   def update
