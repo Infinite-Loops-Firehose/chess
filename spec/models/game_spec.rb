@@ -150,7 +150,7 @@ RSpec.describe Game, type: :model do
     it 'returns false if king is currently in check' do
       game = FactoryGirl.create(:game)
       white_king = FactoryGirl.create(:king, is_white: true, game: game, x_position: 4, y_position: 7)
-      FactoryGirl.create(:rook, is_white: false, game: game, x_position: 4, y_position: 8)
+      FactoryGirl.create(:rook, is_white: false, game: game, x_position: 4, y_position: 5)
       FactoryGirl.create(:king, is_white: false, game: game, x_position: 5, y_position: 2)
       expect(game.stalemate?(white_king.is_white)).to eq(false)
     end

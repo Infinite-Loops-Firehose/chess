@@ -10,11 +10,16 @@
 
   <h1 class="text-center">Infinite Loops Chess</h1>
 
-  <!--
-  <%# if flash[:error].present? %>
-    <div class="alert alert-danger"><%# flash[:error] %></div>
-  <%# end %>
-  -->
+  <div class="gameover">
+    <% if @game.state != Game::IN_PLAY %>
+      <span id="gameover">The game is now over.</span>
+    <% end %>
+    <br/>
+    <% case @game.state %>
+    <% when 3 %>
+      The game has ended in stalemate. 
+    <% end %>
+  </div>
 
   <div class="col-10 center offset-1">
     <table id="chessboard">

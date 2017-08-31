@@ -28,7 +28,8 @@ class Piece < ApplicationRecord
       update_attributes(x_position: new_x, y_position: new_y)
       increment_move
       raise ArgumentError, 'That is an invalid move that leaves your king in check.' if game.check?(is_white)
-      # if game.stalemate?(!is_white)
+      # if game.state != IN_PLAY
+      #   # prevent all moves, print game over message
       # end
     end
   end
@@ -70,6 +71,44 @@ class Piece < ApplicationRecord
     game.update_attributes(move_number: game.move_number - 1)
     update_attributes(game_move_number: game.move_number, piece_move_number: piece_move_number - 1)
     update_attributes(has_moved: false) if piece_move_number.zero?
+  end
+
+  def legal_move?(new_x, new_y) # used only when checking for stalemate in a particular game, not when making permanent moves in game
+    return false unless actual_move?(new_x, new_y)
+    return_val = false
+    piece_moved_start_x = x_position
+    piece_moved_start_y = y_position
+    piece_captured = nil
+    piece_captured_x = nil
+    piece_captured_y = nil
+    # check if you are moving pawn in en passant capture of enemy pawn
+    if type == PAWN && !square_occupied?(new_x, new_y)
+      if (new_x - piece_moved_start_x).abs == 1 && (new_y - piece_moved_start_y).abs == 1
+        piece_captured = game.get_piece_at_coor(new_x, piece_moved_start_y)
+        piece_captured_x = new_x
+        piece_captured_y = piece_moved_start_y
+      end
+    end
+    # return false if move is invalid for this piece for any of the reasons checked in piece #valid_move?
+    return false unless valid_move?(new_x, new_y)
+    # If square is occupied, respond according to whether piece is occupied by friend or foe
+    if square_occupied?(new_x, new_y)
+      occupying_piece = game.get_piece_at_coor(new_x, new_y)
+      return false if (occupying_piece.is_white && is_white?) || (!occupying_piece.is_white && !is_white?)
+      # since player is trying to capture a friendly piece
+      piece_captured = occupying_piece
+      piece_captured_x = occupying_piece.x_position
+      piece_captured_y = occupying_piece.y_position
+      capture_piece(occupying_piece)
+    end
+    # only here do we update coordinates of piece moved, once we have saved all starting coordinates of piece moved and any piece it captured
+    update_attributes(x_position: new_x, y_position: new_y)
+    increment_move
+    return_val = true unless game.check?(is_white)
+    update_attributes(x_position: piece_moved_start_x, y_position: piece_moved_start_y)
+    piece_captured.update_attributes(x_position: piece_captured_x, y_position: piece_captured_y) unless piece_captured.nil?
+    decrement_move
+    return_val
   end
 
   private
