@@ -1,5 +1,6 @@
 class GamesController < ApplicationController
   before_action :authenticate_user!, only: %i[new create show update]
+  helper_method :game
 
   def index
     @available_games = Game.available
@@ -15,6 +16,11 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find(params[:id])
+    if @game.check?(true)
+      flash[:alert] = 'White King is in check!'
+    elsif @game.check?(false)
+      flash[:alert] = 'Black King is in check!'
+    end
   end
 
   def update
@@ -27,9 +33,19 @@ class GamesController < ApplicationController
     redirect_to game_path(@game)
   end
 
+  def forfeit
+    current_game.forfeit(current_user)
+    flash[:alert] = 'You forfeited the game :('
+    redirect_to root_path
+  end
+
   private
 
   def game_params
     params.require(:game).permit(:user_white_id, :user_black_id)
+  end
+
+  def current_game
+    @game ||= Game.find(params[:id])
   end
 end

@@ -20,6 +20,8 @@ ActiveRecord::Schema.define(version: 20170826060700) do
     t.datetime "updated_at",                null: false
     t.integer  "user_white_id"
     t.integer  "user_black_id"
+    t.integer  "player_win"
+    t.integer  "player_lose"
     t.integer  "move_number",   default: 0, null: false
     t.integer  "state",         default: 0, null: false
     t.index ["user_black_id"], name: "index_games_on_user_black_id", using: :btree
