@@ -40,6 +40,7 @@ group :development, :test do
   gem 'rubocop', require: false
   gem 'pry-rails'
   gem 'pry-stack_explorer'
+  gem 'pry-doc'
   # adding factory_girl gem to automate test data generation
   gem "factory_girl_rails", "~> 4.0"
 end
