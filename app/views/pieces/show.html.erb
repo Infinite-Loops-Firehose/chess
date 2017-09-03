@@ -8,7 +8,7 @@
           <td
             ' '
             id=
-            <% if @piece == Piece.get_piece_at_coor(col, row) %>
+            <% if @piece == @piece.game.get_piece_at_coor(col, row) %>
             'selected_square'
             <% else %>
               <%="#{col}#{row}"%>
@@ -21,7 +21,7 @@
             <% end %>
           >
             <% piece_image = @piece.game.render_piece(col, row) %>
-            <% if @piece == Piece.get_piece_at_coor(col, row) %>
+            <% if @piece == @piece.game.get_piece_at_coor(col, row) %>
               <%= piece_image %>
             <% else %>
               <%= piece_image %>

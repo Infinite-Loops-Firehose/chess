@@ -2,7 +2,7 @@
 <script
   src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
   integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
-  crossorigin="anonymous">    
+  crossorigin="anonymous">
 </script>
 </head>
 
@@ -10,11 +10,16 @@
 
   <h1 class="text-center">Infinite Loops Chess</h1>
 
-  <!--
-  <%# if flash[:error].present? %>
-    <div class="alert alert-danger"><%# flash[:error] %></div>
-  <%# end %>
-  -->
+  <div class="gameover">
+    <% if @game.state != Game::IN_PLAY %>
+      <span id="gameover">The game is now over.</span>
+    <% end %>
+    <br/>
+    <% case @game.state %>
+    <% when 3 %>
+      The game has ended in stalemate. 
+    <% end %>
+  </div>
 
   <div class="col-10 center offset-1">
     <table id="chessboard">
@@ -28,12 +33,13 @@
                 class="white"
               <% else %>
                 class="black"
-              <% end %>   
+              <% end %>
               >
                 <% piece_image = @game.render_piece(col, row) %>
                 <% if piece_image.present? %>
-                  <% piece = Piece.get_piece_at_coor(col, row) %>
-                  <span id='piece' data-id=<%= piece.id %>>
+                  <% piece = @game.get_piece_at_coor(col, row) %>
+                  <span id='piece' data-id=<%= piece.id %> data-type=<%= piece.type %> data-color=<%= piece.is_white ? "white" : "black" %> data-x-pos=<%= piece.x_position
+                  %> data-y-pos=<%= piece.y_position %>>
                     <%= piece_image %>
                   </span>
                 <% end %>
@@ -43,5 +49,6 @@
         <% end %>
       </tbody>
     </table>
+    <%= button_to "Forfeit", forfeit_game_path, :class => "btn btn-success", :method => :patch %>
   </div>
 </body>

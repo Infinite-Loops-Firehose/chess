@@ -43,14 +43,19 @@ class Game < ApplicationRecord
   end
 
   def render_piece(x, y)
-    piece = Piece.find_by(game_id: id, x_position: x, y_position: y)
+    piece = get_piece_at_coor(x, y)
     piece.render if piece.present?
+  end
+
+  def get_piece_at_coor(x, y)
+    pieces.find_by(x_position: x, y_position: y)
   end
 
   def check?(is_white)
     king = pieces.find_by(type: KING, is_white: is_white)
-    pieces.where(game_id: id, is_white: !is_white).find_each do |piece|
-      @enemy_piece_causing_check = piece
+    return false if king.nil? # used for tests where there is no king generated
+    pieces.where(game_id: id, is_white: !is_white).where.not(x_position: nil, y_position: nil).find_each do |piece|
+      next if piece.x_position.nil? || piece.y_position.nil?
       return true if piece.valid_move?(king.x_position, king.y_position)
     end
     false
@@ -73,7 +78,29 @@ class Game < ApplicationRecord
     return false if @enemy_piece_causing_check.can_be_blocked?(king)
     # we want to look at potential moves, not at the current state of the board.
 
+  def forfeit(current_user)
+    if current_user.id == user_white_id
+      update_attributes!(player_win: user_black_id, player_lose: user_white_id)
+    elsif current_user.id == user_black_id
+      update_attributes!(player_win: user_white_id, player_lose: user_black_id)
+    end
   end
 
+  def stalemate?(is_white)
+    return false if check?(is_white)
+    (1..8).each do |new_x|
+      (1..8).each do |new_y|
+        pieces.where(is_white: is_white).where.not(x_position: nil, y_position: nil).find_each do |piece|
+          return false if piece.legal_move?(new_x, new_y)
+        end
+      end
+    end
+    true
+  end
 
+  IN_PLAY = 0
+  FORFEIT = 1
+  CHECKMATE = 2
+  STALEMATE = 3
+  AGREED_DRAW = 4
 end

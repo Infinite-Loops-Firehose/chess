@@ -1,6 +1,6 @@
 class Rook < Piece
   def valid_move?(x_destination, y_destination)
-    (vertical(x_destination, y_destination) || horizontal(x_destination, y_destination)) && !obstructed?(x_destination, y_destination)
+    (vertical(x_destination.to_i, y_destination.to_i) || horizontal(x_destination.to_i, y_destination.to_i)) && !obstructed?(x_destination.to_i, y_destination.to_i)
   end
 
   private

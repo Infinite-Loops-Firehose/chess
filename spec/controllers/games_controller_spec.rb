@@ -10,4 +10,14 @@ RSpec.describe GamesController, type: :controller do
       expect(Game.last.user_white_id).to eq(user_white.id)
     end
   end
+
+  describe 'games#forfeit action' do
+    let(:game) { FactoryGirl.create :game }
+    let(:user_white) { FactoryGirl.create :user }
+    let(:user_black) { FactoryGirl.create :user }
+
+    it 'should redirect to the home page' do
+      expect(response).to be_successful
+    end
+  end
 end
