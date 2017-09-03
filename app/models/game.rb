@@ -56,6 +56,7 @@ class Game < ApplicationRecord
     return false if king.nil? # used for tests where there is no king generated
     pieces.where(game_id: id, is_white: !is_white).where.not(x_position: nil, y_position: nil).find_each do |piece|
       next if piece.x_position.nil? || piece.y_position.nil?
+      @enemy_piece_causing_check = piece
       return true if piece.valid_move?(king.x_position, king.y_position)
     end
     false
