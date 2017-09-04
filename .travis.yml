@@ -18,3 +18,4 @@ deploy:
     branch: master
     repo: "Infinite-Loops-Firehose/chess"
   run: "rake db:migrate"
+  
