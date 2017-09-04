@@ -17,5 +17,5 @@ deploy:
   on:
     branch: master
   run:
-  - rake db:migrate
-  - restart
+    - "rake db:migrate"
+    - restart
