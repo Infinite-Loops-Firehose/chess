@@ -5,6 +5,5 @@ Rails.application.routes.draw do
   resources :games, only: %i[new create show update] do
     patch 'forfeit', on: :member
   end
-  resources :pieces, only: %i[show update]
-  
+  resources :pieces, only: %i[show update]  
 end
