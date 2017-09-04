@@ -19,6 +19,3 @@ deploy:
   run:
   - rake db:migrate
   - restart
-  branches:
-    only:
-    - master
