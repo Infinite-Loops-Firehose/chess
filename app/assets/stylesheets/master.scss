@@ -22,13 +22,13 @@ table td {
 }
 
 .white {
-    background: url(chess-blues-white.png);
+    background: image_url("chess-blues-white.png");
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
 
 .black {
-    background: url(chess-blues-black.png);
+    background: image_url("chess-blues-black.png");
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
