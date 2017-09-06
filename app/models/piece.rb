@@ -111,7 +111,12 @@ class Piece < ApplicationRecord
     return_val
   end
 
-  def can_be_blocked?(king); end
+  def can_be_blocked?(king)
+    # load all the squares in between the attacking piece and the king, IF the attacking piece isn't a knight.
+    # (for knights, check to see if pieces can attack the knight. This can be covered in can_be_captured?)
+    # for all pieces on the threatened king's team, look for a piece which could move to a square in the path.
+    
+  end
 
   private
 
