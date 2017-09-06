@@ -72,12 +72,12 @@ class Game < ApplicationRecord
       # check all possible unobstructed moves to see if the king would be in check if it moved there
     return false if king.can_move_out_of_check?  
     # is a friendly piece able to block the check?
-      # we need to make an obstruction with a friendly piece that blocks the check threat
+    # we need to make an obstruction with a friendly piece that blocks the check threat
     # we want to take our piece, where valid move will obstruct check from the enemy piece
     # use square_occupied method to build the array to find potential obstruction squares, also filter by is_white
-      # for the whole obstruction array that we will build, check each square. if it were occupied, then it would block check.
+    # for the whole obstruction array that we will build, check each square. if it were occupied, then it would block check.
     return false if @enemy_piece_causing_check.can_be_blocked?(king)
-    # we want to look at potential moves, not at the current state of the board.
+  end
 
   def forfeit(current_user)
     if current_user.id == user_white_id

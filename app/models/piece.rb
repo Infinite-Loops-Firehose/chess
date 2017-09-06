@@ -53,11 +53,9 @@ class Piece < ApplicationRecord
 
   def obstructed?(new_x, new_y)
     # errors.add(:base, 'Pieces cannot be moved off the board: invalid move')
-    return true if invalid?(new_x, new_y)
-    # errors.add(:base, 'There is a horizontal or vertical obstruction: invalid move')
-    return true if horizontal_or_vertical_obstruction?(new_x, new_y)
-    # errors.add(:base, 'There is a diagonal obstruction: invalid move')
-    return true if diagonal_obstruction?(new_x, new_y)
+    return true if off_board?(new_x, new_y)
+    # errors.add(:base, 'There is an obstruction: invalid move')
+    return true if straight_obstruction?(new_x, new_y)
     false
   end
 
@@ -111,73 +109,107 @@ class Piece < ApplicationRecord
     return_val
   end
 
-  def can_be_blocked?(king)
-    # load all the squares in between the attacking piece and the king, IF the attacking piece isn't a knight.
-    # (for knights, check to see if pieces can attack the knight. This can be covered in can_be_captured?)
-    # for all pieces on the threatened king's team, look for a piece which could move to a square in the path.
-    
-  end
-
-  private
-
-  def invalid?(new_x, new_y)
-    new_x < 1 || new_x > 8 || new_y < 1 || new_y > 8
-  end
-
-  def horizontal_or_vertical?(new_x, new_y)
-    new_x == x_position || new_y == y_position
-  end
-
-  def diagonal?(new_x, new_y)
-    # in order for the move to be diagonal, the piece must be moving by the same distance both horizontally and vertically.
-    return true if (new_x - x_position).abs == (new_y - y_position).abs
-  end
-
-  def vertical_obstruction?(range_y)
-    obstruction = game.pieces.where(y_position: ((range_y.first + 1)..(range_y.last - 1)), x_position: x_position) # will always return something, even if it's an empty query
-    obstruction.present?
-  end
-
-  def horizontal_obstruction?(range_x)
-    obstruction = game.pieces.where(y_position: y_position, x_position: (range_x.first + 1)..(range_x.last - 1)) # will always return something, even if it's an empty query
-    obstruction.present?
-  end
-
-  def horizontal_or_vertical_obstruction?(new_x, new_y)
-    return false unless horizontal_or_vertical?(new_x, new_y)
-    range_x = [new_x, x_position].sort
-    range_y = [new_y, y_position].sort
-    vertical_obstruction?(range_y) || horizontal_obstruction?(range_x)
-  end
-
-  def diagonal_obstruction?(new_x, new_y)
-    return false unless diagonal?(new_x, new_y)
+  def straight_obstruction?(new_x, new_y)
+    return false unless straight_move?(new_x, new_y)
     x_values = if x_position.to_i < new_x.to_i
                  (x_position.to_i..new_x.to_i).to_a # array of x values, including the starting and ending squares
-               else
+               elsif x_position.to_i > new_x.to_i
                  x_position.to_i.downto(new_x.to_i).to_a
+               else # new_x must equal x_position in this last case. and we already ruled out range_y != 0 in straight_move?
+                 range_y = (new_y - y_position).abs
+                 Array.new(new_x.to_i, range_y) # array of x values that are all equal to new_x, the length of which is the same as the length of y values array
                end
 
     y_values = if y_position.to_i < new_y.to_i
                  (y_position.to_i..new_y.to_i).to_a # array of y values, including the starting and ending squares
-               else
+               elsif y_position.to_i > new_y
                  y_position.to_i.downto(new_y.to_i).to_a
+               else # new_y must equal y_position in this last case. and we already ruled out range_x != 0 in straight_move?
+                 range_x = (new_x - x_position).abs
+                 Array.new(new_y.to_i, range_x)
                end
 
-    coordinates = []
+    straight_obstruction_array = []
 
     x_values.zip(y_values) do |x_value, y_value| # combines x_value and y_value pairs into a multidimensional array
-      coordinates << [x_value, y_value] # [ [1, 1], [2, 2], [3, 3] ] for example
+      straight_obstruction_array << [x_value, y_value] # [ [1, 1], [2, 2], [3, 3] ] for example
     end
 
-    coordinates.shift
-    coordinates.pop # this is an array of only the in-between squares - not including the start or end squares
-    coordinates.each do |coor|
+    straight_obstruction_array.shift
+    straight_obstruction_array.pop # this is an array of only the in-between squares - not including the start or end squares
+    straight_obstruction_array.each do |coor|
       obstructing_piece = game.get_piece_at_coor(coor.first, coor.last)
       return true if obstructing_piece.present?
     end
     false
   end
+
+  def can_be_blocked?(king)
+    # load all the squares in between the attacking piece and the king, IF the attacking piece isn't a knight.
+    # (for knights, check to see if pieces can attack the knight. This can be covered in can_be_captured?)
+    # for all pieces on the threatened king's team, look for a piece which could move to a square in the path.
+    game.pieces.where(is_white: is_white).where.not(x_position: nil, y_position: nil).find_each do |piece|
+          
+    end
+    
+  end
+
+  private
+
+  def off_board?(new_x, new_y)
+    new_x < 1 || new_x > 8 || new_y < 1 || new_y > 8
+  end
+
+  def straight_move?(new_x, new_y)
+    (new_x - x_position != 0 || new_y - y_position != 0) &&
+    (new_x == x_position || new_y == y_position || (new_x - x_position).abs == (new_y - y_position).abs)
+  end
+
+  # def vertical_obstruction?(range_y)
+  #   obstruction = game.pieces.where(y_position: ((range_y.first + 1)..(range_y.last - 1)), x_position: x_position) # will always return something, even if it's an empty query
+  #   obstruction.present?
+  # end
+
+  # def horizontal_obstruction?(range_x)
+  #   obstruction = game.pieces.where(y_position: y_position, x_position: (range_x.first + 1)..(range_x.last - 1)) # will always return something, even if it's an empty query
+  #   obstruction.present?
+  # end
+
+  # def horizontal_or_vertical_obstruction?(new_x, new_y)
+  #   return false unless straight_move?(new_x, new_y)
+  #   range_x = [new_x, x_position].sort
+  #   range_y = [new_y, y_position].sort
+  #   vertical_obstruction?(range_y) || horizontal_obstruction?(range_x)
+  # end
+
+  # def diagonal_obstruction?(new_x, new_y)
+  #   return false unless straight_move?(new_x, new_y)
+  #   x_values = if x_position.to_i < new_x.to_i
+  #                (x_position.to_i..new_x.to_i).to_a # array of x values, including the starting and ending squares
+  #              else
+  #                x_position.to_i.downto(new_x.to_i).to_a
+  #              end
+
+  #   y_values = if y_position.to_i < new_y.to_i
+  #                (y_position.to_i..new_y.to_i).to_a # array of y values, including the starting and ending squares
+  #              else
+  #                y_position.to_i.downto(new_y.to_i).to_a
+  #              end
+
+  #   coordinates = []
+
+  #   x_values.zip(y_values) do |x_value, y_value| # combines x_value and y_value pairs into a multidimensional array
+  #     coordinates << [x_value, y_value] # [ [1, 1], [2, 2], [3, 3] ] for example
+  #   end
+
+  #   coordinates.shift
+  #   coordinates.pop # this is an array of only the in-between squares - not including the start or end squares
+  #   coordinates.each do |coor|
+  #     obstructing_piece = game.get_piece_at_coor(coor.first, coor.last)
+  #     return true if obstructing_piece.present?
+  #   end
+  #   false
+  # end
 end
 
 PAWN = 'Pawn'.freeze
