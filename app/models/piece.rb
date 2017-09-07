@@ -111,6 +111,24 @@ class Piece < ApplicationRecord
 
   def straight_obstruction?(new_x, new_y)
     return false unless straight_move?(new_x, new_y)
+    obstruction_array = straight_obstruction_array(new_x, new_y)
+    obstruction_array.each do |coordinates|
+      obstructing_piece = game.get_piece_at_coor(coordinates.first, coordinates.last)
+      return true if obstructing_piece.present?
+    end
+    false
+  end
+
+  def trimmed_coordinates_array(x_values, y_values)
+    coordinates_array = []
+    x_values.zip(y_values) do |x_value, y_value| # combines x_value and y_value pairs into a multidimensional array
+      coordinates_array << [x_value, y_value] # [ [1, 1], [2, 2], [3, 3] ] for example
+    end
+    coordinates_array.shift
+    coordinates_array.pop
+  end
+
+  def straight_obstruction_array(new_x, new_y)
     x_values = if x_position.to_i < new_x.to_i
                  (x_position.to_i..new_x.to_i).to_a # array of x values, including the starting and ending squares
                elsif x_position.to_i > new_x.to_i
@@ -128,28 +146,17 @@ class Piece < ApplicationRecord
                  range_x = (new_x - x_position).abs
                  Array.new(new_y.to_i, range_x)
                end
-
-    straight_obstruction_array = []
-
-    x_values.zip(y_values) do |x_value, y_value| # combines x_value and y_value pairs into a multidimensional array
-      straight_obstruction_array << [x_value, y_value] # [ [1, 1], [2, 2], [3, 3] ] for example
-    end
-
-    straight_obstruction_array.shift
-    straight_obstruction_array.pop # this is an array of only the in-between squares - not including the start or end squares
-    straight_obstruction_array.each do |coor|
-      obstructing_piece = game.get_piece_at_coor(coor.first, coor.last)
-      return true if obstructing_piece.present?
-    end
-    false
+    trimmed_coordinates_array(x_values, y_values)
   end
 
   def can_be_blocked?(king)
     # load all the squares in between the attacking piece and the king, IF the attacking piece isn't a knight.
     # (for knights, check to see if pieces can attack the knight. This can be covered in can_be_captured?)
-    # for all pieces on the threatened king's team, look for a piece which could move to a square in the path.
+    # for all pieces on the threatened king's team, look for a piece which could move to a square in the path.    
     game.pieces.where(is_white: is_white).where.not(x_position: nil, y_position: nil).find_each do |piece|
-          
+      straight_obstruction_array(king.x_position, king.y_position).each do |coordinates|
+        return true if piece.valid_move?(coordinates.first, coordinates.last)       
+      end
     end
     
   end
