@@ -119,23 +119,22 @@ class Piece < ApplicationRecord
     false
   end
 
-  def trimmed_coordinates_array(x_values, y_values)
-    coordinates_array = []
-    x_values.zip(y_values) do |x_value, y_value| # combines x_value and y_value pairs into a multidimensional array
-      coordinates_array << [x_value, y_value] # [ [1, 1], [2, 2], [3, 3] ] for example
-    end
+  def trimmed_coordinates_array(x_values, y_values) # x_values = [1, 1, 1, 1], y_values = [2, 3, 4, 5]
+    coordinates_array = x_values.zip(y_values) # [[1, 2], [1, 3], [1, 4], [1, 5]]
     coordinates_array.shift
     coordinates_array.pop
+    coordinates_array # [[1, 3], [1, 4]]
   end
 
   def straight_obstruction_array(new_x, new_y)
+    return nil unless straight_move?(new_x, new_y)
     x_values = if x_position.to_i < new_x.to_i
                  (x_position.to_i..new_x.to_i).to_a # array of x values, including the starting and ending squares
                elsif x_position.to_i > new_x.to_i
                  x_position.to_i.downto(new_x.to_i).to_a
                else # new_x must equal x_position in this last case. and we already ruled out range_y != 0 in straight_move?
                  range_y = (new_y - y_position).abs
-                 Array.new(new_x.to_i, range_y) # array of x values that are all equal to new_x, the length of which is the same as the length of y values array
+                 Array.new(range_y + 1, new_x.to_i) # array of x values that are all equal to new_x, the length of which is the same as the length of y values array
                end
 
     y_values = if y_position.to_i < new_y.to_i
@@ -144,7 +143,7 @@ class Piece < ApplicationRecord
                  y_position.to_i.downto(new_y.to_i).to_a
                else # new_y must equal y_position in this last case. and we already ruled out range_x != 0 in straight_move?
                  range_x = (new_x - x_position).abs
-                 Array.new(new_y.to_i, range_x)
+                 Array.new(range_x + 1, new_y.to_i)
                end
     trimmed_coordinates_array(x_values, y_values)
   end
@@ -152,13 +151,17 @@ class Piece < ApplicationRecord
   def can_be_blocked?(king)
     # load all the squares in between the attacking piece and the king, IF the attacking piece isn't a knight.
     # (for knights, check to see if pieces can attack the knight. This can be covered in can_be_captured?)
-    # for all pieces on the threatened king's team, look for a piece which could move to a square in the path.    
+    # for all pieces on the threatened king's team, look for a piece which could move to a square in the path.
     game.pieces.where(is_white: is_white).where.not(x_position: nil, y_position: nil).find_each do |piece|
       straight_obstruction_array(king.x_position, king.y_position).each do |coordinates|
-        return true if piece.valid_move?(coordinates.first, coordinates.last)       
+        return true if piece.valid_move?(coordinates.first, coordinates.last)
       end
     end
-    
+    # game.pieces.where(is_white: is_white).where.not(x_position: nil, y_position: nil).find_each do |piece|
+    #   straight_obstruction_array(king.x_position, king.y_position).each do |coordinates|
+    #     return true if piece.valid_move?(coordinates.first, coordinates.last)
+    #   end
+    # end
   end
 
   private
@@ -169,7 +172,7 @@ class Piece < ApplicationRecord
 
   def straight_move?(new_x, new_y)
     (new_x - x_position != 0 || new_y - y_position != 0) &&
-    (new_x == x_position || new_y == y_position || (new_x - x_position).abs == (new_y - y_position).abs)
+      (new_x == x_position || new_y == y_position || (new_x - x_position).abs == (new_y - y_position).abs)
   end
 
   # def vertical_obstruction?(range_y)
