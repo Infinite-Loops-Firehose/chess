@@ -148,13 +148,13 @@ class Piece < ApplicationRecord
     trimmed_coordinates_array(x_values, y_values)
   end
 
-  def can_be_blocked?(king)
-    # load all the squares in between the attacking piece and the king, IF the attacking piece isn't a knight.
+  def can_be_blocked?(new_x, new_y) # used for determining checkmate
+    # load all the squares in between the piece and the enemy king, IF the piece isn't a knight.
     # (for knights, check to see if pieces can attack the knight. This can be covered in can_be_captured?)
     # for all pieces on the threatened king's team, look for a piece which could move to a square in the path.
-    game.pieces.where(is_white: is_white).where.not(x_position: nil, y_position: nil).find_each do |piece|
-      straight_obstruction_array(king.x_position, king.y_position).each do |coordinates|
-        return true if piece.valid_move?(coordinates.first, coordinates.last)
+    game.pieces.where(is_white: !is_white).where.not(x_position: nil, y_position: nil).find_each do |piece|
+      straight_obstruction_array(new_x, new_y).each do |coords|
+        return true if piece.valid_move?(coords.first, coords.last)
       end
     end
     # game.pieces.where(is_white: is_white).where.not(x_position: nil, y_position: nil).find_each do |piece|
