@@ -26,7 +26,7 @@ class Piece < ApplicationRecord
         capture_piece(occupying_piece)
       end
       update_attributes(x_position: new_x, y_position: new_y)
-      raise ArgumentError, 'That is an invalid move that leaves your king in check.' if game.under_attack?(is_white, friendly_king.x_position, friendly_king.y_position)
+      # raise ArgumentError, 'That is an invalid move that leaves your king in check.' if game.under_attack?(is_white, friendly_king(is_white).x_position, friendly_king(is_white).y_position)
       increment_move
       # if game.state != IN_PLAY
       #   # prevent all moves, print game over message
@@ -168,15 +168,15 @@ class Piece < ApplicationRecord
     return false if can_be_blocked?(enemy_king(is_white).x_position, enemy_king(is_white).y_position)
   end
 
-  private
-
   def enemy_king(is_white)
     game.pieces.find_by(type: KING, is_white: !is_white)
   end
 
-  def friendly_king
+  def friendly_king(is_white)
     game.pieces.find_by(type: KING, is_white: is_white)
   end
+
+  private
 
   def off_board?(new_x, new_y)
     new_x < 1 || new_x > 8 || new_y < 1 || new_y > 8
