@@ -89,7 +89,7 @@ class Game < ApplicationRecord
   end
 
   def attacking_piece
-    Piece.find_by(game_move_number: move_number).where.not(game_move_number: 0) # the piece that most recently moved.
+    Piece.find_by(game_move_number: move_number) # the piece that most recently moved.
     # this is the piece that causes check and possibly checkmate.
   end
 

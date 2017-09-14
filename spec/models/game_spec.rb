@@ -134,7 +134,7 @@ RSpec.describe Game, type: :model do
       FactoryGirl.create(:pawn, is_white: true, game: game, x_position: 5, y_position: 5)
       FactoryGirl.create(:king, is_white: true, game: game, x_position: 6, y_position: 6)
       FactoryGirl.create(:pawn, is_white: true, game: game, x_position: 6, y_position: 3)
-      FactoryGirl.create(:piece, is_white: true, type: QUEEN, game: game, x_position: 7, y_position: 4)
+      FactoryGirl.create(:queen, is_white: true, game: game, x_position: 7, y_position: 4)
       FactoryGirl.create(:bishop, is_white: true, game: game, x_position: 8, y_position: 1)
       expect(game.stalemate?(black_king.is_white)).to eq(true)
     end
