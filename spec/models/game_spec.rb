@@ -156,4 +156,39 @@ RSpec.describe Game, type: :model do
       expect(game.stalemate?(white_king.is_white)).to eq(false)
     end
   end
+
+  describe '#checkmate?' do
+    it 'should return true if king is in checkmate' do
+      game = FactoryGirl.create(:game, move_number: 15)
+      FactoryGirl.create(:king, is_white: false, game: game, x_position: 8, y_position: 5)
+      FactoryGirl.create(:king, is_white: true, game: game, x_position: 6, y_position: 5)
+      FactoryGirl.create(:rook, is_white: true, game: game, x_position: 8, y_position: 1, game_move_number: 15)
+      expect(game.checkmate?).to eq(true)
+    end
+
+    it 'should return false if king can capture attacking piece' do
+      game = FactoryGirl.create(:game)
+      FactoryGirl.create(:king, is_white: true, game: game, x_position: 6, y_position: 3)
+      FactoryGirl.create(:king, is_white: false, game: game, x_position: 5, y_position: 8)
+      FactoryGirl.create(:rook, is_white: false, game: game, x_position: 5, y_position: 3)
+      expect(game.checkmate?).to eq(false)
+    end
+
+    it 'should return false if friendly piece can block checkmate' do
+      game = FactoryGirl.create(:game)
+      FactoryGirl.create(:king, is_white: false, game: game, x_position: 3, y_position: 8)
+      FactoryGirl.create(:king, is_white: true, game: game, x_position: 5, y_position: 1)
+      FactoryGirl.create(:bishop, is_white: false, game: game, x_position: 4, y_position: 7)
+      FactoryGirl.create(:bishop, is_white: true, game: game, x_position: 6, y_position: 5)
+      expect(game.checkmate?).to eq(false)
+    end
+
+    it 'should return false if king can move out of attacked position' do
+      game = FactoryGirl.create(:game, move_number: 15)
+      FactoryGirl.create(:king, is_white: true, game: game, x_position: 3, y_position: 8)
+      FactoryGirl.create(:king, is_white: false, game: game, x_position: 5, y_position: 1)
+      FactoryGirl.create(:bishop, is_white: false, game: game, x_position: 5, y_position: 6, game_move_number: 15)
+      expect(game.checkmate?).to eq(false)
+    end
+  end
 end

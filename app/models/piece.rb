@@ -148,9 +148,9 @@ class Piece < ApplicationRecord
     trimmed_coordinates_array(x_values, y_values)
   end
 
-  def can_be_blocked?(new_x, new_y) # used for determining checkmate
+  def can_be_blocked?(new_x, new_y) # used for determining checkmate. Our piece is the attacking piece in this case.
     # this method works for all pieces except a knight, which doesn't have a straight path.
-    game.pieces.where(is_white: !is_white).where.not(x_position: nil, y_position: nil).find_each do |piece|
+    game.pieces.where(is_white: !is_white).where.not(x_position: nil, y_position: nil, type: KING).find_each do |piece|
       straight_obstruction_array(new_x, new_y).each do |coords|
         return true if piece.valid_move?(coords.first, coords.last)
       end
@@ -162,10 +162,11 @@ class Piece < ApplicationRecord
   end
 
   def causes_checkmate?(is_white)
-    return false unless causes_check?
+    return false unless causes_check?(is_white)
     return false if game.under_attack?(is_white, x_position, y_position)
     return false if enemy_king(is_white).can_move_out_of_check?
     return false if can_be_blocked?(enemy_king(is_white).x_position, enemy_king(is_white).y_position)
+    true
   end
 
   def enemy_king(is_white)
