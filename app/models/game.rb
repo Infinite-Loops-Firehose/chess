@@ -51,31 +51,19 @@ class Game < ApplicationRecord
     pieces.find_by(x_position: x, y_position: y)
   end
 
-  def check?(is_white)
-    king = pieces.find_by(type: KING, is_white: is_white)
-    return false if king.nil? # used for tests where there is no king generated
-    pieces.where(game_id: id, is_white: !is_white).where.not(x_position: nil, y_position: nil).find_each do |piece|
-      @enemy_piece_causing_check = piece
-      return true if piece.valid_move?(king.x_position, king.y_position)
+  def under_attack?(is_white, x, y)
+    pieces.where(is_white: !is_white).where.not(x_position: nil, y_position: nil).find_each do |piece|
+      return true if piece.valid_move?(x, y)
     end
     false
   end
 
-  def checkmate?(is_white)
-    king = pieces.find_by(type: KING, is_white: is_white)
-    return false unless check?(is_white)
-    # is a friendly piece able to capture the attacking piece?
-    # look at the attacking piece and see if it is under attack by any friendly pieces
-    return false if @enemy_piece_causing_check.can_be_captured?
-    # is the king able to move elsewhere?
-    # check all possible unobstructed moves to see if the king would be in check if it moved there
-    return false if king.can_move_out_of_check?
-    # is a friendly piece able to block the check?
-    # we need to make an obstruction with a friendly piece that blocks the check threat
-    # we want to take our piece, where valid move will obstruct check from the enemy piece
-    # use square_occupied method to build the array to find potential obstruction squares, also filter by is_white
-    # for the whole obstruction array that we will build, check each square. if it were occupied, then it would block check.
-    return false if @enemy_piece_causing_check.can_be_blocked?(king)
+  def check?
+    attacking_piece.causes_check?(attacking_piece.is_white)
+  end
+
+  def checkmate?
+    attacking_piece.causes_checkmate?(attacking_piece.is_white)
   end
 
   def forfeit(current_user)
@@ -87,15 +75,22 @@ class Game < ApplicationRecord
   end
 
   def stalemate?(is_white)
-    return false if check?(is_white)
+    return false if check?
+    king = pieces.find_by(is_white: is_white, type: KING)
     (1..8).each do |new_x|
       (1..8).each do |new_y|
-        pieces.where(is_white: is_white).where.not(x_position: nil, y_position: nil).find_each do |piece|
+        pieces.where(is_white: is_white).where.not(x_position: nil, y_position: nil, type: KING).find_each do |piece|
           return false if piece.legal_move?(new_x, new_y)
         end
+        return true if king.legal_move?(new_x, new_y) && under_attack?(is_white, new_x, new_y)
       end
     end
     true
+  end
+
+  def attacking_piece
+    Piece.find_by(game_move_number: move_number).where.not(game_move_number: 0) # the piece that most recently moved.
+    # this is the piece that causes check and possibly checkmate.
   end
 
   IN_PLAY = 0

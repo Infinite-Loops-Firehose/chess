@@ -26,8 +26,8 @@ class Piece < ApplicationRecord
         capture_piece(occupying_piece)
       end
       update_attributes(x_position: new_x, y_position: new_y)
+      raise ArgumentError, 'That is an invalid move that leaves your king in check.' if game.under_attack?(is_white, friendly_king.x_position, friendly_king.y_position)
       increment_move
-      raise ArgumentError, 'That is an invalid move that leaves your king in check.' if game.check?(is_white)
       # if game.state != IN_PLAY
       #   # prevent all moves, print game over message
       # end
@@ -102,7 +102,7 @@ class Piece < ApplicationRecord
     # only here do we update coordinates of piece moved, once we have saved all starting coordinates of piece moved and any piece it captured
     update_attributes(x_position: new_x, y_position: new_y)
     increment_move
-    return_val = true unless game.check?(is_white)
+    return_val = true unless game.check?
     update_attributes(x_position: piece_moved_start_x, y_position: piece_moved_start_y)
     piece_captured.update_attributes(x_position: piece_captured_x, y_position: piece_captured_y) unless piece_captured.nil?
     decrement_move
@@ -157,7 +157,26 @@ class Piece < ApplicationRecord
     end
   end
 
+  def causes_check?(is_white)
+    game.under_attack?(!is_white, enemy_king(is_white).x_position, enemy_king(is_white).y_position)
+  end
+
+  def causes_checkmate?(is_white)
+    return false unless causes_check?
+    return false if game.under_attack?(is_white, x_position, y_position)
+    return false if enemy_king(is_white).can_move_out_of_check?
+    return false if can_be_blocked?(enemy_king(is_white).x_position, enemy_king(is_white).y_position)
+  end
+
   private
+
+  def enemy_king(is_white)
+    game.pieces.find_by(type: KING, is_white: !is_white)
+  end
+
+  def friendly_king
+    game.pieces.find_by(type: KING, is_white: is_white)
+  end
 
   def off_board?(new_x, new_y)
     new_x < 1 || new_x > 8 || new_y < 1 || new_y > 8
@@ -167,7 +186,6 @@ class Piece < ApplicationRecord
     (new_x - x_position != 0 || new_y - y_position != 0) &&
       (new_x == x_position || new_y == y_position || (new_x - x_position).abs == (new_y - y_position).abs)
   end
-
 end
 
 PAWN = 'Pawn'.freeze

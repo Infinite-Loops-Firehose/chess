@@ -78,17 +78,17 @@ RSpec.describe Game, type: :model do
 
   describe '#check?' do
     it 'should return true if king in check' do
-      game = FactoryGirl.create(:game)
+      game = FactoryGirl.create(:game, move_number: 4)
       FactoryGirl.create(:king, is_white: true, game: game, x_position: 3, y_position: 8)
-      FactoryGirl.create(:bishop, is_white: false, game: game, x_position: 6, y_position: 5)
-      expect(game.check?(true)).to eq(true)
+      FactoryGirl.create(:bishop, is_white: false, game: game, x_position: 6, y_position: 5, game_move_number: 4)
+      expect(game.check?).to eq(true)
     end
 
     it 'should return false if king is not in check' do
-      game = FactoryGirl.create(:game)
+      game = FactoryGirl.create(:game, move_number: 4)
       FactoryGirl.create(:king, is_white: true, game: game, x_position: 3, y_position: 8)
-      FactoryGirl.create(:bishop, is_white: false, game: game, x_position: 7, y_position: 5)
-      expect(game.check?(true)).to eq(false)
+      FactoryGirl.create(:bishop, is_white: false, game: game, x_position: 7, y_position: 5, game_move_number: 4)
+      expect(game.check?).to eq(false)
     end
   end
 
@@ -112,6 +112,7 @@ RSpec.describe Game, type: :model do
     it 'returns true if king is trapped in corner' do
       game = FactoryGirl.create(:game)
       white_king = FactoryGirl.create(:king, is_white: true, game: game, x_position: 8, y_position: 1)
+      FactoryGirl.create(:king, is_white: false, game: game, x_position: 5, y_position: 8)
       FactoryGirl.create(:rook, is_white: false, game: game, x_position: 5, y_position: 2)
       FactoryGirl.create(:bishop, is_white: false, game: game, x_position: 7, y_position: 1)
       FactoryGirl.create(:knight, is_white: false, game: game, x_position: 6, y_position: 3)
@@ -148,9 +149,9 @@ RSpec.describe Game, type: :model do
     end
 
     it 'returns false if king is currently in check' do
-      game = FactoryGirl.create(:game)
+      game = FactoryGirl.create(:game, move_number: 10)
       white_king = FactoryGirl.create(:king, is_white: true, game: game, x_position: 4, y_position: 7)
-      FactoryGirl.create(:rook, is_white: false, game: game, x_position: 4, y_position: 5)
+      FactoryGirl.create(:rook, is_white: false, game: game, x_position: 4, y_position: 5, game_move_number: 10)
       FactoryGirl.create(:king, is_white: false, game: game, x_position: 5, y_position: 2)
       expect(game.stalemate?(white_king.is_white)).to eq(false)
     end
