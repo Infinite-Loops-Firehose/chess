@@ -9,9 +9,11 @@ class King < Piece
   def can_move_out_of_check?
     ((x_position - 1)..(x_position + 1)).each do |x|
       ((y_position - 1)..(y_position + 1)).each do |y|
-        return true if valid_move?(x, y) && game.under_attack?(is_white, x, y) == false
-        # this still doesn't catch instances where the king's current position blocks a potential move_to square from being under_attack
+        return true if valid_move?(x, y) &&
+                       game.under_attack?(is_white, x, y) == false &&
+                       game.attacking_piece.straight_obstruction_array(x, y).include?([x_position, y_position]) == false
       end
     end
+    false
   end
 end
