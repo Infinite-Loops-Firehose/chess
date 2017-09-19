@@ -177,8 +177,6 @@ class Piece < ApplicationRecord
     game.pieces.find_by(type: KING, is_white: is_white)
   end
 
-  private
-
   def off_board?(new_x, new_y)
     new_x < 1 || new_x > 8 || new_y < 1 || new_y > 8
   end
