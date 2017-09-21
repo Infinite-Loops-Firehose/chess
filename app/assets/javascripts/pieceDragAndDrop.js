@@ -33,6 +33,20 @@ $(".games.show").ready(function(){
         }
         return false;
       }
+
+      // $.ajax({
+      //   url: '/games/' + gameId,
+      //   method: "PUT",
+      //   data: {
+      //     piece: { id: pieceId, x_position: destSqX, y_position: destSqY } 
+      //   },
+      //   success: function(data){
+      //     // data represents the updated game, including all its pieces. (todo: make sure that game includes all pieces)
+      //     // loop through all pieces in the DOM, and update position/remove based on game.pieces.
+      //     // check game.status and end the game and display game over message as appropriate
+      //   }
+      // })
+
       $.ajax({
         url: '/pieces/' + pieceId,
         method: "PUT",
@@ -46,6 +60,7 @@ $(".games.show").ready(function(){
           $(e.target).empty();
           e.target.append( pieceHTML );
           $(pieceHTML).css({"top":"initial", "left":"initial"});
+          App.game.movePiece(pieceId);
         },
         error: function(jqXHR){
           alert(jqXHR.responseJSON.error);
