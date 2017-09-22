@@ -10,6 +10,7 @@ $(".games.show").ready(function(){
 
   pieces.mousedown(function(e){
     pieceHTML = e.target;
+    console.log(pieceHTML);
     pieceId = $(e.target).attr('data-id');
     pieceMovedType = $(e.target).attr('data-type');
     startX = $(e.target).attr('data-x-pos');
@@ -24,16 +25,10 @@ $(".games.show").ready(function(){
   $('td').droppable(
     { accept: pieces },
     {drop: function(e){
-      destSqIdNum = parseInt(e.target.id);
-      destSqX = Math.trunc(destSqIdNum / 10);
-      destSqY = destSqIdNum % 10;
-      function isEnPassantCapture(){
-        if ( $(e.target).children().length == 0 && Math.abs(destSqX - startX) == 1 && Math.abs(destSqY - startY) == 1 && pieceMovedType == "Pawn" ){
-          return true;
-        }
-        return false;
-      }
-
+      var destSqIdNum = parseInt(e.target.id);
+      var destSqX = Math.trunc(destSqIdNum / 10);
+      var destSqY = destSqIdNum % 10;
+      var isEnPassantCapture = $(e.target).children().length == 0 && Math.abs(destSqX - startX) == 1 && Math.abs(destSqY - startY) == 1 && pieceMovedType == "Pawn"
       // $.ajax({
       //   url: '/games/' + gameId,
       //   method: "PUT",
@@ -54,13 +49,13 @@ $(".games.show").ready(function(){
         success: function(){
           $(pieceHTML).attr('data-x-pos', destSqX);
           $(pieceHTML).attr('data-y-pos', destSqY);
-          if (isEnPassantCapture()){
+          if (isEnPassantCapture){
             $("td#" + destSqX + startY).empty();
           }
           $(e.target).empty();
           e.target.append( pieceHTML );
           $(pieceHTML).css({"top":"initial", "left":"initial"});
-          App.game.movePiece(pieceId);
+          App.game.broadcastPieceMovement(pieceId, $("#gameId").data("gameId"));
         },
         error: function(jqXHR){
           alert(jqXHR.responseJSON.error);

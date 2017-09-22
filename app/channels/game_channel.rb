@@ -1,5 +1,6 @@
 class GameChannel < ApplicationCable::Channel
   def subscribed
+    puts "The id of the game subscribed to is: #{params[:game_id]}"
     stream_from "game_channel_#{params[:game_id]}"
     # stream_from "some_channel"
   end
@@ -8,7 +9,7 @@ class GameChannel < ApplicationCable::Channel
     # Any cleanup needed when channel is unsubscribed
   end
 
-  def move_piece(data)
+  def broadcast_piece_movement(data)
     piece = Piece.find(data['pieceId'])
     game = piece.game
     game_id = game.id

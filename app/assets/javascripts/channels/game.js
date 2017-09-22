@@ -1,23 +1,42 @@
-App.game = App.cable.subscriptions.create( { channel: "GameChannel", game_id: 38 }, {  
-  connected: function(){
-    // Called when the subscription is ready for use on the server
-    
-  },
+$(".games.show").ready(function(){
 
-  disconnected: function(){
-    // Called when the subscription has been terminated by the server
-  },
+  var gameId = $("div#gameId").data("gameId");
+  App.game = App.cable.subscriptions.create( { channel: "GameChannel", game_id: gameId }, {  
+    connected: function(data){
+      // Called when the subscription is ready for use on the server
+      console.log(data);
+    },
 
-  received: function(data){
-    console.log(data['piece']);
-    // Called when there's incoming data on the websocket for this channel
-  },
+    disconnected: function(){
+      // Called when the subscription has been terminated by the server
+    },
 
-  movePiece: function(pieceId){
-    this.perform('move_piece', {
-      pieceId: pieceId 
-    })
-  },
+    received: function(data){
+      console.table(data.piece)
+      // var pieceHTML = $(),
+      //     destSqX = ,
+      //     destSqY = ,
+      //     isEnPassantCapture = ,
+      // $(pieceHTML).attr('data-x-pos', destSqX);
+      // $(pieceHTML).attr('data-y-pos', destSqY);
+      // if (isEnPassantCapture){
+      //   $("td#" + destSqX + startY).empty();
+      // }
+      // $(e.target).empty();
+      // e.target.append( pieceHTML );
+      // $(pieceHTML).css({"top":"initial", "left":"initial"});
+      // Called when there's incoming data on the websocket for this channel
+    },
+
+    broadcastPieceMovement: function(pieceId, gameId){
+      this.perform('broadcast_piece_movement', {
+        pieceId: pieceId, 
+        gameId: gameId
+      })
+    },
+  })
 
 })
+
+
 
