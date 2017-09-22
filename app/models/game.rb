@@ -88,6 +88,15 @@ class Game < ApplicationRecord
     true
   end
 
+  # Use this code to test the stalemate rspec tests:
+  # (1..8).each do |new_x|
+  #   (1..8).each do |new_y|
+  #     pieces.where(is_white: true).where.not(x_position: nil, y_position: nil, type: KING).find_each do |piece|
+  #       puts "#{[new_x, new_y]}: legal move for #{piece.type} at [#{piece.x_position}, #{piece.y_position}]? #{piece.legal_move?(new_x, new_y)}"
+  #     end
+  #   end
+  # end
+
   def attacking_piece
     Piece.find_by(game_move_number: move_number) # the piece that most recently moved.
     # this is the piece that causes check and possibly checkmate.
