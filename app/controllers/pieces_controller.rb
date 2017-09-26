@@ -17,6 +17,7 @@ class PiecesController < ApplicationController
     # params[:piece] #{x_position: 5, y_position: 4}
     # params[:piece][:x_position] = #5
     piece_to_move.move_to!(params[:piece][:x_position], params[:piece][:y_position])
+    # @game.update_attributes(state: Game::STALEMATE)
     if @game.stalemate?(!piece_to_move.is_white)
       @game.update_attributes(state: Game::STALEMATE)
     end

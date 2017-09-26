@@ -10,9 +10,6 @@ class GameChannel < ApplicationCable::Channel
   end
 
   def broadcast_piece_movement(data)
-    piece = Piece.find(data['pieceId'])
-    game = piece.game
-    game_id = game.id
-    ActionCable.server.broadcast "game_channel_#{game_id}", piece: Piece.find(data['pieceId'])
+    ActionCable.server.broadcast "game_channel_#{data['gameId']}", data
   end
 end

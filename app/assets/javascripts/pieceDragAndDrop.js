@@ -10,7 +10,6 @@ $(".games.show").ready(function(){
 
   pieces.mousedown(function(e){
     pieceHTML = e.target;
-    console.log(pieceHTML);
     pieceId = $(e.target).attr('data-id');
     pieceMovedType = $(e.target).attr('data-type');
     startX = $(e.target).attr('data-x-pos');
@@ -47,15 +46,8 @@ $(".games.show").ready(function(){
         method: "PUT",
         data: { piece: { x_position: destSqX, y_position: destSqY } },
         success: function(){
-          $(pieceHTML).attr('data-x-pos', destSqX);
-          $(pieceHTML).attr('data-y-pos', destSqY);
-          if (isEnPassantCapture){
-            $("td#" + destSqX + startY).empty();
-          }
-          $(e.target).empty();
-          e.target.append( pieceHTML );
-          $(pieceHTML).css({"top":"initial", "left":"initial"});
-          App.game.broadcastPieceMovement(pieceId, $("#gameId").data("gameId"));
+          gameId = $("#gameId").data("gameId");
+          App.game.broadcastPieceMovement(pieceId, gameId, startX, startY, destSqX, destSqY, isEnPassantCapture);
         },
         error: function(jqXHR){
           alert(jqXHR.responseJSON.error);
