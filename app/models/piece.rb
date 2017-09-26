@@ -26,7 +26,7 @@ class Piece < ApplicationRecord
         capture_piece(occupying_piece)
       end
       update_attributes(x_position: new_x, y_position: new_y)
-      # raise ArgumentError, 'That is an invalid move that leaves your king in check.' if game.under_attack?(is_white, friendly_king(is_white).x_position, friendly_king(is_white).y_position)
+      raise ArgumentError, 'That is an invalid move that leaves your king in check.' if game.under_attack?(is_white, friendly_king(is_white).x_position, friendly_king(is_white).y_position)
       increment_move
       # if game.state != IN_PLAY
       #   # prevent all moves, print game over message
