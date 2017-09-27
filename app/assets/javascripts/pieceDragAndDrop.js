@@ -63,7 +63,6 @@ $(".games.show").ready(function(){
 $('span#gameover').ready(function(){
   var gameState = $("#gameState").data("gameState"),
       gameId = $("#gameId").data("gameId");
-  console.log(gameState);
   App.game.broadcastGameOver(gameId, gameState);
-  // $('span#piece').draggable("destroy");
+  $('span#piece').draggable("destroy");
 })
