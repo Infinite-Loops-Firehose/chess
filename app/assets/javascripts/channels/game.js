@@ -26,6 +26,10 @@ $(".games.show").ready(function(){
       destSqHTML.empty();
       destSqHTML.append(pieceHTML);
       pieceHTML.css({"top":"initial", "left":"initial"});
+
+      if(data.gameState != 0){
+        location.reload();
+      }
       // var pieceHTML = $("span#piece['data-id=#{"pieceId"}']");
       // console.log(pieceHTML);
       // var pieceHTML = $(),
@@ -54,6 +58,14 @@ $(".games.show").ready(function(){
         isEnPassantCapture: isEnPassantCapture
       })
     },
+
+    broadcastGameOver: function(gameId, gameState){
+      this.perform('broadcast_game_over', {
+        gameId: gameId, 
+        gameState: gameState
+      })
+    } 
+      
   })
 
 })

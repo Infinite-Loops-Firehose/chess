@@ -46,7 +46,7 @@ $(".games.show").ready(function(){
         method: "PUT",
         data: { piece: { x_position: destSqX, y_position: destSqY } },
         success: function(){
-          gameId = $("#gameId").data("gameId");
+          var gameId = $("#gameId").data("gameId");
           App.game.broadcastPieceMovement(pieceId, gameId, startX, startY, destSqX, destSqY, isEnPassantCapture);
         },
         error: function(jqXHR){
@@ -61,5 +61,9 @@ $(".games.show").ready(function(){
 
 // stops all drag and drop piece movement once game is marked as over.
 $('span#gameover').ready(function(){
-  $('span#piece').draggable("destroy");
+  var gameState = $("#gameState").data("gameState"),
+      gameId = $("#gameId").data("gameId");
+  console.log(gameState);
+  App.game.broadcastGameOver(gameId, gameState);
+  // $('span#piece').draggable("destroy");
 })
