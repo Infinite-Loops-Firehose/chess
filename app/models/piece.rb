@@ -26,7 +26,7 @@ class Piece < ApplicationRecord
         capture_piece(occupying_piece)
       end
       update_attributes(x_position: new_x, y_position: new_y)
-      raise ArgumentError, 'That is an invalid move that leaves your king in check.' if game.under_attack?(is_white, friendly_king(is_white).x_position, friendly_king(is_white).y_position)
+      raise ArgumentError, 'That is an invalid move that leaves your king in check.' if game.under_attack?(is_white, game.friendly_king(is_white).x_position, game.friendly_king(is_white).y_position)
       increment_move
       # if game.state != IN_PLAY
       #   # prevent all moves, print game over message
@@ -102,7 +102,7 @@ class Piece < ApplicationRecord
     # only here do we update coordinates of piece moved, once we have saved all starting coordinates of piece moved and any piece it captured
     update_attributes(x_position: new_x, y_position: new_y)
     increment_move
-    return_val = true unless game.check?
+    return_val = true unless game.check?(is_white)
     update_attributes(x_position: piece_moved_start_x, y_position: piece_moved_start_y)
     piece_captured.update_attributes(x_position: piece_captured_x, y_position: piece_captured_y) unless piece_captured.nil?
     decrement_move
@@ -155,26 +155,6 @@ class Piece < ApplicationRecord
         return true if piece.valid_move?(coords.first, coords.last)
       end
     end
-  end
-
-  def causes_check?(is_white)
-    game.under_attack?(!is_white, enemy_king(is_white).x_position, enemy_king(is_white).y_position)
-  end
-
-  def causes_checkmate?(is_white)
-    return false unless causes_check?(is_white)
-    return false if game.under_attack?(is_white, x_position, y_position)
-    return false if enemy_king(is_white).can_move_out_of_check?
-    return false if can_be_blocked?(enemy_king(is_white).x_position, enemy_king(is_white).y_position)
-    true
-  end
-
-  def enemy_king(is_white)
-    game.pieces.find_by(type: KING, is_white: !is_white)
-  end
-
-  def friendly_king(is_white)
-    game.pieces.find_by(type: KING, is_white: is_white)
   end
 
   def off_board?(new_x, new_y)

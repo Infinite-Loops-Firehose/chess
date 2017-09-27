@@ -15,7 +15,7 @@ class King < Piece
       ((y_position - 1)..(y_position + 1)).each do |y|
         return true if valid_move?(x, y) &&
                        game.under_attack?(is_white, x, y) == false &&
-                       (game.attacking_piece.type != 'knight' ? game.attacking_piece.straight_move?(x, y) == false : true)
+                       (game.attacking_piece(is_white).type != 'knight' ? game.attacking_piece(is_white).straight_move?(x, y) == false : true)
       end
     end
     false

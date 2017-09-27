@@ -60,8 +60,8 @@ class Pawn < Piece
   end
 
   def backwards_move?(new_y)
-    return new_y > y_position if is_white
-    new_y < y_position
+    return new_y < y_position if is_white
+    new_y > y_position
   end
 
   def current_position?(new_x, new_y)
