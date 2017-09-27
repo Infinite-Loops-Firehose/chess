@@ -170,6 +170,7 @@ RSpec.describe Game, type: :model do
       white_king = FactoryGirl.create(:king, is_white: true, game: game, x_position: 6, y_position: 3)
       FactoryGirl.create(:king, is_white: false, game: game, x_position: 5, y_position: 8)
       FactoryGirl.create(:rook, is_white: false, game: game, x_position: 5, y_position: 3)
+      FactoryGirl.create(:rook, is_white: false, game: game, x_position: 6, y_position: 4)
       expect(game.checkmate?(white_king.is_white)).to eq(false)
     end
 
@@ -177,8 +178,11 @@ RSpec.describe Game, type: :model do
       game = FactoryGirl.create(:game)
       black_king = FactoryGirl.create(:king, is_white: false, game: game, x_position: 3, y_position: 8)
       FactoryGirl.create(:king, is_white: true, game: game, x_position: 5, y_position: 1)
-      FactoryGirl.create(:bishop, is_white: false, game: game, x_position: 4, y_position: 7)
+      FactoryGirl.create(:bishop, is_white: false, game: game, x_position: 3, y_position: 6)
       FactoryGirl.create(:bishop, is_white: true, game: game, x_position: 6, y_position: 5)
+      FactoryGirl.create(:queen, is_white: true, game: game, x_position: 1, y_position: 7)
+      FactoryGirl.create(:rook, is_white: true, game: game, x_position: 4, y_position: 3)
+      FactoryGirl.create(:rook, is_white: true, game: game, x_position: 7, y_position: 7)
       expect(game.checkmate?(black_king.is_white)).to eq(false)
     end
 
