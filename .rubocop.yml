@@ -5,6 +5,7 @@ AllCops:
     - vendor/**/*
     - config/environments/*
     - bin/**/*
+    - redis-stable/**/*
 
 Rails:
   Enabled: true

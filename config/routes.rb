@@ -6,5 +6,5 @@ Rails.application.routes.draw do
     patch 'forfeit', on: :member
   end
   resources :pieces, only: %i[show update]
-  mount ActionCable.server => "/cable"
+  mount ActionCable.server => '/cable'
 end

@@ -1,6 +1,5 @@
 class GameChannel < ApplicationCable::Channel
   def subscribed
-    puts "The id of the game subscribed to is: #{params[:game_id]}"
     stream_from "game_channel_#{params[:game_id]}"
     # stream_from "some_channel"
   end
