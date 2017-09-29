@@ -7,7 +7,7 @@ class Game < ApplicationRecord
   def populate_board!
     # this should create all 32 Pieces with their initial X/Y coordinates.
 
-    # black Pieces
+    # White Pieces
     (1..8).each do |i|
       Piece.create(game_id: id, is_white: true, type: PAWN, x_position: i, y_position: 2)
     end
@@ -24,7 +24,7 @@ class Game < ApplicationRecord
     Piece.create(game_id: id, is_white: true, type: KING, x_position: 4, y_position: 1)
     Piece.create(game_id: id, is_white: true, type: QUEEN, x_position: 5, y_position: 1)
 
-    # white Pieces
+    # Black Pieces
     (1..8).each do |i|
       Piece.create(game_id: id, is_white: false, type: PAWN, x_position: i, y_position: 7)
     end

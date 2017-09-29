@@ -62,8 +62,8 @@ RSpec.describe Pawn, type: :model do
 
     it 'should return false if moving one space forward when destination square is occupied' do
       pawn = FactoryGirl.create(:pawn, x_position: 4, y_position: 4, is_white: false)
-      FactoryGirl.create(:rook, x_position: 4, y_position: 5, is_white: true)
-      expect(pawn.valid_move?(4, 5)).to eq false
+      FactoryGirl.create(:rook, x_position: 4, y_position: 3, is_white: true)
+      expect(pawn.valid_move?(4, 3)).to eq false
     end
 
     it 'should return true when capturing piece using en passant' do
