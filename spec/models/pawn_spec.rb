@@ -50,19 +50,22 @@ RSpec.describe Pawn, type: :model do
     end
 
     it 'should return false if moving more than one space diagonally forward when capturing' do
-      FactoryGirl.create(:rook, x_position: 2, y_position: 2, is_white: true)
-      pawn = FactoryGirl.create(:pawn, x_position: 5, y_position: 5, is_white: false, has_moved: true)
+      game = FactoryGirl.create(:game)
+      FactoryGirl.create(:rook, x_position: 2, y_position: 2, is_white: true, game: game)
+      pawn = FactoryGirl.create(:pawn, x_position: 5, y_position: 5, is_white: false, has_moved: true, game: game)
       expect(pawn.valid_move?(2, 2)).to eq false
     end
 
     it 'should return false if moving one space diagonally forward when not capturing' do
-      pawn = FactoryGirl.create(:pawn, x_position: 4, y_position: 4)
+      game = FactoryGirl.create(:game)
+      pawn = FactoryGirl.create(:pawn, x_position: 4, y_position: 4, game: game)
       expect(pawn.valid_move?(5, 5)).to eq false
     end
 
     it 'should return false if moving one space forward when destination square is occupied' do
-      pawn = FactoryGirl.create(:pawn, x_position: 4, y_position: 4, is_white: false)
-      FactoryGirl.create(:rook, x_position: 4, y_position: 3, is_white: true)
+      game = FactoryGirl.create(:game)
+      pawn = FactoryGirl.create(:pawn, x_position: 4, y_position: 4, is_white: false, game: game)
+      FactoryGirl.create(:rook, x_position: 4, y_position: 3, is_white: true, game: game)
       expect(pawn.valid_move?(4, 3)).to eq false
     end
 

@@ -10,6 +10,7 @@ class Pawn < Piece
     return false if backwards_move?(new_y.to_i)
     return false if sideways_move?(new_x.to_i, new_y.to_i)
     return false if obstructed?(new_x.to_i, new_y.to_i)
+    return false if square_occupied?(new_x.to_i, new_y.to_i) && forwards_straight_move?(new_x.to_i, new_y.to_i)
     return true if capture_move?(new_x.to_i, new_y.to_i)
     return true if en_passant_capture?(new_x.to_i, new_y.to_i)
     if allowed_to_move?(new_x.to_i, new_y.to_i) && !square_occupied?(new_x.to_i, new_y.to_i)
@@ -62,6 +63,12 @@ class Pawn < Piece
   def backwards_move?(new_y)
     return new_y < y_position if is_white
     new_y > y_position
+  end
+
+  def forwards_straight_move?(new_x, new_y)
+    return false if new_x != x_position
+    return new_y > y_position if is_white
+    new_y < y_position
   end
 
   def current_position?(new_x, new_y)
