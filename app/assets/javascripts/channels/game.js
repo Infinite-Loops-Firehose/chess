@@ -27,7 +27,7 @@ $(".games.show").ready(function(){
       destSqHTML.append(pieceHTML);
       pieceHTML.css({"top":"initial", "left":"initial"});
 
-      if(data.gameState != 0){
+      if(data.gameState != null && data.gameState != 0){
         location.reload();
       }
       // var pieceHTML = $("span#piece['data-id=#{"pieceId"}']");
