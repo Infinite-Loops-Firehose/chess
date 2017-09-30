@@ -18,4 +18,6 @@ deploy:
     branch: master
     repo: "Infinite-Loops-Firehose/chess"
   run: "rake db:migrate"
+  skip_cleanup: true
+  # tried this according to https://stackoverflow.com/questions/27560551/head-detached-warning-in-travis-ci-when-deploying-to-heroku
   
