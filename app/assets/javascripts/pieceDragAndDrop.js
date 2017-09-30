@@ -24,28 +24,30 @@ $(".games.show").ready(function(){
   $('td').droppable(
     { accept: pieces },
     {drop: function(e){
-      destSqIdNum = parseInt(e.target.id);
-      destSqX = Math.trunc(destSqIdNum / 10);
-      destSqY = destSqIdNum % 10;
-      function isEnPassantCapture(){
-        if ( $(e.target).children().length == 0 && Math.abs(destSqX - startX) == 1 && Math.abs(destSqY - startY) == 1 && pieceMovedType == "Pawn" ){
-          return true;
-        }
-        return false;
-      }
+      var destSqIdNum = parseInt(e.target.id);
+      var destSqX = Math.trunc(destSqIdNum / 10);
+      var destSqY = destSqIdNum % 10;
+      var isEnPassantCapture = $(e.target).children().length == 0 && Math.abs(destSqX - startX) == 1 && Math.abs(destSqY - startY) == 1 && pieceMovedType == "Pawn"
+      // $.ajax({
+      //   url: '/games/' + gameId,
+      //   method: "PUT",
+      //   data: {
+      //     piece: { id: pieceId, x_position: destSqX, y_position: destSqY } 
+      //   },
+      //   success: function(data){
+      //     // data represents the updated game, including all its pieces. (todo: make sure that game includes all pieces)
+      //     // loop through all pieces in the DOM, and update position/remove based on game.pieces.
+      //     // check game.status and end the game and display game over message as appropriate
+      //   }
+      // })
+
       $.ajax({
         url: '/pieces/' + pieceId,
         method: "PUT",
         data: { piece: { x_position: destSqX, y_position: destSqY } },
         success: function(){
-          $(pieceHTML).attr('data-x-pos', destSqX);
-          $(pieceHTML).attr('data-y-pos', destSqY);
-          if (isEnPassantCapture()){
-            $("td#" + destSqX + startY).empty();
-          }
-          $(e.target).empty();
-          e.target.append( pieceHTML );
-          $(pieceHTML).css({"top":"initial", "left":"initial"});
+          var gameId = $("#gameId").data("gameId");
+          App.game.broadcastPieceMovement(pieceId, gameId, startX, startY, destSqX, destSqY, isEnPassantCapture);
         },
         error: function(jqXHR){
           alert(jqXHR.responseJSON.error);
@@ -59,5 +61,8 @@ $(".games.show").ready(function(){
 
 // stops all drag and drop piece movement once game is marked as over.
 $('span#gameover').ready(function(){
+  var gameState = $("#gameState").data("gameState"),
+      gameId = $("#gameId").data("gameId");
+  App.game.broadcastGameOver(gameId, gameState);
   $('span#piece').draggable("destroy");
 })
