@@ -19,6 +19,8 @@ class PiecesController < ApplicationController
     piece_to_move.move_to!(params[:piece][:x_position], params[:piece][:y_position])
     if @game.stalemate?(!piece_to_move.is_white)
       @game.update_attributes(state: Game::STALEMATE)
+    elsif @game.checkmate?(!piece_to_move.is_white)
+      @game.update_attributes(state: Game::CHECKMATE)
     end
     if @game.state != Game::IN_PLAY
       redirect_to game_path(@game)

@@ -21,6 +21,10 @@ FactoryGirl.define do
     association :game
   end
 
+  factory :queen do
+    association :game
+  end
+
   factory :knight do
     association :game
   end

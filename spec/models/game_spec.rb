@@ -78,17 +78,17 @@ RSpec.describe Game, type: :model do
 
   describe '#check?' do
     it 'should return true if king in check' do
-      game = FactoryGirl.create(:game)
-      FactoryGirl.create(:king, is_white: true, game: game, x_position: 3, y_position: 8)
-      FactoryGirl.create(:bishop, is_white: false, game: game, x_position: 6, y_position: 5)
-      expect(game.check?(true)).to eq(true)
+      game = FactoryGirl.create(:game, move_number: 4)
+      white_king = FactoryGirl.create(:king, is_white: true, game: game, x_position: 3, y_position: 8)
+      FactoryGirl.create(:bishop, is_white: false, game: game, x_position: 6, y_position: 5, game_move_number: 4)
+      expect(game.check?(white_king.is_white)).to eq(true)
     end
 
     it 'should return false if king is not in check' do
-      game = FactoryGirl.create(:game)
-      FactoryGirl.create(:king, is_white: true, game: game, x_position: 3, y_position: 8)
-      FactoryGirl.create(:bishop, is_white: false, game: game, x_position: 7, y_position: 5)
-      expect(game.check?(true)).to eq(false)
+      game = FactoryGirl.create(:game, move_number: 4)
+      white_king = FactoryGirl.create(:king, is_white: true, game: game, x_position: 3, y_position: 8)
+      FactoryGirl.create(:bishop, is_white: false, game: game, x_position: 7, y_position: 5, game_move_number: 4)
+      expect(game.check?(white_king.is_white)).to eq(false)
     end
   end
 
@@ -112,29 +112,29 @@ RSpec.describe Game, type: :model do
     it 'returns true if king is trapped in corner' do
       game = FactoryGirl.create(:game)
       white_king = FactoryGirl.create(:king, is_white: true, game: game, x_position: 8, y_position: 1)
+      FactoryGirl.create(:king, is_white: false, game: game, x_position: 5, y_position: 8)
       FactoryGirl.create(:rook, is_white: false, game: game, x_position: 5, y_position: 2)
       FactoryGirl.create(:bishop, is_white: false, game: game, x_position: 7, y_position: 1)
       FactoryGirl.create(:knight, is_white: false, game: game, x_position: 6, y_position: 3)
       expect(game.stalemate?(white_king.is_white)).to eq(true)
     end
 
-    it 'returns true if king is trapped in center of board' do
+    it 'returns true in the Gelfand vs Kramnik example https://en.wikipedia.org/wiki/Stalemate#Gelfand_versus_Kramnik' do
       game = FactoryGirl.create(:game)
-      black_king = FactoryGirl.create(:king, is_white: false, game: game, x_position: 5, y_position: 4)
-      FactoryGirl.create(:pawn, is_white: false, game: game, x_position: 4, y_position: 4)
-      FactoryGirl.create(:pawn, is_white: false, game: game, x_position: 6, y_position: 4)
-      FactoryGirl.create(:pawn, is_white: false, game: game, x_position: 5, y_position: 3)
-      FactoryGirl.create(:rook, is_white: false, game: game, x_position: 4, y_position: 3)
-      FactoryGirl.create(:bishop, is_white: true, game: game, x_position: 2, y_position: 1)
-      FactoryGirl.create(:knight, is_white: true, game: game, x_position: 2, y_position: 4)
-      FactoryGirl.create(:rook, is_white: true, game: game, x_position: 3, y_position: 4)
-      FactoryGirl.create(:rook, is_white: true, game: game, x_position: 4, y_position: 6)
-      FactoryGirl.create(:pawn, is_white: true, game: game, x_position: 3, y_position: 5)
-      FactoryGirl.create(:pawn, is_white: true, game: game, x_position: 5, y_position: 5)
-      FactoryGirl.create(:king, is_white: true, game: game, x_position: 6, y_position: 6)
+      black_king = FactoryGirl.create(:king, is_white: false, game: game, x_position: 8, y_position: 7)
+      FactoryGirl.create(:pawn, is_white: false, game: game, x_position: 1, y_position: 6)
+      FactoryGirl.create(:pawn, is_white: false, game: game, x_position: 6, y_position: 6)
+      FactoryGirl.create(:pawn, is_white: false, game: game, x_position: 7, y_position: 7)
+      FactoryGirl.create(:pawn, is_white: false, game: game, x_position: 8, y_position: 6)
+      FactoryGirl.create(:king, is_white: true, game: game, x_position: 8, y_position: 2)
+      FactoryGirl.create(:queen, is_white: true, game: game, x_position: 4, y_position: 8)
+      FactoryGirl.create(:rook, is_white: true, game: game, x_position: 5, y_position: 7)
+      FactoryGirl.create(:pawn, is_white: true, game: game, x_position: 1, y_position: 5)
+      FactoryGirl.create(:pawn, is_white: true, game: game, x_position: 4, y_position: 4)
       FactoryGirl.create(:pawn, is_white: true, game: game, x_position: 6, y_position: 3)
-      FactoryGirl.create(:piece, is_white: true, type: QUEEN, game: game, x_position: 7, y_position: 4)
-      FactoryGirl.create(:bishop, is_white: true, game: game, x_position: 8, y_position: 1)
+      FactoryGirl.create(:pawn, is_white: true, game: game, x_position: 6, y_position: 5)
+      FactoryGirl.create(:pawn, is_white: true, game: game, x_position: 7, y_position: 4)
+      FactoryGirl.create(:pawn, is_white: true, game: game, x_position: 8, y_position: 5)
       expect(game.stalemate?(black_king.is_white)).to eq(true)
     end
 
@@ -148,11 +148,50 @@ RSpec.describe Game, type: :model do
     end
 
     it 'returns false if king is currently in check' do
-      game = FactoryGirl.create(:game)
+      game = FactoryGirl.create(:game, move_number: 10)
       white_king = FactoryGirl.create(:king, is_white: true, game: game, x_position: 4, y_position: 7)
-      FactoryGirl.create(:rook, is_white: false, game: game, x_position: 4, y_position: 5)
+      FactoryGirl.create(:rook, is_white: false, game: game, x_position: 4, y_position: 5, game_move_number: 10)
       FactoryGirl.create(:king, is_white: false, game: game, x_position: 5, y_position: 2)
       expect(game.stalemate?(white_king.is_white)).to eq(false)
+    end
+  end
+
+  describe '#checkmate?' do
+    it 'should return true if king is in checkmate' do
+      game = FactoryGirl.create(:game, move_number: 15)
+      black_king = FactoryGirl.create(:king, is_white: false, game: game, x_position: 8, y_position: 5)
+      FactoryGirl.create(:king, is_white: true, game: game, x_position: 6, y_position: 5)
+      FactoryGirl.create(:rook, is_white: true, game: game, x_position: 8, y_position: 1, game_move_number: 15)
+      expect(game.checkmate?(black_king.is_white)).to eq(true)
+    end
+
+    it 'should return false if king can capture attacking piece' do
+      game = FactoryGirl.create(:game)
+      white_king = FactoryGirl.create(:king, is_white: true, game: game, x_position: 6, y_position: 3)
+      FactoryGirl.create(:king, is_white: false, game: game, x_position: 5, y_position: 8)
+      FactoryGirl.create(:rook, is_white: false, game: game, x_position: 5, y_position: 3)
+      FactoryGirl.create(:rook, is_white: false, game: game, x_position: 6, y_position: 4)
+      expect(game.checkmate?(white_king.is_white)).to eq(false)
+    end
+
+    it 'should return false if friendly piece can block checkmate' do
+      game = FactoryGirl.create(:game)
+      black_king = FactoryGirl.create(:king, is_white: false, game: game, x_position: 3, y_position: 8)
+      FactoryGirl.create(:king, is_white: true, game: game, x_position: 5, y_position: 1)
+      FactoryGirl.create(:bishop, is_white: false, game: game, x_position: 3, y_position: 6)
+      FactoryGirl.create(:bishop, is_white: true, game: game, x_position: 6, y_position: 5)
+      FactoryGirl.create(:queen, is_white: true, game: game, x_position: 1, y_position: 7)
+      FactoryGirl.create(:rook, is_white: true, game: game, x_position: 4, y_position: 3)
+      FactoryGirl.create(:rook, is_white: true, game: game, x_position: 7, y_position: 7)
+      expect(game.checkmate?(black_king.is_white)).to eq(false)
+    end
+
+    it 'should return false if king can move out of attacked position' do
+      game = FactoryGirl.create(:game, move_number: 15)
+      white_king = FactoryGirl.create(:king, is_white: true, game: game, x_position: 3, y_position: 8)
+      FactoryGirl.create(:king, is_white: false, game: game, x_position: 5, y_position: 1)
+      FactoryGirl.create(:bishop, is_white: false, game: game, x_position: 5, y_position: 6, game_move_number: 15)
+      expect(game.checkmate?(white_king.is_white)).to eq(false)
     end
   end
 end

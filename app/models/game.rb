@@ -7,39 +7,39 @@ class Game < ApplicationRecord
   def populate_board!
     # this should create all 32 Pieces with their initial X/Y coordinates.
 
-    # black Pieces
+    # White Pieces
     (1..8).each do |i|
-      Piece.create(game_id: id, is_white: false, type: PAWN, x_position: i, y_position: 2)
+      Piece.create(game_id: id, is_white: true, type: PAWN, x_position: i, y_position: 2)
     end
 
-    Piece.create(game_id: id, is_white: false, type: ROOK, x_position: 1, y_position: 1)
-    Piece.create(game_id: id, is_white: false, type: ROOK, x_position: 8, y_position: 1)
+    Piece.create(game_id: id, is_white: true, type: ROOK, x_position: 1, y_position: 1)
+    Piece.create(game_id: id, is_white: true, type: ROOK, x_position: 8, y_position: 1)
 
-    Piece.create(game_id: id, is_white: false, type: KNIGHT, x_position: 2, y_position: 1)
-    Piece.create(game_id: id, is_white: false, type: KNIGHT, x_position: 7, y_position: 1)
+    Piece.create(game_id: id, is_white: true, type: KNIGHT, x_position: 2, y_position: 1)
+    Piece.create(game_id: id, is_white: true, type: KNIGHT, x_position: 7, y_position: 1)
 
-    Piece.create(game_id: id, is_white: false, type: BISHOP, x_position: 3, y_position: 1)
-    Piece.create(game_id: id, is_white: false, type: BISHOP, x_position: 6, y_position: 1)
+    Piece.create(game_id: id, is_white: true, type: BISHOP, x_position: 3, y_position: 1)
+    Piece.create(game_id: id, is_white: true, type: BISHOP, x_position: 6, y_position: 1)
 
-    Piece.create(game_id: id, is_white: false, type: KING, x_position: 4, y_position: 1)
-    Piece.create(game_id: id, is_white: false, type: QUEEN, x_position: 5, y_position: 1)
+    Piece.create(game_id: id, is_white: true, type: KING, x_position: 4, y_position: 1)
+    Piece.create(game_id: id, is_white: true, type: QUEEN, x_position: 5, y_position: 1)
 
-    # white Pieces
+    # Black Pieces
     (1..8).each do |i|
-      Piece.create(game_id: id, is_white: true, type: PAWN, x_position: i, y_position: 7)
+      Piece.create(game_id: id, is_white: false, type: PAWN, x_position: i, y_position: 7)
     end
 
-    Piece.create(game_id: id, is_white: true, type: ROOK, x_position: 1, y_position: 8)
-    Piece.create(game_id: id, is_white: true, type: ROOK, x_position: 8, y_position: 8)
+    Piece.create(game_id: id, is_white: false, type: ROOK, x_position: 1, y_position: 8)
+    Piece.create(game_id: id, is_white: false, type: ROOK, x_position: 8, y_position: 8)
 
-    Piece.create(game_id: id, is_white: true, type: KNIGHT, x_position: 2, y_position: 8)
-    Piece.create(game_id: id, is_white: true, type: KNIGHT, x_position: 7, y_position: 8)
+    Piece.create(game_id: id, is_white: false, type: KNIGHT, x_position: 2, y_position: 8)
+    Piece.create(game_id: id, is_white: false, type: KNIGHT, x_position: 7, y_position: 8)
 
-    Piece.create(game_id: id, is_white: true, type: BISHOP, x_position: 3, y_position: 8)
-    Piece.create(game_id: id, is_white: true, type: BISHOP, x_position: 6, y_position: 8)
+    Piece.create(game_id: id, is_white: false, type: BISHOP, x_position: 3, y_position: 8)
+    Piece.create(game_id: id, is_white: false, type: BISHOP, x_position: 6, y_position: 8)
 
-    Piece.create(game_id: id, is_white: true, type: KING, x_position: 5, y_position: 8)
-    Piece.create(game_id: id, is_white: true, type: QUEEN, x_position: 4, y_position: 8)
+    Piece.create(game_id: id, is_white: false, type: KING, x_position: 5, y_position: 8)
+    Piece.create(game_id: id, is_white: false, type: QUEEN, x_position: 4, y_position: 8)
   end
 
   def render_piece(x, y)
@@ -51,14 +51,37 @@ class Game < ApplicationRecord
     pieces.find_by(x_position: x, y_position: y)
   end
 
-  def check?(is_white)
-    king = pieces.find_by(type: KING, is_white: is_white)
-    return false if king.nil? # used for tests where there is no king generated
-    pieces.where(game_id: id, is_white: !is_white).where.not(x_position: nil, y_position: nil).find_each do |piece|
-      next if piece.x_position.nil? || piece.y_position.nil?
-      return true if piece.valid_move?(king.x_position, king.y_position)
+  def under_attack?(is_white, x, y)
+    pieces.where(is_white: !is_white).where.not(x_position: nil, y_position: nil).find_each do |piece|
+      return true if piece.valid_move?(x, y)
     end
     false
+  end
+
+  def attacking_piece(is_white) # is_white is the value of the friendly_king, NOT the attacking_piece
+    pieces.where(is_white: !is_white).where.not(x_position: nil, y_position: nil).find_each do |piece|
+      return piece if piece.valid_move?(friendly_king(is_white).x_position, friendly_king(is_white).y_position)
+    end
+  end
+
+  def check?(is_white)
+    under_attack?(is_white, friendly_king(is_white).x_position, friendly_king(is_white).y_position)
+  end
+
+  def checkmate?(is_white)
+    return false unless check?(is_white)
+    return false if under_attack?(is_white, attacking_piece(is_white).x_position, attacking_piece(is_white).y_position)
+    return false if friendly_king(is_white).can_move_out_of_check?
+    return false if attacking_piece(is_white).can_be_blocked?(friendly_king(is_white).x_position, friendly_king(is_white).y_position)
+    true
+  end
+
+  def enemy_king(is_white)
+    pieces.find_by(type: KING, is_white: !is_white)
+  end
+
+  def friendly_king(is_white)
+    pieces.find_by(type: KING, is_white: is_white)
   end
 
   def forfeit(current_user)
@@ -71,15 +94,26 @@ class Game < ApplicationRecord
 
   def stalemate?(is_white)
     return false if check?(is_white)
+    king = pieces.find_by(is_white: is_white, type: KING)
     (1..8).each do |new_x|
       (1..8).each do |new_y|
-        pieces.where(is_white: is_white).where.not(x_position: nil, y_position: nil).find_each do |piece|
+        pieces.where(is_white: is_white).where.not(x_position: nil, y_position: nil, type: KING).find_each do |piece|
           return false if piece.legal_move?(new_x, new_y)
         end
+        return true if king.legal_move?(new_x, new_y) && under_attack?(is_white, new_x, new_y)
       end
     end
     true
   end
+
+  # Use this code to test the stalemate rspec tests:
+  # (1..8).each do |new_x|
+  #   (1..8).each do |new_y|
+  #     pieces.where(is_white: false).where.not(x_position: nil, y_position: nil, type: KING).find_each do |piece|
+  #       puts "#{[new_x, new_y]}: legal move for #{piece.type} at [#{piece.x_position}, #{piece.y_position}]? #{piece.legal_move?(new_x, new_y)}"
+  #     end
+  #   end
+  # end
 
   IN_PLAY = 0
   FORFEIT = 1
