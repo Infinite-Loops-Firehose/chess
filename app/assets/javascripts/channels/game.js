@@ -1,5 +1,5 @@
 $(".games.show").ready(function(){
-
+  // Getting gameId from games#show
   var gameId = $("div#gameId").data("gameId");
   App.game = App.cable.subscriptions.create( { channel: "GameChannel", game_id: gameId }, {  
     connected: function(){
