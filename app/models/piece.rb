@@ -1,5 +1,6 @@
 class Piece < ApplicationRecord
   # class OffBoardError < StandardError; end   <-- we may want to use this at some point for error messages
+  # new comment to ensure I can push master branch to heroku
 
   belongs_to :game
 
