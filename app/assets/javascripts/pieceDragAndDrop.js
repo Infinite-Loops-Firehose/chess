@@ -36,8 +36,6 @@ $(".games.show").ready(function(){
           piece: { id: pieceId, x_position: destSqX, y_position: destSqY } 
         },
         success: function(data){
-          var pieceHTML = $("span#piece['data-id=#{"pieceId"}']");
-          console.log(pieceHTML);
           $(pieceHTML).attr('data-x-pos', destSqX);
           $(pieceHTML).attr('data-y-pos', destSqY);
           if (isEnPassantCapture){
