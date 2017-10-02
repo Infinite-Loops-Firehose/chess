@@ -1,0 +1,20 @@
+ae_epoll.o: ae_epoll.c
+ae_evport.o: ae_evport.c
+ae_kqueue.o: ae_kqueue.c
+ae_select.o: ae_select.c
+anet.o: anet.c fmacros.h anet.h
+crc64.o: crc64.c
+endianconv.o: endianconv.c
+geohash.o: geohash.c geohash.h
+geohash_helper.o: geohash_helper.c fmacros.h geohash_helper.h geohash.h \
+ debugmacro.h
+lzf_c.o: lzf_c.c lzfP.h
+lzf_d.o: lzf_d.c lzfP.h
+memtest.o: memtest.c config.h
+pqsort.o: pqsort.c
+rand.o: rand.c
+release.o: release.c release.h version.h crc64.h
+setproctitle.o: setproctitle.c
+sha1.o: sha1.c solarisfixes.h sha1.h config.h
+siphash.o: siphash.c
+util.o: util.c fmacros.h util.h sds.h sha1.h
