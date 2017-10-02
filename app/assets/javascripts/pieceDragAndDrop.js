@@ -2,6 +2,7 @@
 $(".games.show").ready(function(){
 
   var pieces = $('span#piece');
+  var gameId = $('div#gameId').data('gameId');
   var pieceHTML;
   var pieceId;
   var pieceMovedType;
@@ -14,7 +15,7 @@ $(".games.show").ready(function(){
     pieceMovedType = $(e.target).attr('data-type');
     startX = $(e.target).attr('data-x-pos');
     startY = $(e.target).attr('data-y-pos');
-  })
+  });
 
   pieces.draggable({
     containment: '#chessboard tbody',
@@ -27,9 +28,9 @@ $(".games.show").ready(function(){
       var destSqIdNum = parseInt(e.target.id);
       var destSqX = Math.trunc(destSqIdNum / 10);
       var destSqY = destSqIdNum % 10;
-      var isEnPassantCapture = $(e.target).children().length == 0 && Math.abs(destSqX - startX) == 1 && Math.abs(destSqY - startY) == 1 && pieceMovedType == "Pawn"
+      var isEnPassantCapture = $(e.target).children().length == 0 && Math.abs(destSqX - startX) == 1 && Math.abs(destSqY - startY) == 1 && pieceMovedType == "Pawn";
       $.ajax({
-        url: '/games/' + gameId,
+        url: '/pieces/' + pieceId,
         method: "PUT",
         data: {
           piece: { id: pieceId, x_position: destSqX, y_position: destSqY } 
@@ -57,16 +58,12 @@ $(".games.show").ready(function(){
           $(pieceHTML).addClass('ui-draggable ui-draggable-handle')
         },
       })
-
-    }
+    }}
   )
 
 });
 
 // stops all drag and drop piece movement once game is marked as over.
 $('span#gameover').ready(function(){
-  var gameState = $("#gameState").data("gameState"),
-      gameId = $("#gameId").data("gameId");
-  App.game.broadcastGameOver(gameId, gameState);
   $('span#piece').draggable("destroy");
 })
