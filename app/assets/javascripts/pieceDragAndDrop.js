@@ -1,4 +1,4 @@
-
+// added drop piece code back to this file
 $(".games.show").ready(function(){
 
   var pieces = $('span#piece');
