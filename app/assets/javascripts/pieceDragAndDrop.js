@@ -37,10 +37,6 @@ $(".games.show").ready(function(){
         success: function(data){
           var pieceHTML = $("span#piece['data-id=#{"pieceId"}']");
           console.log(pieceHTML);
-          var pieceHTML = $(),
-              destSqX = ,
-              destSqY = ,
-              isEnPassantCapture = ,
           $(pieceHTML).attr('data-x-pos', destSqX);
           $(pieceHTML).attr('data-y-pos', destSqY);
           if (isEnPassantCapture){
@@ -49,29 +45,22 @@ $(".games.show").ready(function(){
           $(e.target).empty();
           e.target.append( pieceHTML );
           $(pieceHTML).css({"top":"initial", "left":"initial"});
+        },
           // Called when there's incoming data on the websocket for this channel
           // data represents the updated game, including all its pieces. (todo: make sure that game includes all pieces)
           // loop through all pieces in the DOM, and update position/remove based on game.pieces.
           // check game.status and end the game and display game over message as appropriate
-        }
-      })
 
-      $.ajax({
-        url: '/pieces/' + pieceId,
-        method: "PUT",
-        data: { piece: { x_position: destSqX, y_position: destSqY } },
-        success: function(){
-          var gameId = $("#gameId").data("gameId");
-          App.game.broadcastPieceMovement(pieceId, gameId, startX, startY, destSqX, destSqY, isEnPassantCapture);
-        },
         error: function(jqXHR){
           alert(jqXHR.responseJSON.error);
           $(pieceHTML).css({"top":"initial", "left":"initial"});
           $(pieceHTML).addClass('ui-draggable ui-draggable-handle')
         },
       })
-    }}
+
+    }
   )
+
 });
 
 // stops all drag and drop piece movement once game is marked as over.
