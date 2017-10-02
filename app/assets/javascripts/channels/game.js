@@ -1,8 +1,8 @@
 $(".games.show").ready(function(){
   // Getting gameId from games#show
-  var gameId = $("div#gameId").data("gameId");
-  App.game = App.cable.subscriptions.create( { channel: "GameChannel", game_id: gameId }, {  
-    connected: function(){
+  // var gameId = $("div#gameId").data("gameId");
+  // App.game = App.cable.subscriptions.create( { channel: "GameChannel", game_id: gameId }, {  
+  //   connected: function(){
       // Called when the subscription is ready for use on the server
     },
 
@@ -11,25 +11,25 @@ $(".games.show").ready(function(){
     },
 
     received: function(data){
-      var pieceId = data.pieceId,
-          pieceHTML =  $('span#piece[data-id="' + pieceId + '"]'),
-          startY = data.startY,
-          destSqX = data.destSqX,
-          destSqY = data.destSqY,
-          isEnPassantCapture = data.isEnPassantCapture
-      if (isEnPassantCapture){
-        $("td#" + destSqX + startY).empty();
-      }
-      pieceHTML.attr("data-x-pos", destSqX);
-      pieceHTML.attr("data-y-pos", destSqY); 
-      destSqHTML = $("td#" + destSqX + destSqY);
-      destSqHTML.empty();
-      destSqHTML.append(pieceHTML);
-      pieceHTML.css({"top":"initial", "left":"initial"});
+      // var pieceId = data.pieceId,
+      //     pieceHTML =  $('span#piece[data-id="' + pieceId + '"]'),
+      //     startY = data.startY,
+      //     destSqX = data.destSqX,
+      //     destSqY = data.destSqY,
+      //     isEnPassantCapture = data.isEnPassantCapture
+      // if (isEnPassantCapture){
+      //   $("td#" + destSqX + startY).empty();
+      // }
+      // pieceHTML.attr("data-x-pos", destSqX);
+      // pieceHTML.attr("data-y-pos", destSqY); 
+      // destSqHTML = $("td#" + destSqX + destSqY);
+      // destSqHTML.empty();
+      // destSqHTML.append(pieceHTML);
+      // pieceHTML.css({"top":"initial", "left":"initial"});
 
-      if(data.gameState != null && data.gameState != 0){
-        location.reload();
-      }
+      // if(data.gameState != null && data.gameState != 0){
+      //   location.reload();
+      // }
       // var pieceHTML = $("span#piece['data-id=#{"pieceId"}']");
       // console.log(pieceHTML);
       // var pieceHTML = $(),

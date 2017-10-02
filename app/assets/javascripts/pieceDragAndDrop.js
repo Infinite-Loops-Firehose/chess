@@ -28,18 +28,33 @@ $(".games.show").ready(function(){
       var destSqX = Math.trunc(destSqIdNum / 10);
       var destSqY = destSqIdNum % 10;
       var isEnPassantCapture = $(e.target).children().length == 0 && Math.abs(destSqX - startX) == 1 && Math.abs(destSqY - startY) == 1 && pieceMovedType == "Pawn"
-      // $.ajax({
-      //   url: '/games/' + gameId,
-      //   method: "PUT",
-      //   data: {
-      //     piece: { id: pieceId, x_position: destSqX, y_position: destSqY } 
-      //   },
-      //   success: function(data){
-      //     // data represents the updated game, including all its pieces. (todo: make sure that game includes all pieces)
-      //     // loop through all pieces in the DOM, and update position/remove based on game.pieces.
-      //     // check game.status and end the game and display game over message as appropriate
-      //   }
-      // })
+      $.ajax({
+        url: '/games/' + gameId,
+        method: "PUT",
+        data: {
+          piece: { id: pieceId, x_position: destSqX, y_position: destSqY } 
+        },
+        success: function(data){
+          var pieceHTML = $("span#piece['data-id=#{"pieceId"}']");
+          console.log(pieceHTML);
+          var pieceHTML = $(),
+              destSqX = ,
+              destSqY = ,
+              isEnPassantCapture = ,
+          $(pieceHTML).attr('data-x-pos', destSqX);
+          $(pieceHTML).attr('data-y-pos', destSqY);
+          if (isEnPassantCapture){
+            $("td#" + destSqX + startY).empty();
+          }
+          $(e.target).empty();
+          e.target.append( pieceHTML );
+          $(pieceHTML).css({"top":"initial", "left":"initial"});
+          // Called when there's incoming data on the websocket for this channel
+          // data represents the updated game, including all its pieces. (todo: make sure that game includes all pieces)
+          // loop through all pieces in the DOM, and update position/remove based on game.pieces.
+          // check game.status and end the game and display game over message as appropriate
+        }
+      })
 
       $.ajax({
         url: '/pieces/' + pieceId,
