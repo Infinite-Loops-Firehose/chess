@@ -19,7 +19,14 @@ table td {
     vertical-align: middle;
     text-align: center;
     padding: 8px;
+
+    img {
+      width: 74px;
+      height: 74px;
+    }
 }
+
+
 
 .white {
     background: image_url("chess-blues-white.png");
