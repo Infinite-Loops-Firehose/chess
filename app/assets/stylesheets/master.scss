@@ -18,8 +18,15 @@ table td {
     height: 90px;
     vertical-align: middle;
     text-align: center;
-    padding: 8px;
+    padding: 0 0 5px 0;
+
+    img {
+      width: 85px;
+      height: 85px;
+    }
 }
+
+
 
 .white {
     background: image_url("chess-blues-white.png");
