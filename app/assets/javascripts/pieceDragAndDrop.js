@@ -10,8 +10,10 @@ $(".games.show").ready(function(){
   var startY;
 
   pieces.mousedown(function(e){
-    pieceHTML = e.target;
+    pieceHTML = $(e.target).parent('span');
+    console.log(pieceHTML);
     pieceId = $(e.target).attr('data-id');
+    console.log(pieceId);
     pieceMovedType = $(e.target).attr('data-type');
     startX = $(e.target).attr('data-x-pos');
     startY = $(e.target).attr('data-y-pos');
