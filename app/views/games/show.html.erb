@@ -44,10 +44,14 @@
                 <% piece_image = @game.render_piece(col, row) %>
                 <% if piece_image.present? %>
                   <% piece = @game.get_piece_at_coor(col, row) %>
-                  <span id='piece' data-id=<%= piece.id %> data-type=<%= piece.type %> data-color=<%= piece.is_white ? "white" : "black" %> data-x-pos=<%= piece.x_position
-                  %> data-y-pos=<%= piece.y_position %>>
-                    <%= image_tag(piece_image) %>
-                  </span>
+                  <%= image_tag piece_image, :id => "piece", :data => {
+                      :id => piece.id,
+                      :type => piece.type,
+                      :color => (piece.is_white ? "white" : "black"),
+                      :x => piece.x_position,
+                      :y => piece.y_position
+                    }
+                  %>
                 <% end %>
               </td>
             <% end %>
@@ -58,3 +62,11 @@
     <%= button_to "Forfeit", forfeit_game_path, :class => "btn btn-success", :method => :patch %>
   </div>
 </body>
+
+<!--<span id="piece" data-id="151" data-type="Pawn" data-color="black" data-x-pos="6" data-y-pos="6" class="ui-draggable ui-draggable-handle" style="position: relative; left: initial; top: initial;">
+                    blues-black-pawn.png
+                  </span>-->
+
+<!--<span id="piece" data-id="154" data-type="Rook" data-color="black" data-x-pos="1" data-y-pos="8" class="ui-draggable ui-draggable-handle" style="position: relative;">
+                    <img src="/assets/blues-black-rook-da7a6c550d4df31ed957d479e7e57e9cbe1369f5458c65be3f4e286983322c20.png" alt="Blues black rook">
+                  </span>-->

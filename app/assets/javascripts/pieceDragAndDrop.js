@@ -1,7 +1,7 @@
 
 $(".games.show").ready(function(){
 
-  var pieces = $('span#piece');
+  var pieces = $('img#piece');
   var pieceHTML;
   var pieceId;
   var pieceMovedType;
@@ -12,8 +12,8 @@ $(".games.show").ready(function(){
     pieceHTML = e.target;
     pieceId = $(e.target).attr('data-id');
     pieceMovedType = $(e.target).attr('data-type');
-    startX = $(e.target).attr('data-x-pos');
-    startY = $(e.target).attr('data-y-pos');
+    startX = $(e.target).attr('data-x');
+    startY = $(e.target).attr('data-y');
   })
 
   pieces.draggable({
@@ -64,5 +64,5 @@ $('span#gameover').ready(function(){
   var gameState = $("#gameState").data("gameState"),
       gameId = $("#gameId").data("gameId");
   App.game.broadcastGameOver(gameId, gameState);
-  $('span#piece').draggable("destroy");
+  $('img#piece').draggable("destroy");
 })
