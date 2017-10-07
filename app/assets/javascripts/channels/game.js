@@ -20,8 +20,8 @@ $(".games.show").ready(function(){
       if (isEnPassantCapture){
         $("td#" + destSqX + startY).empty();
       }
-      pieceHTML.attr("data-x-pos", destSqX);
-      pieceHTML.attr("data-y-pos", destSqY); 
+      pieceHTML.attr("data-x", destSqX);
+      pieceHTML.attr("data-y", destSqY); 
       destSqHTML = $("td#" + destSqX + destSqY);
       destSqHTML.empty();
       destSqHTML.append(pieceHTML);
@@ -36,8 +36,8 @@ $(".games.show").ready(function(){
       //     destSqX = ,
       //     destSqY = ,
       //     isEnPassantCapture = ,
-      // $(pieceHTML).attr('data-x-pos', destSqX);
-      // $(pieceHTML).attr('data-y-pos', destSqY);
+      // $(pieceHTML).attr('data-x', destSqX);
+      // $(pieceHTML).attr('data-y', destSqY);
       // if (isEnPassantCapture){
       //   $("td#" + destSqX + startY).empty();
       // }
