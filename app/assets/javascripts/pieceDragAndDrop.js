@@ -1,8 +1,7 @@
 // added drop piece code back to this file
 $(".games.show").ready(function(){
 
-  var pieces = $('span#piece');
-  var gameId = $('div#gameId').data('gameId');
+  var pieces = $('img#piece');
   var pieceHTML;
   var pieceId;
   var pieceMovedType;
@@ -15,9 +14,9 @@ $(".games.show").ready(function(){
     pieceId = $(e.target).attr('data-id');
     console.log(pieceId);
     pieceMovedType = $(e.target).attr('data-type');
-    startX = $(e.target).attr('data-x-pos');
-    startY = $(e.target).attr('data-y-pos');
-  });
+    startX = $(e.target).attr('data-x');
+    startY = $(e.target).attr('data-y');
+  })
 
   pieces.draggable({
     containment: '#chessboard tbody',
@@ -65,5 +64,8 @@ $(".games.show").ready(function(){
 
 // stops all drag and drop piece movement once game is marked as over.
 $('span#gameover').ready(function(){
-  $('span#piece').draggable("destroy");
+  var gameState = $("#gameState").data("gameState"),
+      gameId = $("#gameId").data("gameId");
+  App.game.broadcastGameOver(gameId, gameState);
+  $('img#piece').draggable("destroy");
 })

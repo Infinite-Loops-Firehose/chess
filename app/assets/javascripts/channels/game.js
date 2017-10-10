@@ -9,23 +9,24 @@
     // disconnected: function(){
       // Called when the subscription has been terminated by the server
     // },
-
-    // received: function(data){
-      // var pieceId = data.pieceId,
-      //     pieceHTML =  $('span#piece[data-id="' + pieceId + '"]'),
-      //     startY = data.startY,
-      //     destSqX = data.destSqX,
-      //     destSqY = data.destSqY,
-      //     isEnPassantCapture = data.isEnPassantCapture
-      // if (isEnPassantCapture){
-      //   $("td#" + destSqX + startY).empty();
-      // }
-      // pieceHTML.attr("data-x-pos", destSqX);
-      // pieceHTML.attr("data-y-pos", destSqY); 
-      // destSqHTML = $("td#" + destSqX + destSqY);
-      // destSqHTML.empty();
-      // destSqHTML.append(pieceHTML);
-      // pieceHTML.css({"top":"initial", "left":"initial"});
+    
+//     received: function(data){
+//       var pieceId = data.pieceId,
+//           pieceHTML =  $('span#piece[data-id="' + pieceId + '"]'),
+//           startY = data.startY,
+//           destSqX = data.destSqX,
+//           destSqY = data.destSqY,
+//           isEnPassantCapture = data.isEnPassantCapture
+//       if (isEnPassantCapture){
+//         $("td#" + destSqX + startY).empty();
+//       }
+//       pieceHTML.attr("data-x", destSqX);
+//       pieceHTML.attr("data-y", destSqY); 
+//       destSqHTML = $("td#" + destSqX + destSqY);
+//       destSqHTML.empty();
+//       destSqHTML.append(pieceHTML);
+//       pieceHTML.css({"top":"initial", "left":"initial"});
+// >>>>>>> 55d334091f104966f1028f9a84ba33610e018df6
 
       // if(data.gameState != null && data.gameState != 0){
       //   location.reload();
@@ -36,8 +37,8 @@
       //     destSqX = ,
       //     destSqY = ,
       //     isEnPassantCapture = ,
-      // $(pieceHTML).attr('data-x-pos', destSqX);
-      // $(pieceHTML).attr('data-y-pos', destSqY);
+      // $(pieceHTML).attr('data-x', destSqX);
+      // $(pieceHTML).attr('data-y', destSqY);
       // if (isEnPassantCapture){
       //   $("td#" + destSqX + startY).empty();
       // }
