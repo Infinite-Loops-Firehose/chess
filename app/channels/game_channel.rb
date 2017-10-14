@@ -8,11 +8,11 @@ class GameChannel < ApplicationCable::Channel
     # Any cleanup needed when channel is unsubscribed
   end
 
-  # def broadcast_piece_movement(data)
-  #   ActionCable.server.broadcast "game_channel_#{data['gameId']}", data
-  # end
+  def broadcast_piece_movement(data)
+    ActionCable.server.broadcast "game_channel_#{data['gameId']}", data
+  end
 
-  # def broadcast_game_over(data)
-  #   ActionCable.server.broadcast "game_channel_#{data['gameId']}", data
-  # end
+  def broadcast_game_over(data)
+    ActionCable.server.broadcast "game_channel_#{data['gameId']}", data
+  end
 end

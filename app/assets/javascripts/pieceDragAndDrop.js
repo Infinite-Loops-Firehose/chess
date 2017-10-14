@@ -9,10 +9,8 @@ $(".games.show").ready(function(){
   var startY;
 
   pieces.mousedown(function(e){
-    pieceHTML = $(e.target).parent('span');
-    console.log(pieceHTML);
+    pieceHTML = $(e.target);
     pieceId = $(e.target).attr('data-id');
-    console.log(pieceId);
     pieceMovedType = $(e.target).attr('data-type');
     startX = $(e.target).attr('data-x');
     startY = $(e.target).attr('data-y');
@@ -37,14 +35,8 @@ $(".games.show").ready(function(){
           piece: { id: pieceId, x_position: destSqX, y_position: destSqY } 
         },
         success: function(data){
-          $(pieceHTML).attr('data-x-pos', destSqX);
-          $(pieceHTML).attr('data-y-pos', destSqY);
-          if (isEnPassantCapture){
-            $("td#" + destSqX + startY).empty();
-          }
-          $(e.target).empty();
-          e.target.append( pieceHTML );
-          $(pieceHTML).css({"top":"initial", "left":"initial"});
+          var gameId = $("#gameId").data("gameId");
+          App.game.broadcastPieceMovement(pieceId, gameId, startX, startY, destSqX, destSqY, isEnPassantCapture);
         },
           // Called when there's incoming data on the websocket for this channel
           // data represents the updated game, including all its pieces. (todo: make sure that game includes all pieces)
