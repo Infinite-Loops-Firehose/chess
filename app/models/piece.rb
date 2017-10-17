@@ -1,15 +1,16 @@
 class Piece < ApplicationRecord
   # class OffBoardError < StandardError; end   <-- we may want to use this at some point for error messages
+  # new comment to ensure I can push master branch to heroku
 
   belongs_to :game
 
   def color
-    return 'White' if is_white == true
-    'Black'
+    return 'white' if is_white == true
+    'black'
   end
 
   def render
-    "#{color} #{type}"
+    "blues-#{color}-#{type.downcase}.png"
   end
 
   def move_to!(new_x, new_y)

@@ -5,7 +5,7 @@ class Game < ApplicationRecord
   scope :available, -> { where('user_white_id IS NULL OR user_black_id IS NULL') }
 
   def populate_board!
-    # this should create all 32 Pieces with their initial X/Y coordinates.
+    # this should create all 32 Pieces with their initial X/Y coordinates. White pieces will be at bottom of board.
 
     # White Pieces
     (1..8).each do |i|

@@ -1,5 +1,5 @@
 $(".games.show").ready(function(){
-
+  // Getting gameId from games#show
   var gameId = $("div#gameId").data("gameId");
   App.game = App.cable.subscriptions.create( { channel: "GameChannel", game_id: gameId }, {  
     connected: function(){
@@ -11,8 +11,9 @@ $(".games.show").ready(function(){
     },
 
     received: function(data){
+      console.log("Received callback has been triggered!");
       var pieceId = data.pieceId,
-          pieceHTML =  $('span#piece[data-id="' + pieceId + '"]'),
+          pieceHTML =  $('img#piece[data-id="' + pieceId + '"]'),
           startY = data.startY,
           destSqX = data.destSqX,
           destSqY = data.destSqY,
@@ -20,8 +21,8 @@ $(".games.show").ready(function(){
       if (isEnPassantCapture){
         $("td#" + destSqX + startY).empty();
       }
-      pieceHTML.attr("data-x-pos", destSqX);
-      pieceHTML.attr("data-y-pos", destSqY); 
+      pieceHTML.attr("data-x", destSqX);
+      pieceHTML.attr("data-y", destSqY); 
       destSqHTML = $("td#" + destSqX + destSqY);
       destSqHTML.empty();
       destSqHTML.append(pieceHTML);
@@ -30,20 +31,6 @@ $(".games.show").ready(function(){
       if(data.gameState != null && data.gameState != 0){
         location.reload();
       }
-      // var pieceHTML = $("span#piece['data-id=#{"pieceId"}']");
-      // console.log(pieceHTML);
-      // var pieceHTML = $(),
-      //     destSqX = ,
-      //     destSqY = ,
-      //     isEnPassantCapture = ,
-      // $(pieceHTML).attr('data-x-pos', destSqX);
-      // $(pieceHTML).attr('data-y-pos', destSqY);
-      // if (isEnPassantCapture){
-      //   $("td#" + destSqX + startY).empty();
-      // }
-      // $(e.target).empty();
-      // e.target.append( pieceHTML );
-      // $(pieceHTML).css({"top":"initial", "left":"initial"});
       // Called when there's incoming data on the websocket for this channel
     },
 
@@ -65,9 +52,8 @@ $(".games.show").ready(function(){
         gameState: gameState
       })
     } 
-      
-  })
 
+  })
 })
 
 

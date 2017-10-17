@@ -44,10 +44,14 @@
                 <% piece_image = @game.render_piece(col, row) %>
                 <% if piece_image.present? %>
                   <% piece = @game.get_piece_at_coor(col, row) %>
-                  <span id='piece' data-id=<%= piece.id %> data-type=<%= piece.type %> data-color=<%= piece.is_white ? "white" : "black" %> data-x-pos=<%= piece.x_position
-                  %> data-y-pos=<%= piece.y_position %>>
-                    <%= piece_image %>
-                  </span>
+                  <%= image_tag piece_image, :id => "piece", :data => {
+                      :id => piece.id,
+                      :type => piece.type,
+                      :color => (piece.is_white ? "white" : "black"),
+                      :x => piece.x_position,
+                      :y => piece.y_position
+                    }
+                  %>
                 <% end %>
               </td>
             <% end %>
