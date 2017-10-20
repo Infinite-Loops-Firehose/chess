@@ -6,5 +6,5 @@ test:
 
 production:
   adapter: redis
-  url: https://infinite-loops-chess.herokuapp.com/
+  url: redis://redistogo:9e8f9e6c63ccfcf43d7891b8877a172d@crestfish.redistogo.com:11064/
   # redis://localhost:6379/1
