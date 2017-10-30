@@ -11,7 +11,6 @@ $(".games.show").ready(function(){
     },
 
     received: function(data){
-      console.log("Received callback has been triggered!");
       var pieceId = data.pieceId,
           pieceHTML =  $('img#piece[data-id="' + pieceId + '"]'),
           startY = data.startY,
@@ -26,17 +25,43 @@ $(".games.show").ready(function(){
       destSqHTML = $("td#" + destSqX + destSqY);
       destSqHTML.empty();
       destSqHTML.append(pieceHTML);
-      pieceHTML.css({"top":"initial", "left":"initial"});
+      pieceHTML.css({"top":"initial", "left":"initial"});      
+
+      var displayWhiteKingCheck = function(whiteKingCheck){
+        if (whiteKingCheck == true){
+          $("#messages").append('<p>The white king is in check!</p>');
+        } else {
+          $("#messages").empty();
+        }
+      }
+
+      var displayBlackKingCheck = function(blackKingCheck){
+        if (blackKingCheck == true){
+          $("#messages").append('<p>The black king is in check!</p>');
+        } else {
+          $("#messages").empty();
+        }
+      }
+
+      if (data.pieceColor == "white"){
+        gon.watch('black_king_check', displayBlackKingCheck);
+      }
+
+      if (data.pieceColor == "black"){
+        gon.watch('white_king_check', displayWhiteKingCheck);
+      }
 
       if(data.gameState != null && data.gameState != 0){
         location.reload();
       }
+
       // Called when there's incoming data on the websocket for this channel
     },
 
-    broadcastPieceMovement: function(pieceId, gameId, startX, startY, destSqX, destSqY, isEnPassantCapture){
+    broadcastPieceMovement: function(pieceId, pieceColor, gameId, startX, startY, destSqX, destSqY, isEnPassantCapture){
       this.perform('broadcast_piece_movement', {
         pieceId: pieceId, 
+        pieceColor: pieceColor,
         gameId: gameId,
         startX: startX,
         startY: startY,
@@ -48,7 +73,7 @@ $(".games.show").ready(function(){
 
     broadcastGameOver: function(gameId, gameState){
       this.perform('broadcast_game_over', {
-        gameId: gameId, 
+        gameId: game, 
         gameState: gameState
       })
     } 

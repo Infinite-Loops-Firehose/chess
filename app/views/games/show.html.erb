@@ -2,7 +2,7 @@
 <script
   src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
   integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
-  crossorigin="anonymous">
+  crossorigin="anonymous"> 
 </script>
 </head>
 
@@ -14,17 +14,14 @@
   <div id="gameState" data-game-state=<%= @game.state %>>
   </div>
 
+  <%= content_tag "div", id: "kingChecked", data: {whiteKingCheck: @game.check?(true), blackKingCheck: @game.check?(false)} do %>
+
+  <% end %>
+
   <h1 class="text-center">Infinite Loops Chess</h1>
 
-  <div class="gameover">
-    <% if @game.state != Game::IN_PLAY %>
-      <span id="gameover">The game is now over.</span>
-    <% end %>
-    <br/>
-    <% case @game.state %>
-    <% when 3 %>
-      The game has ended in stalemate. 
-    <% end %>
+  <div id="messages">
+
   </div>
 
   <div class="col-10 center offset-1">
@@ -61,4 +58,6 @@
     </table>
     <%= button_to "Forfeit", forfeit_game_path, :class => "btn btn-success", :method => :patch %>
   </div>
+
+
 </body>

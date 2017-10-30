@@ -4,7 +4,8 @@ Rails.application.routes.draw do
   root 'games#index'
   resources :games, only: %i[new create show update] do
     patch 'forfeit', on: :member
+    resources :messages, only: [:update, :show]
   end
-  resources :pieces, only: %i[show update]
+  resources :pieces, only: [:update]
   mount ActionCable.server => '/cable'
 end

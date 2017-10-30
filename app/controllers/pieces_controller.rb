@@ -22,6 +22,7 @@ class PiecesController < ApplicationController
     elsif @game.checkmate?(!piece_to_move.is_white)
       @game.update_attributes(state: Game::CHECKMATE)
     end
+
     if @game.state != Game::IN_PLAY
       redirect_to game_path(@game)
       return

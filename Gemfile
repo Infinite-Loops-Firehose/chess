@@ -76,3 +76,6 @@ gem 'omniauth-facebook'
 
 # added figaro gem to create and use environmental variables
 gem 'figaro'
+
+# adding gon gem to use rails variables in assets/javascripts files
+gem 'gon'
