@@ -17,3 +17,4 @@
 //= require bootstrap-sprockets
 //= require jquery-readySelector
 //= require_tree .
+//= require_tree ./channels
