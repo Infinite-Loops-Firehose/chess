@@ -1,25 +1,16 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+** TO DO ** image of login screen.
+* Ruby version: ** TO DO **
 
-Things you may want to cover:
+Installation Instructions:
+<pre>
+git clone https://github.com/dennisgit42/chess.git
+cd chess/
+gem install bundler
+bundle install
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-nonsense
+rake db:create
+rake db:migrate
+rails s
+</pre>
