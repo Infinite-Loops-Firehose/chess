@@ -11,49 +11,67 @@ $(".games.show").ready(function(){
     },
 
     received: function(data){
-      var pieceId = data.pieceId,
+      console.log("The value of gameId in game.js.erb is now: " + data.gameId);
+
+      // var pieces = $('img#piece');
+      // pieces.draggable({
+      //   containment: '#chessboard tbody',
+      //   cursor: 'move',
+      // });
+
+      if (data.pieceId !== undefined){
+        var pieceId = data.pieceId,
           pieceHTML =  $('img#piece[data-id="' + pieceId + '"]'),
           startY = data.startY,
           destSqX = data.destSqX,
           destSqY = data.destSqY,
           isEnPassantCapture = data.isEnPassantCapture
-      if (isEnPassantCapture){
-        $("td#" + destSqX + startY).empty();
-      }
-      pieceHTML.attr("data-x", destSqX);
-      pieceHTML.attr("data-y", destSqY); 
-      destSqHTML = $("td#" + destSqX + destSqY);
-      destSqHTML.empty();
-      destSqHTML.append(pieceHTML);
-      pieceHTML.css({"top":"initial", "left":"initial"});      
+        if (isEnPassantCapture){
+          $("td#" + destSqX + startY).empty();
+        }
+        pieceHTML.attr("data-x", destSqX);
+        pieceHTML.attr("data-y", destSqY); 
+        destSqHTML = $("td#" + destSqX + destSqY);
+        destSqHTML.empty();
+        destSqHTML.append(pieceHTML);
+        pieceHTML.css({"top":"initial", "left":"initial"});      
 
-      var displayWhiteKingCheck = function(whiteKingCheck){
-        if (whiteKingCheck == true){
-          $("#messages").append('<p>The white king is in check!</p>');
-        } else {
-          $("#messages").empty();
+        var displayWhiteKingCheck = function(whiteKingCheck){
+          if (whiteKingCheck == true){
+            $("#messages").append('<p>The white king is in check!</p>');
+          } else {
+            $("#messages").empty();
+          }
+        }
+
+        var displayBlackKingCheck = function(blackKingCheck){
+          if (blackKingCheck == true){
+            $("#messages").append('<p>The black king is in check!</p>');
+          } else {
+            $("#messages").empty();
+          }
+        }
+
+        if (data.pieceColor == "white"){
+          gon.watch('black_king_check', displayBlackKingCheck);
+        }
+
+        if (data.pieceColor == "black"){
+          gon.watch('white_king_check', displayWhiteKingCheck);
         }
       }
 
-      var displayBlackKingCheck = function(blackKingCheck){
-        if (blackKingCheck == true){
-          $("#messages").append('<p>The black king is in check!</p>');
-        } else {
-          $("#messages").empty();
+      console.log("The value of gameState in game.js.erb is now: " + data.gameState);
+
+      var reloadGameWithGameOverMessage = function(gameState){
+        if(gameState != 0){
+          console.log("The value of gameState in game.js.erb is now: " + gameState);
+          location.reload();
+          
         }
       }
-
-      if (data.pieceColor == "white"){
-        gon.watch('black_king_check', displayBlackKingCheck);
-      }
-
-      if (data.pieceColor == "black"){
-        gon.watch('white_king_check', displayWhiteKingCheck);
-      }
-
-      if(data.gameState != null && data.gameState != 0){
-        location.reload();
-      }
+      gon.watch('game_state', reloadGameWithGameOverMessage)
+  
 
       // Called when there's incoming data on the websocket for this channel
     },
@@ -71,12 +89,14 @@ $(".games.show").ready(function(){
       })
     },
 
-    broadcastGameOver: function(gameId, gameState){
-      this.perform('broadcast_game_over', {
-        gameId: game, 
-        gameState: gameState
-      })
-    } 
+    // broadcastGameOver: function(gameId, gameState, pieces){
+    //   console.log("the value of gameState in game.js.erb upon broadcast of gameover is " + gameState);
+    //   this.perform('broadcast_game_over', {
+    //     gameId: gameId, 
+    //     gameState: gameState,
+    //     pieces: pieces
+    //   })
+    // } 
 
   })
 })

@@ -7,7 +7,8 @@ $(".games.show").ready(function(){
   var pieceMovedType;
   var startX;
   var startY;
-  var gameId;
+  var gameId = $("div#gameId").attr("data-game-id");
+  var gameState = $("div#gameState").attr("data-game-state");
 
   pieces.mousedown(function(e){
     pieceHTML = $(e.target);
@@ -16,7 +17,6 @@ $(".games.show").ready(function(){
     pieceMovedType = $(e.target).attr('data-type');
     startX = $(e.target).attr('data-x');
     startY = $(e.target).attr('data-y');
-    gameId = $("div#gameId").attr("data-game-id");
   })
 
   pieces.draggable({
@@ -54,12 +54,7 @@ $(".games.show").ready(function(){
     }}
   )
 
+  if (gameState != 0){
+    pieces.draggable("destroy");
+  }
 });
-
-// stops all drag and drop piece movement once game is marked as over.
-$('span#gameover').ready(function(){
-  var gameState = $("#gameState").data("gameState"),
-      gameId = $("#gameId").data("gameId");
-  App.game.broadcastGameOver(gameId, gameState);
-  $('img#piece').draggable("destroy");
-})
