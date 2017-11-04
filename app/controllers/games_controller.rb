@@ -34,7 +34,7 @@ class GamesController < ApplicationController
   def forfeit
     @game = Game.find(params[:id])
     @game.update(state: Game::FORFEIT)
-    redirect_to game_path(@game)
+    gon.watch.game_state = @game.state
   end
 
   private
