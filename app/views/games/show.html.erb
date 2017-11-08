@@ -27,8 +27,8 @@
       <p><%= User.find(@game.user_black_id).name %> has been stalemated by <%= User.find(@game.user_white_id).name %>!</p>
     <% end %>
     <% if @game.state == Game::FORFEIT %>
-      <% %>
-      <p><%= @game.player_lose %> has forfeited the game!</p>
+      <% losing_player = User.find(@game.player_lose) %>
+      <p><%= losing_player.name %> has forfeited the game!</p>
     <% end %>
   </div>
 
@@ -64,7 +64,7 @@
         <% end %>
       </tbody>
     </table>
-    <%= button_to "Forfeit", forfeit_game_path, :class => "btn btn-success", :method => :patch %>
+    <%= button_to "Forfeit", forfeit_game_path(@game), :class => "btn btn-success", :method => :patch %>
   </div>
 
 

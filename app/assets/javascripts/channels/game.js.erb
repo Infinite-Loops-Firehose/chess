@@ -11,14 +11,6 @@ $(".games.show").ready(function(){
     },
 
     received: function(data){
-      console.log("The value of gameId in game.js.erb is now: " + data.gameId);
-
-      // var pieces = $('img#piece');
-      // pieces.draggable({
-      //   containment: '#chessboard tbody',
-      //   cursor: 'move',
-      // });
-
       if (data.pieceId !== undefined){
         var pieceId = data.pieceId,
           pieceHTML =  $('img#piece[data-id="' + pieceId + '"]'),
@@ -61,19 +53,12 @@ $(".games.show").ready(function(){
         }
       }
 
-      console.log("The value of gameState in game.js.erb is now: " + data.gameState);
-
       var reloadGameWithGameOverMessage = function(gameState){
         if(gameState != 0){
-          console.log("The value of gameState in game.js.erb is now: " + gameState);
-          location.reload();
-          
+          location.reload();   
         }
       }
       gon.watch('game_state', reloadGameWithGameOverMessage)
-  
-
-      // Called when there's incoming data on the websocket for this channel
     },
 
     broadcastPieceMovement: function(pieceId, pieceColor, gameId, startX, startY, destSqX, destSqY, isEnPassantCapture){
@@ -88,16 +73,6 @@ $(".games.show").ready(function(){
         isEnPassantCapture: isEnPassantCapture
       })
     },
-
-    // broadcastGameOver: function(gameId, gameState, pieces){
-    //   console.log("the value of gameState in game.js.erb upon broadcast of gameover is " + gameState);
-    //   this.perform('broadcast_game_over', {
-    //     gameId: gameId, 
-    //     gameState: gameState,
-    //     pieces: pieces
-    //   })
-    // } 
-
   })
 })
 

@@ -33,8 +33,9 @@ class GamesController < ApplicationController
 
   def forfeit
     @game = Game.find(params[:id])
-    @game.update(state: Game::FORFEIT)
     gon.watch.game_state = @game.state
+    @game.update(state: Game::FORFEIT, player_lose: current_user.id)
+    GameChannel.broadcast_player_forfeit('game_id' => @game.id, 'player_lose' => current_user.id)
   end
 
   private
