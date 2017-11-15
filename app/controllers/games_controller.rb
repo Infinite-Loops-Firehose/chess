@@ -16,6 +16,7 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find(params[:id])
+    gon.watch.game_state = @game.state
     gon.watch.white_king_check = @game.check?(true)
     gon.watch.black_king_check = @game.check?(false)
   end
@@ -31,9 +32,10 @@ class GamesController < ApplicationController
   end
 
   def forfeit
-    current_game.forfeit(current_user)
-    flash[:alert] = 'You forfeited the game :('
-    redirect_to root_path
+    @game = Game.find(params[:id])
+    gon.watch.game_state = @game.state
+    @game.update(state: Game::FORFEIT, player_lose: current_user.id)
+    GameChannel.broadcast_player_forfeit('game_id' => @game.id, 'player_lose' => current_user.id)
   end
 
   private

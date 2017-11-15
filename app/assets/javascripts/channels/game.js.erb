@@ -53,17 +53,12 @@ $(".games.show").ready(function(){
         }
       }
 
-      console.log("The value of gameState in game.js.erb is now: " + data.gameState);
-
       var reloadGameWithGameOverMessage = function(gameState){
         if(gameState != 0){
           location.reload();
         }
       }
       gon.watch('game_state', reloadGameWithGameOverMessage)
-  
-
-      // Called when there's incoming data on the websocket for this channel
     },
 
     broadcastPieceMovement: function(pieceId, pieceColor, gameId, startX, startY, destSqX, destSqY, isEnPassantCapture){

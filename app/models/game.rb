@@ -68,11 +68,13 @@ class Game < ApplicationRecord
     under_attack?(is_white, friendly_king(is_white).x_position, friendly_king(is_white).y_position)
   end
 
-  def checkmate?(is_white)
+  def checkmate?(is_white) # is_white is the is_white value of the king that may be in checkmate
     return false unless check?(is_white)
-    return false if under_attack?(is_white, attacking_piece(is_white).x_position, attacking_piece(is_white).y_position)
+    return false if under_attack?(!is_white, attacking_piece(is_white).x_position, attacking_piece(is_white).y_position)
     return false if friendly_king(is_white).can_move_out_of_check?
     return false if attacking_piece(is_white).can_be_blocked?(friendly_king(is_white).x_position, friendly_king(is_white).y_position)
+    update_attributes!(player_win: user_black_id, player_lose: user_white_id) if is_white == true
+    update_attributes!(player_win: user_white_id, player_lose: user_black_id) if is_white == false
     true
   end
 
