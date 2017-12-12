@@ -4,6 +4,8 @@ class GamesController < ApplicationController
 
   def index
     @available_games = Game.available
+    @games_in_progress = Game.in_progress
+    @games_ended = Game.ended
   end
 
   def new; end

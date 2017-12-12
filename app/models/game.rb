@@ -3,6 +3,8 @@ class Game < ApplicationRecord
   belongs_to :user_white, class_name: 'User'
   has_many :pieces, dependent: :destroy
   scope :available, -> { where('user_white_id IS NULL OR user_black_id IS NULL') }
+  scope :in_progress, -> { where.not('user_white_id IS NULL OR user_black_id IS NULL').where(state: IN_PLAY) }
+  scope :ended, -> { where.not(state: IN_PLAY) }
 
   def populate_board!
     # this should create all 32 Pieces with their initial X/Y coordinates. White pieces will be at bottom of board.

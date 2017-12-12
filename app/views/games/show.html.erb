@@ -65,6 +65,8 @@
       </tbody>
     </table>
     <%= button_to "Forfeit", forfeit_game_path(@game), :class => "btn btn-success", :method => :patch %>
+    <br />
+    <%= button_to "Go back to index of games", root_path, :method => :get, :class => "btn btn-success" %>
   </div>
 
 
