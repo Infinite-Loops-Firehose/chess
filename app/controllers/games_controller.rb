@@ -31,13 +31,14 @@ class GamesController < ApplicationController
       @game.update(user_white_id: current_user.id)
     end
     redirect_to game_path(@game)
+    GameChannel.broadcast_game_change('game_id' => @game.id, 'user_black_id' => @game.user_black_id)
   end
 
   def forfeit
     @game = Game.find(params[:id])
-    gon.watch.game_state = @game.state
     @game.update(state: Game::FORFEIT, player_lose: current_user.id)
-    GameChannel.broadcast_player_forfeit('game_id' => @game.id, 'player_lose' => current_user.id)
+    redirect_to game_path(@game)
+    GameChannel.broadcast_game_change('game_id' => @game.id)
   end
 
   private

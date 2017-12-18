@@ -17,19 +17,31 @@
   <h1 class="text-center">Infinite Loops Chess</h1>
 
   <div id="messages">
-    <% if @game.checkmate?(true) %>
-      <p><%= User.find(@game.user_black_id).name %> has checkmated <%= User.find(@game.user_white_id).name %>!</p>
-    <% elsif @game.checkmate?(false) %>
-      <p><%= User.find(@game.user_white_id).name %> has checkmated <%= User.find(@game.user_black_id).name %>!</p>
-    <% elsif @game.stalemate?(true) %>
-      <p><%= User.find(@game.user_white_id).name %> has been stalemated by <%= User.find(@game.user_black_id).name %>!</p>
-    <% elsif @game.stalemate?(false) %>
-      <p><%= User.find(@game.user_black_id).name %> has been stalemated by <%= User.find(@game.user_white_id).name %>!</p>
+    <div id="whitePlayer">
+      <%= @game.user_white.name %> is playing white.
+    </div>
+    <div id="blackPlayer">
+      <% if @game.user_black != nil %>
+      <%= @game.user_black.name %> is playing black.
     <% end %>
-    <% if @game.state == Game::FORFEIT %>
-      <% losing_player = User.find(@game.player_lose) %>
-      <p><%= losing_player.name %> has forfeited the game!</p>
-    <% end %>
+    </div> 
+    <div id="gameEndMessages"> 
+      <% if @game.checkmate?(true) %>
+        <p><%= User.find(@game.user_black_id).name %> has checkmated <%= User.find(@game.user_white_id).name %>!</p>
+      <% elsif @game.checkmate?(false) %>
+        <p><%= User.find(@game.user_white_id).name %> has checkmated <%= User.find(@game.user_black_id).name %>!</p>
+      <% elsif @game.stalemate?(true) %>
+        <p><%= User.find(@game.user_white_id).name %> has been stalemated by <%= User.find(@game.user_black_id).name %>!</p>
+      <% elsif @game.stalemate?(false) %>
+        <p><%= User.find(@game.user_black_id).name %> has been stalemated by <%= User.find(@game.user_white_id).name %>!</p>
+      <% end %>
+      <% if @game.state == Game::FORFEIT %>
+        <% losing_player = User.find(@game.player_lose) %>
+        <p><%= losing_player.name %> has forfeited the game!</p>
+      <% end %>
+    </div>
+    <div id="tempMessages">
+    </div>
   </div>
 
   <div class="col-10 center offset-1">
@@ -64,9 +76,13 @@
         <% end %>
       </tbody>
     </table>
-    <%= button_to "Forfeit", forfeit_game_path(@game), :class => "btn btn-success", :method => :patch %>
+
     <br />
-    <%= button_to "Go back to index of games", root_path, :method => :get, :class => "btn btn-success" %>
+    <%= button_to "Go back to index of games", root_path, :method => :get, :class => "btn btn-success" %>        
+    <br /><br /><br /><br /><br /><br />
+    <% if @game.state == Game::IN_PLAY && @game.user_black != nil %>
+      <%= button_to "Forfeit", forfeit_game_path(@game), :class => "btn btn-success", :method => :patch %>
+    <% end %> 
   </div>
 
 
