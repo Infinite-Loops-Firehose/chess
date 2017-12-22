@@ -1,15 +1,15 @@
 @import "bootstrap";
 
 body{
-  background: image_url("chess-by-water.jpg");
-  background-repeat: no-repeat;
-  color: white;
+  background: linear-gradient(0deg,rgba(50,50,60,0.6),rgba(50,50,60,0.6)),url("chess-by-water.jpg");
+  background-size: cover;
+  color: #ddddee;
   font-family: Helvetica, Times;
 }
 
 #chessboard {
-    width: 720px;
-    height: 720px;
+    max-width: 100%;
+    height: 100%;
     margin: auto;
 }
 
