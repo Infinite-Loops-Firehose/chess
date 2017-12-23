@@ -30,35 +30,40 @@ $(".games.show").ready(function(){
 
         var displayWhiteKingCheck = function(whiteKingCheck){
           if (whiteKingCheck == true){
-            $("#messages").append('<p>The white king is in check!</p>');
+            $("#tempMessages").append('<p>The white king is in check!</p>');
           } else {
-            $("#messages").empty();
+            $("#tempMessages").empty();
           }
         }
 
         var displayBlackKingCheck = function(blackKingCheck){
           if (blackKingCheck == true){
-            $("#messages").append('<p>The black king is in check!</p>');
+            $("#tempMessages").append('<p>The black king is in check!</p>');
           } else {
-            $("#messages").empty();
+            $("#tempMessages").empty();
           }
         }
 
         if (data.pieceColor == "white"){
           gon.watch('black_king_check', displayBlackKingCheck);
-        }
+        } 
 
         if (data.pieceColor == "black"){
           gon.watch('white_king_check', displayWhiteKingCheck);
         }
       }
 
-      var reloadGameWithGameOverMessage = function(gameState){
+      var reloadDueToGameState = function(gameState){
         if(gameState != 0){
-          location.reload();   
+          location.reload();
         }
       }
-      gon.watch('game_state', reloadGameWithGameOverMessage)
+
+      if(typeof data.user_black_id !== 'undefined'){
+        location.reload();
+      }
+
+      gon.watch('game_state', reloadDueToGameState)
     },
 
     broadcastPieceMovement: function(pieceId, pieceColor, gameId, startX, startY, destSqX, destSqY, isEnPassantCapture){

@@ -1,6 +1,5 @@
 // added drop piece code back to this file
 $(".games.show").ready(function(){
-
   var pieces = $('img#piece');
   var pieceHTML;
   var pieceId;
@@ -10,6 +9,11 @@ $(".games.show").ready(function(){
   var gameId = $("div#gameId").attr("data-game-id");
   var gameState = $("div#gameState").attr("data-game-state");
 
+  pieces.draggable({
+    containment: '#chessboard tbody',
+    cursor: 'move',
+  });
+
   pieces.mousedown(function(e){
     pieceHTML = $(e.target);
     pieceId = $(e.target).attr('data-id');
@@ -18,11 +22,6 @@ $(".games.show").ready(function(){
     startX = $(e.target).attr('data-x');
     startY = $(e.target).attr('data-y');
   })
-
-  pieces.draggable({
-    containment: '#chessboard tbody',
-    cursor: 'move',
-  });
 
   $('td').droppable(
     { accept: pieces },
@@ -59,4 +58,5 @@ $(".games.show").ready(function(){
   if (gameState != 0){
     pieces.draggable("destroy");
   }
+  
 });
