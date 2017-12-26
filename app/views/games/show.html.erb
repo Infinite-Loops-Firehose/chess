@@ -17,13 +17,16 @@
   <h1 class="text-center">Infinite Loops Chess</h1>
 
   <div id="messages">
+    <div id="currentUser">
+      <p>You are logged in as <%= current_user.name %></p>
+    </div>
     <div id="whitePlayer">
-      <%= @game.user_white.name %> is playing white.
+      <p><%= @game.user_white.name %> is playing white.</p>
     </div>
     <div id="blackPlayer">
       <% if @game.user_black != nil %>
-      <%= @game.user_black.name %> is playing black.
-    <% end %>
+        <p><%= @game.user_black.name %> is playing black.</p>
+      <% end %>
     </div> 
     <div id="gameEndMessages"> 
       <% if @game.checkmate?(true) %>
@@ -41,6 +44,14 @@
       <% end %>
     </div>
     <div id="tempMessages">
+    </div>
+    <div id="turn">
+      <% if @game.is_white_turn == true %>
+        <p>The current turn belongs to: <%= @game.user_white.name %></p>
+      <% end %>
+      <% if @game.is_white_turn == false %>
+        <p>The current turn belongs to: <%= @game.user_black.name %></p>
+      <% end %>
     </div>
   </div>
 
@@ -84,6 +95,5 @@
       <%= button_to "Forfeit", forfeit_game_path(@game), :class => "btn btn-success", :method => :patch %>
     <% end %> 
   </div>
-
 
 </body>

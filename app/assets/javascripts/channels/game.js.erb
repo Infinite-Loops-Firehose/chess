@@ -1,4 +1,5 @@
 $(".games.show").ready(function(){
+
   // Getting gameId from games#show
   var gameId = $("div#gameId").data("gameId");
   App.game = App.cable.subscriptions.create( { channel: "GameChannel", game_id: gameId }, {  
@@ -12,45 +13,97 @@ $(".games.show").ready(function(){
 
     received: function(data){
       if (data.pieceId !== undefined){
-        var pieceId = data.pieceId,
-          pieceHTML =  $('img#piece[data-id="' + pieceId + '"]'),
-          startY = data.startY,
-          destSqX = data.destSqX,
-          destSqY = data.destSqY,
-          isEnPassantCapture = data.isEnPassantCapture
+        var whitePieces = $("#piece[data-color='white']");
+        var blackPieces = $("#piece[data-color='black']");
+        var pieceHTML;
+        var pieceId;
+        var pieceMovedType;
+        var startX;
+        var startY;
+        var gameId = $("div#gameId").attr("data-game-id");
+        var gameState = $("div#gameState").attr("data-game-state");
+
+        whitePieces.mousedown(function(e){
+          pieceHTML = $(e.target);
+          pieceId = $(e.target).attr('data-id');
+          pieceColor = $(e.target).attr('data-color');
+          pieceMovedType = $(e.target).attr('data-type');
+          startX = $(e.target).attr('data-x');
+          startY = $(e.target).attr('data-y');
+        });
+
+        blackPieces.mousedown(function(e){
+          pieceHTML = $(e.target);
+          pieceId = $(e.target).attr('data-id');
+          pieceColor = $(e.target).attr('data-color');
+          pieceMovedType = $(e.target).attr('data-type');
+          startX = $(e.target).attr('data-x');
+          startY = $(e.target).attr('data-y');
+        });
+
+        pieceId = data.pieceId;
+        pieceHTML =  $('img#piece[data-id="' + pieceId + '"]'),
+        startY = data.startY,
+        destSqX = data.destSqX,
+        destSqY = data.destSqY,
+        isEnPassantCapture = data.isEnPassantCapture;
         if (isEnPassantCapture){
           $("td#" + destSqX + startY).empty();
         }
         pieceHTML.attr("data-x", destSqX);
-        pieceHTML.attr("data-y", destSqY); 
+        pieceHTML.attr("data-y", destSqY);
         destSqHTML = $("td#" + destSqX + destSqY);
         destSqHTML.empty();
         destSqHTML.append(pieceHTML);
         pieceHTML.css({"top":"initial", "left":"initial"});      
 
         var displayWhiteKingCheck = function(whiteKingCheck){
+          $("#tempMessages").empty();
           if (whiteKingCheck == true){
             $("#tempMessages").append('<p>The white king is in check!</p>');
-          } else {
-            $("#tempMessages").empty();
           }
         }
 
         var displayBlackKingCheck = function(blackKingCheck){
+          $("#tempMessages").empty();
           if (blackKingCheck == true){
             $("#tempMessages").append('<p>The black king is in check!</p>');
-          } else {
-            $("#tempMessages").empty();
           }
         }
 
         if (data.pieceColor == "white"){
-          gon.watch('black_king_check', displayBlackKingCheck);
-        } 
+          gon.watch("black_king_check", displayBlackKingCheck);
+        }; 
 
         if (data.pieceColor == "black"){
-          gon.watch('white_king_check', displayWhiteKingCheck);
+          gon.watch("white_king_check", displayWhiteKingCheck);
+        };
+
+        var setPlayerTurn = function(isWhiteTurn){
+          $("#turn").empty();
+          if(isWhiteTurn == true){
+            whitePieces.draggable({
+              containment: "#chessboard tbody",
+              cursor: "move",
+            }).draggable("enable");
+            blackPieces.draggable().draggable("disable");
+            $("#turn").append("<p>The current turn belongs to: " + gon.user_white_name + "</p>" );
+          } 
+          if(isWhiteTurn == false){
+            whitePieces.draggable().draggable("disable");
+            blackPieces.draggable({
+              containment: "#chessboard tbody",
+              cursor: "move",
+            }).draggable("enable");
+            $("#turn").append("<p>The current turn belongs to: " + gon.user_black_name + "</p>");
+          }
         }
+
+        gon.watch("is_white_turn", setPlayerTurn);
+      }
+
+      if (typeof data.user_black_id !== 'undefined'){
+        location.reload();
       }
 
       var reloadDueToGameState = function(gameState){
@@ -58,17 +111,13 @@ $(".games.show").ready(function(){
           location.reload();
         }
       }
-
-      if(typeof data.user_black_id !== 'undefined'){
-        location.reload();
-      }
-
-      gon.watch('game_state', reloadDueToGameState)
+      gon.watch("game_state", reloadDueToGameState);
+      
     },
 
     broadcastPieceMovement: function(pieceId, pieceColor, gameId, startX, startY, destSqX, destSqY, isEnPassantCapture){
       this.perform('broadcast_piece_movement', {
-        pieceId: pieceId, 
+        pieceId: pieceId,
         pieceColor: pieceColor,
         gameId: gameId,
         startX: startX,

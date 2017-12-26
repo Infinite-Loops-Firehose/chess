@@ -1,6 +1,7 @@
 // added drop piece code back to this file
 $(".games.show").ready(function(){
-  var pieces = $('img#piece');
+  var whitePieces = $("#piece[data-color='white']");
+  var blackPieces = $("#piece[data-color='black']");
   var pieceHTML;
   var pieceId;
   var pieceMovedType;
@@ -9,22 +10,54 @@ $(".games.show").ready(function(){
   var gameId = $("div#gameId").attr("data-game-id");
   var gameState = $("div#gameState").attr("data-game-state");
 
-  pieces.draggable({
-    containment: '#chessboard tbody',
-    cursor: 'move',
+  whitePieces.draggable({
+    containment: "#chessboard tbody",
+    cursor: "move",
+  });
+  blackPieces.draggable({
+    containment: "#chessboard tbody",
+    cursor: "move",
   });
 
-  pieces.mousedown(function(e){
+  var setPlayerTurn = function(isWhiteTurn){
+    if (isWhiteTurn == undefined){
+      whitePieces.draggable().draggable("destroy");
+      blackPieces.draggable().draggable("destroy");
+    }
+    if (isWhiteTurn == true){
+      whitePieces.draggable().draggable("enable");
+      blackPieces.draggable().draggable("disable");
+    }
+    if (isWhiteTurn == false){
+      whitePieces.draggable().draggable("disable");
+      blackPieces.draggable().draggable("enable");
+    }
+  }
+
+  gon.watch("is_white_turn", setPlayerTurn)
+
+  whitePieces.mousedown(function(e){
     pieceHTML = $(e.target);
     pieceId = $(e.target).attr('data-id');
     pieceColor = $(e.target).attr('data-color');
     pieceMovedType = $(e.target).attr('data-type');
     startX = $(e.target).attr('data-x');
     startY = $(e.target).attr('data-y');
-  })
+  });
+
+  blackPieces.mousedown(function(e){
+    pieceHTML = $(e.target);
+    pieceId = $(e.target).attr('data-id');
+    pieceColor = $(e.target).attr('data-color');
+    pieceMovedType = $(e.target).attr('data-type');
+    startX = $(e.target).attr('data-x');
+    startY = $(e.target).attr('data-y');
+  });
 
   $('td').droppable(
-    { accept: pieces },
+    // { accept: pieces },
+    // { accept: whitePieces },
+    // { accept: blackPieces },
     {drop: function(e){
       var destSqIdNum = parseInt(e.target.id);
       var destSqX = Math.trunc(destSqIdNum / 10);
@@ -53,10 +86,9 @@ $(".games.show").ready(function(){
     }}
   )
 
-  // App.game.broadcastForfeitGame(gameId, gameState);
-
   if (gameState != 0){
-    pieces.draggable("destroy");
+    whitePieces.draggable().draggable("destroy");
+    blackPieces.draggable().draggable("destroy");
   }
   
 });
