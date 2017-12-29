@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-  before_action :authenticate_user!, only: %i[new create show update]
+  before_action :authenticate_user!, only: %i[new create show update forfeit]
   helper_method :game
 
   def index

@@ -79,9 +79,13 @@ $(".games.show").ready(function(){
           gon.watch("white_king_check", displayWhiteKingCheck);
         };
 
+        var currentUserId = $("#currentUser").attr("data-current-user-id");
+        var whitePlayerId = $("#whitePlayer").attr("data-user-white-id");
+        var blackPlayerId = $("#blackPlayer").attr("data-user-black-id");
+
         var setPlayerTurn = function(isWhiteTurn){
           $("#turn").empty();
-          if(isWhiteTurn == true){
+          if(isWhiteTurn == true && currentUserId == whitePlayerId){
             whitePieces.draggable({
               containment: "#chessboard tbody",
               cursor: "move",
@@ -89,7 +93,12 @@ $(".games.show").ready(function(){
             blackPieces.draggable().draggable("disable");
             $("#turn").append("<p>The current turn belongs to: " + gon.user_white_name + "</p>" );
           } 
-          if(isWhiteTurn == false){
+          if(isWhiteTurn == true && currentUserId != whitePlayerId){
+            whitePieces.draggable().draggable("disable");
+            blackPieces.draggable().draggable("disable");
+            $("#turn").append("<p>The current turn belongs to: " + gon.user_white_name + "</p>" );
+          }
+          if(isWhiteTurn == false && currentUserId == blackPlayerId){
             whitePieces.draggable().draggable("disable");
             blackPieces.draggable({
               containment: "#chessboard tbody",
@@ -97,8 +106,12 @@ $(".games.show").ready(function(){
             }).draggable("enable");
             $("#turn").append("<p>The current turn belongs to: " + gon.user_black_name + "</p>");
           }
+          if(isWhiteTurn == false && currentUserId != blackPlayerId){
+            whitePieces.draggable().draggable("disable");
+            blackPieces.draggable().draggable("disable");
+            $("#turn").append("<p>The current turn belongs to: " + gon.user_black_name + "</p>");
+          }
         }
-
         gon.watch("is_white_turn", setPlayerTurn);
       }
 

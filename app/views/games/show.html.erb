@@ -17,13 +17,13 @@
   <h1 class="text-center">Infinite Loops Chess</h1>
 
   <div id="messages">
-    <div id="currentUser">
+    <div id="currentUser" data-current-user-id=<%= current_user.id %>>
       <p>You are logged in as <%= current_user.name %></p>
     </div>
-    <div id="whitePlayer">
+    <div id="whitePlayer" data-user-white-id=<%= @game.user_white_id %>>
       <p><%= @game.user_white.name %> is playing white.</p>
     </div>
-    <div id="blackPlayer">
+    <div id="blackPlayer" data-user-black-id=<%= @game.user_black_id %>>
       <% if @game.user_black != nil %>
         <p><%= @game.user_black.name %> is playing black.</p>
       <% end %>

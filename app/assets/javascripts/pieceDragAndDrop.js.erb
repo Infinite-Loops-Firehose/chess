@@ -19,18 +19,30 @@ $(".games.show").ready(function(){
     cursor: "move",
   });
 
+  var currentUserId = $("#currentUser").attr("data-current-user-id");
+  var whitePlayerId = $("#whitePlayer").attr("data-user-white-id");
+  var blackPlayerId = $("#blackPlayer").attr("data-user-black-id");
+
   var setPlayerTurn = function(isWhiteTurn){
     if (isWhiteTurn == undefined){
       whitePieces.draggable().draggable("destroy");
       blackPieces.draggable().draggable("destroy");
     }
-    if (isWhiteTurn == true){
+    if (isWhiteTurn == true && currentUserId == whitePlayerId){
       whitePieces.draggable().draggable("enable");
       blackPieces.draggable().draggable("disable");
     }
-    if (isWhiteTurn == false){
+    if (isWhiteTurn == true && currentUserId != whitePlayerId){
+      whitePieces.draggable().draggable("disable");
+      blackPieces.draggable().draggable("disable");
+    }
+    if (isWhiteTurn == false && currentUserId == blackPlayerId){
       whitePieces.draggable().draggable("disable");
       blackPieces.draggable().draggable("enable");
+    }
+    if (isWhiteTurn == false && currentUserId != blackPlayerId){
+      whitePieces.draggable().draggable("disable");
+      blackPieces.draggable().draggable("disable");
     }
   }
 
@@ -85,10 +97,5 @@ $(".games.show").ready(function(){
       })
     }}
   )
-
-  if (gameState != 0){
-    whitePieces.draggable().draggable("destroy");
-    blackPieces.draggable().draggable("destroy");
-  }
   
 });
