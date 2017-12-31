@@ -44,6 +44,12 @@
       <% end %>
     </div>
     <div id="tempMessages">
+      <% if @game.check?(true) %>
+        <p>The white king is in check!</p>
+      <% end %>
+      <% if @game.check?(false) %>
+        <p>The black king is in check!</p>
+      <% end %>
     </div>
     <div id="turn">
       <% if @game.is_white_turn == true %>
