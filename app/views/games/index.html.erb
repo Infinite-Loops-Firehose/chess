@@ -1,21 +1,48 @@
 <div class="col-12 text-center">
-  <h1>Do you want to play a game of chess? Here is a list of all the games that still need a player.</h1>
+  <h1>Do you want to play a game of chess?</h1>
 
   <div>
     <% if !user_signed_in? %>
       <%= link_to "Sign in with Facebook", user_facebook_omniauth_authorize_path, class:'btn btn-success' %>
     <% end %>
 
-    <% if user_signed_in? %>
-      <%= link_to "Sign out", destroy_user_session_path, method: :delete, class:'btn btn-warning' %>
+    <% if !user_signed_in? %>
+      <%= link_to "Sign in using id you created for chess", new_user_session_path, class:'btn btn-success' %>
+      <%= link_to "Create a new id for this app", new_user_registration_path, class:'btn btn-success' %>
     <% end %>
 
     <% if user_signed_in? %>
+      You are currently signed in as <%= current_user.name %>
+      <%= link_to "Sign out", destroy_user_session_path, method: :delete, class:'btn btn-warning' %>
       <%= link_to "Delete your registration", user_registration_path, method: :delete, class:'btn btn-danger' %>
     <% end %>
   </div>
 
   <br />
+  <h1>Here is a list of all the games that have two players and are currently ongoing:</h1>  
+  <% @games_in_progress.each do |game| %>
+    <div class="row .container-fluid">
+      <div class="col-12">
+        The game with id <%= game.id %> was created <%= game.created_at.strftime("%b %d, %Y") %>
+      </div> 
+      <div class="col-12">
+        <%= game.user_white.name %> is playing white.
+      </div>
+      <div class="col-12">
+        <%= game.user_black.name %> is playing black.
+      </div>
+      <div class="col-12">
+        <% if current_user == game.user_white || current_user == game.user_black %>
+          <%= link_to "Continue game", game_path(game.id), method: :get, class: "btn btn-success" %>
+        <% end %>
+      </div>
+    </div>
+    
+    <br />
+  <% end %>
+
+  <br />
+  <h1>Here is a list of all the games that are still looking for someone to play black:</h1>
   <% @available_games.each do |game| %>
     <div class="row .container-fluid">
       <div class="col-12">
@@ -23,16 +50,7 @@
       </div> 
 
       <div class="col-12">
-        <% if game.user_white == nil %>
-          No one is playing White.
-          <% if user_signed_in? %>
-            <%= link_to "Join game as white", game_path(game.id), method: :put, class: "btn btn-success"%>
-          <% else %>
-            Sign in using link above if you want to join this game.
-          <% end %>
-        <% else %>
-          <%= game.user_white.name %> is playing white. 
-        <% end %>    
+        <%= game.user_white.name %> is playing white.
       </div>
 
       <div class="col-12">
@@ -52,12 +70,37 @@
     <br />
   <% end %>
 
-  <div class="col-12">
-    <% if user_signed_in? %>
-      <h1>Or you can create a new game and ask someone else to join you.</h1>
-      <%= link_to "Create new game", games_path(game: {user_white_id: current_user} ), method: :post, class: "btn btn-success" %>
-    <% else %>
-      <h1>Sign in if you want to create a new game.</h1>
-    <% end %>
+  <br />
+  <h1>Here is a list of all the games that have ended: </h1>
+  <% @games_ended.each do |game| %>
+    <div class="row .container-fluid">
+      <div class="col-12">
+        The game with id <%= game.id %> was created <%= game.created_at.strftime("%b %d, %Y") %>
+      </div> 
+      <div class="col-12">
+        <%= game.user_white.name %> is playing white.
+      </div>
+      <div class="col-12">
+        <%= game.user_black.name %> is playing black.    
+      </div>
+      <div class="col-12">
+        <%= link_to "See how this game ended", game_path(game.id), method: :get, class: "btn btn-success"%>
+      </div>
+    </div>
+
+    <br />
+  <% end %>
+
+  <br />
+  <br />
+  <div class="row .container-fluid">
+    <div class="col-12">
+      <% if user_signed_in? %>
+        <h1>Or you can create a new game playing as white and ask someone else to join you playing as black:</h1>
+        <%= link_to "Create new game", games_path(game: {user_white_id: current_user} ), method: :post, class: "btn btn-success" %>
+      <% else %>
+        <h1>Sign in if you want to create a new game.</h1>
+      <% end %>
+    </div>
   </div>
 </div>

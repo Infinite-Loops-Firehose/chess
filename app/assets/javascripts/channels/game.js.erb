@@ -11,51 +11,59 @@ $(".games.show").ready(function(){
     },
 
     received: function(data){
-      var pieceId = data.pieceId,
+      if (data.pieceId !== undefined){
+        var pieceId = data.pieceId,
           pieceHTML =  $('img#piece[data-id="' + pieceId + '"]'),
           startY = data.startY,
           destSqX = data.destSqX,
           destSqY = data.destSqY,
           isEnPassantCapture = data.isEnPassantCapture
-      if (isEnPassantCapture){
-        $("td#" + destSqX + startY).empty();
-      }
-      pieceHTML.attr("data-x", destSqX);
-      pieceHTML.attr("data-y", destSqY); 
-      destSqHTML = $("td#" + destSqX + destSqY);
-      destSqHTML.empty();
-      destSqHTML.append(pieceHTML);
-      pieceHTML.css({"top":"initial", "left":"initial"});      
+        if (isEnPassantCapture){
+          $("td#" + destSqX + startY).empty();
+        }
+        pieceHTML.attr("data-x", destSqX);
+        pieceHTML.attr("data-y", destSqY); 
+        destSqHTML = $("td#" + destSqX + destSqY);
+        destSqHTML.empty();
+        destSqHTML.append(pieceHTML);
+        pieceHTML.css({"top":"initial", "left":"initial"});      
 
-      var displayWhiteKingCheck = function(whiteKingCheck){
-        if (whiteKingCheck == true){
-          $("#messages").append('<p>The white king is in check!</p>');
-        } else {
-          $("#messages").empty();
+        var displayWhiteKingCheck = function(whiteKingCheck){
+          if (whiteKingCheck == true){
+            $("#tempMessages").append('<p>The white king is in check!</p>');
+          } else {
+            $("#tempMessages").empty();
+          }
+        }
+
+        var displayBlackKingCheck = function(blackKingCheck){
+          if (blackKingCheck == true){
+            $("#tempMessages").append('<p>The black king is in check!</p>');
+          } else {
+            $("#tempMessages").empty();
+          }
+        }
+
+        if (data.pieceColor == "white"){
+          gon.watch('black_king_check', displayBlackKingCheck);
+        } 
+
+        if (data.pieceColor == "black"){
+          gon.watch('white_king_check', displayWhiteKingCheck);
         }
       }
 
-      var displayBlackKingCheck = function(blackKingCheck){
-        if (blackKingCheck == true){
-          $("#messages").append('<p>The black king is in check!</p>');
-        } else {
-          $("#messages").empty();
+      var reloadDueToGameState = function(gameState){
+        if(gameState != 0){
+          location.reload();
         }
       }
 
-      if (data.pieceColor == "white"){
-        gon.watch('black_king_check', displayBlackKingCheck);
-      }
-
-      if (data.pieceColor == "black"){
-        gon.watch('white_king_check', displayWhiteKingCheck);
-      }
-
-      if(data.gameState != null && data.gameState != 0){
+      if(typeof data.user_black_id !== 'undefined'){
         location.reload();
       }
 
-      // Called when there's incoming data on the websocket for this channel
+      gon.watch('game_state', reloadDueToGameState)
     },
 
     broadcastPieceMovement: function(pieceId, pieceColor, gameId, startX, startY, destSqX, destSqY, isEnPassantCapture){
@@ -70,14 +78,6 @@ $(".games.show").ready(function(){
         isEnPassantCapture: isEnPassantCapture
       })
     },
-
-    broadcastGameOver: function(gameId, gameState){
-      this.perform('broadcast_game_over', {
-        gameId: game, 
-        gameState: gameState
-      })
-    } 
-
   })
 })
 

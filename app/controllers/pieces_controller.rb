@@ -23,10 +23,6 @@ class PiecesController < ApplicationController
       @game.update_attributes(state: Game::CHECKMATE)
     end
 
-    if @game.state != Game::IN_PLAY
-      redirect_to game_path(@game)
-      return
-    end
     # flash[:error] = 'That is an invalid move.' if piece_to_move.errors.present?
     # redirect_to game_path(piece_to_move.game)
     # render json: piece_to_move
