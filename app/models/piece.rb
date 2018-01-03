@@ -156,6 +156,7 @@ class Piece < ApplicationRecord
         return true if piece.valid_move?(coords.first, coords.last)
       end
     end
+    false
   end
 
   def off_board?(new_x, new_y)

@@ -1,6 +1,7 @@
 class King < Piece
   def valid_move?(new_x, new_y)
     return false if off_board?(new_x.to_i, new_y.to_i)
+    return false if game.under_attack?(is_white, new_x.to_i, new_y.to_i) # king is not allowed to move into check
     if square_occupied?(new_x.to_i, new_y.to_i)
       return false if game.get_piece_at_coor(new_x.to_i, new_y.to_i).is_white == is_white
     end

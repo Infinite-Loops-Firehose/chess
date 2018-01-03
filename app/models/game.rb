@@ -52,14 +52,17 @@ class Game < ApplicationRecord
   end
 
   def under_attack?(is_white, x, y)
-    pieces.where(is_white: !is_white).where.not(x_position: nil, y_position: nil).find_each do |piece|
+    pieces.where(is_white: !is_white).where.not(x_position: nil, y_position: nil, type: KING).find_each do |piece|
       return true if piece.valid_move?(x, y)
+    end
+    if (enemy_king(is_white).x_position - x).abs <=1 && (enemy_king(is_white).y_position - y).abs <=1
+      return true
     end
     false
   end
 
   def attacking_piece(is_white) # is_white is the value of the friendly_king, NOT the attacking_piece
-    pieces.where(is_white: !is_white).where.not(x_position: nil, y_position: nil).find_each do |piece|
+    pieces.where(is_white: !is_white).where.not(x_position: nil, y_position: nil, type: KING).find_each do |piece| # a king cannot be an attacking piece because it would put himself into check
       return piece if piece.valid_move?(friendly_king(is_white).x_position, friendly_king(is_white).y_position)
     end
   end
@@ -70,7 +73,7 @@ class Game < ApplicationRecord
 
   def checkmate?(is_white)
     return false unless check?(is_white)
-    return false if under_attack?(is_white, attacking_piece(is_white).x_position, attacking_piece(is_white).y_position)
+    return false if under_attack?(!is_white, attacking_piece(is_white).x_position, attacking_piece(is_white).y_position)
     return false if friendly_king(is_white).can_move_out_of_check?
     return false if attacking_piece(is_white).can_be_blocked?(friendly_king(is_white).x_position, friendly_king(is_white).y_position)
     true
