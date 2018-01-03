@@ -57,7 +57,7 @@ class Game < ApplicationRecord
     pieces.where(is_white: !is_white).where.not(x_position: nil, y_position: nil, type: KING).find_each do |piece|
       return true if piece.valid_move?(x, y)
     end
-    if (enemy_king(is_white).x_position - x).abs <=1 && (enemy_king(is_white).y_position - y).abs <=1
+    if (enemy_king(is_white).x_position - x).abs <= 1 && (enemy_king(is_white).y_position - y).abs <= 1
       return true
     end
     false
