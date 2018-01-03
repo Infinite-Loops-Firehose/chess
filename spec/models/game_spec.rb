@@ -87,6 +87,7 @@ RSpec.describe Game, type: :model do
     it 'should return false if king is not in check' do
       game = FactoryGirl.create(:game, move_number: 4)
       white_king = FactoryGirl.create(:king, is_white: true, game: game, x_position: 3, y_position: 8)
+      FactoryGirl.create(:king, is_white: false, game: game, x_position: 8, y_position: 1)
       FactoryGirl.create(:bishop, is_white: false, game: game, x_position: 7, y_position: 5, game_move_number: 4)
       expect(game.check?(white_king.is_white)).to eq(false)
     end

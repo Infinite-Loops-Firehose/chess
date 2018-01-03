@@ -97,17 +97,20 @@ RSpec.describe Piece, type: :model do
     it 'Changes x and y coor of moving piece to x and y of destination square if that square is empty' do
       game1 = FactoryGirl.create(:game)
       piece1 = Piece.create(game_id: game1.id, is_white: false, type: KING, x_position: 2, y_position: 4)
+      FactoryGirl.create(:king, is_white: true, game: game1, x_position: 6, y_position: 8)
       piece1.move_to!(3, 4)
       expect(piece1.x_position).to eq(3)
       expect(piece1.y_position).to eq(4)
     end
     it 'updates x and y of moving piece to new square and captures enemy piece at that square' do
       game1 = FactoryGirl.create(:game)
-      black_king = Piece.create(game_id: game1.id, is_white: false, type: KING, x_position: 2, y_position: 4)
+      black_queen = Piece.create(game_id: game1.id, is_white: false, type: QUEEN, x_position: 2, y_position: 4)
       white_queen = Piece.create(game_id: game1.id, is_white: true, type: QUEEN, x_position: 1, y_position: 4)
-      black_king.move_to!(1, 4)
-      expect(black_king.x_position).to eq(1)
-      expect(black_king.y_position).to eq(4)
+      FactoryGirl.create(:king, is_white: false, game: game1, x_position: 6, y_position: 8)
+      FactoryGirl.create(:king, is_white: true, game: game1, x_position: 1, y_position: 8)
+      black_queen.move_to!(1, 4)
+      expect(black_queen.x_position).to eq(1)
+      expect(black_queen.y_position).to eq(4)
       white_queen.reload
       expect(white_queen.x_position).to eq(nil)
       expect(white_queen.y_position).to eq(nil)
@@ -136,6 +139,7 @@ RSpec.describe Piece, type: :model do
       it 'raises argument error if the move is not valid for king' do
         game1 = FactoryGirl.create(:game)
         white_king = game1.pieces.create(game_id: game1.id, is_white: true, type: KING, x_position: 6, y_position: 3)
+        FactoryGirl.create(:king, game: game1, is_white: false, x_position: 5, y_position: 8)
         expect { white_king.move_to!(6, 5) }.to raise_error(ArgumentError)
       end
 
