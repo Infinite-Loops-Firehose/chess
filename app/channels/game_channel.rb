@@ -12,7 +12,7 @@ class GameChannel < ApplicationCable::Channel
     ActionCable.server.broadcast "game_channel_#{data['gameId']}", data
   end
 
-  def broadcast_game_over(data)
-    ActionCable.server.broadcast "game_channel_#{data['gameId']}", data
+  def self.broadcast_game_change(data)
+    ActionCable.server.broadcast "game_channel_#{data['game_id']}", data
   end
 end

@@ -1,31 +1,75 @@
 // added drop piece code back to this file
 $(".games.show").ready(function(){
-
-  var pieces = $('img#piece');
+  var whitePieces = $("#piece[data-color='white']");
+  var blackPieces = $("#piece[data-color='black']");
   var pieceHTML;
   var pieceId;
   var pieceMovedType;
   var startX;
   var startY;
-  var gameId;
+  var gameId = $("div#gameId").attr("data-game-id");
+  var gameState = $("div#gameState").attr("data-game-state");
 
-  pieces.mousedown(function(e){
+  whitePieces.draggable({
+    containment: "#chessboard tbody",
+    cursor: "move",
+  });
+  blackPieces.draggable({
+    containment: "#chessboard tbody",
+    cursor: "move",
+  });
+
+  var currentUserId = $("#currentUser").attr("data-current-user-id");
+  var whitePlayerId = $("#whitePlayer").attr("data-user-white-id");
+  var blackPlayerId = $("#blackPlayer").attr("data-user-black-id");
+
+  var setPlayerTurn = function(isWhiteTurn){
+    if (isWhiteTurn == undefined){
+      whitePieces.draggable().draggable("destroy");
+      blackPieces.draggable().draggable("destroy");
+    }
+    if (isWhiteTurn == true && currentUserId == whitePlayerId){
+      whitePieces.draggable().draggable("enable");
+      blackPieces.draggable().draggable("disable");
+    }
+    if (isWhiteTurn == true && currentUserId != whitePlayerId){
+      whitePieces.draggable().draggable("disable");
+      blackPieces.draggable().draggable("disable");
+    }
+    if (isWhiteTurn == false && currentUserId == blackPlayerId){
+      whitePieces.draggable().draggable("disable");
+      blackPieces.draggable().draggable("enable");
+    }
+    if (isWhiteTurn == false && currentUserId != blackPlayerId){
+      whitePieces.draggable().draggable("disable");
+      blackPieces.draggable().draggable("disable");
+    }
+  }
+
+  gon.watch("is_white_turn", setPlayerTurn)
+
+  whitePieces.mousedown(function(e){
     pieceHTML = $(e.target);
     pieceId = $(e.target).attr('data-id');
     pieceColor = $(e.target).attr('data-color');
     pieceMovedType = $(e.target).attr('data-type');
     startX = $(e.target).attr('data-x');
     startY = $(e.target).attr('data-y');
-    gameId = $("div#gameId").attr("data-game-id");
-  })
+  });
 
-  pieces.draggable({
-    containment: '#chessboard tbody',
-    cursor: 'move',
+  blackPieces.mousedown(function(e){
+    pieceHTML = $(e.target);
+    pieceId = $(e.target).attr('data-id');
+    pieceColor = $(e.target).attr('data-color');
+    pieceMovedType = $(e.target).attr('data-type');
+    startX = $(e.target).attr('data-x');
+    startY = $(e.target).attr('data-y');
   });
 
   $('td').droppable(
-    { accept: pieces },
+    // { accept: pieces },
+    // { accept: whitePieces },
+    // { accept: blackPieces },
     {drop: function(e){
       var destSqIdNum = parseInt(e.target.id);
       var destSqX = Math.trunc(destSqIdNum / 10);
@@ -53,13 +97,5 @@ $(".games.show").ready(function(){
       })
     }}
   )
-
+  
 });
-
-// stops all drag and drop piece movement once game is marked as over.
-$('span#gameover').ready(function(){
-  var gameState = $("#gameState").data("gameState"),
-      gameId = $("#gameId").data("gameId");
-  App.game.broadcastGameOver(gameId, gameState);
-  $('img#piece').draggable("destroy");
-})

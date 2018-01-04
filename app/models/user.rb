@@ -7,6 +7,8 @@ class User < ApplicationRecord
 
   has_many :games, dependent: :destroy, foreign_key: :user_white_id
 
+  validates :name, presence: true
+
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email
@@ -15,11 +17,11 @@ class User < ApplicationRecord
     end
   end
 
-  def self.new_with_session(params, session)
-    super.tap do |user|
-      if data == session['devise.facebook_data'] && session['devise.facebook_data']['extra']['raw_info']
-        user.email = data['email'] if user.email.blank?
-      end
-    end
-  end
+  # def self.new_with_session(params, session) this method added for omniauth creates the 'undefined var data' error
+  #   super.tap do |user|
+  #     if data == session['devise.facebook_data'] && session['devise.facebook_data']['extra']['raw_info']
+  #       user.email = data['email'] if user.email.blank?
+  #     end
+  #   end
+  # end
 end

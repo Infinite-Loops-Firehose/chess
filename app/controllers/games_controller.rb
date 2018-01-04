@@ -1,9 +1,11 @@
 class GamesController < ApplicationController
-  before_action :authenticate_user!, only: %i[new create show update]
+  before_action :authenticate_user!, only: %i[new create show update forfeit]
   helper_method :game
 
   def index
     @available_games = Game.available
+    @games_in_progress = Game.in_progress
+    @games_ended = Game.ended
   end
 
   def new; end
@@ -16,6 +18,10 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find(params[:id])
+    gon.user_white_name = @game.user_white.name
+    gon.user_black_name = @game.user_black.name unless @game.user_black.nil?
+    gon.watch.is_white_turn = @game.is_white_turn
+    gon.watch.game_state = @game.state
     gon.watch.white_king_check = @game.check?(true)
     gon.watch.black_king_check = @game.check?(false)
   end
@@ -28,12 +34,14 @@ class GamesController < ApplicationController
       @game.update(user_white_id: current_user.id)
     end
     redirect_to game_path(@game)
+    GameChannel.broadcast_game_change('game_id' => @game.id, 'user_black_id' => @game.user_black_id)
   end
 
   def forfeit
-    current_game.forfeit(current_user)
-    flash[:alert] = 'You forfeited the game :('
-    redirect_to root_path
+    @game = Game.find(params[:id])
+    @game.update(state: Game::FORFEIT, player_lose: current_user.id, is_white_turn: nil)
+    redirect_to game_path(@game)
+    GameChannel.broadcast_game_change('game_id' => @game.id)
   end
 
   private
