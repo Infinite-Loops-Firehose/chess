@@ -7,9 +7,58 @@
     <%= include_gon %>
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
 
   <body class="<%= controller_name %> <%= action_name %>">
+    <nav class="navbar fixed-top navbar-toggleable-md navbar-inverse bg-inverse">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <%= link_to root_path, class: 'navbar-brand' do %>
+        Infinite Loops Chess
+      <% end %>
+
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="navbar-nav mr-auto mt-2 mt-md-0">
+          <% if user_signed_in? %>
+          <li class="nav-item" id="new-game">
+            <%= link_to games_path(game: {user_white_id: current_user} ), method: :post, class: "btn btn-success" do %>
+              Create a New Game
+            <% end %>
+          </li>
+          <% else %>
+          <li class="nav-item btn">
+            <h5>Sign in if you want to start a new game!</h5>
+          </li>
+          <% end %>
+        </ul>
+        <ul class="navbar-nav">
+          <% if user_signed_in? %>
+            <li class="nav-item btn">
+              You are logged in as <%= current_user.name %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Sign out", destroy_user_session_path, method: :delete, class: 'nav-link btn btn-warning' %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Delete your registration", user_registration_path, method: :delete, class: 'nav-link btn btn-danger' %>
+            </li>
+          <% else %>
+            <li class="nav-item">
+              <%= link_to "Sign in with Facebook", user_facebook_omniauth_authorize_path, class: 'nav-link btn btn-success' %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Sign in with User ID", new_user_session_path, class: 'nav-link btn btn-success' %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Create a new User ID", new_user_registration_path, class: 'nav-link btn btn-success' %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </nav>
+
     <% if notice.present? %>
       <p class="alert alert-info"><%= notice %></p>
     <% end %>

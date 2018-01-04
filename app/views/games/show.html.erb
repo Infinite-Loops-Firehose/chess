@@ -14,7 +14,9 @@
   <div id="gameState" data-game-state=<%= @game.state %>>
   </div>
 
-  <h1 class="text-center">Infinite Loops Chess</h1>
+  <%= content_tag "div", id: "kingChecked", data: {whiteKingCheck: @game.check?(true), blackKingCheck: @game.check?(false)} do %>
+
+  <% end %>
 
   <div id="messages">
     <div id="currentUser" data-current-user-id=<%= current_user.id %>>
@@ -61,45 +63,48 @@
     </div>
   </div>
 
-  <div class="col-10 center offset-1">
-    <table id="chessboard">
-      <tbody>
-        <% [8, 7, 6, 5, 4, 3, 2, 1].each do |row| %>
-          <tr>
-            <% (1..8).each do |col| %>
-              <td
-                id=<%="#{col}#{row}"%>
-              <% if (col + row).odd? %>
-                class="white"
-              <% else %>
-                class="black"
-              <% end %>
-              >
-                <% piece_image = @game.render_piece(col, row) %>
-                <% if piece_image.present? %>
-                  <% piece = @game.get_piece_at_coor(col, row) %>
-                  <%= image_tag piece_image, :id => "piece", :data => {
-                      :id => piece.id,
-                      :type => piece.type,
-                      :color => (piece.is_white ? "white" : "black"),
-                      :x => piece.x_position,
-                      :y => piece.y_position
-                    }
-                  %>
+  <div class="container">
+    <div class="row">
+      <div class="col-10 center offset-1">
+        <table id="chessboard">
+          <tbody>
+            <% [8, 7, 6, 5, 4, 3, 2, 1].each do |row| %>
+              <tr>
+                <% (1..8).each do |col| %>
+                  <td
+                    id=<%="#{col}#{row}"%>
+                  <% if (col + row).odd? %>
+                    class="white"
+                  <% else %>
+                    class="black"
+                  <% end %>
+                  >
+                    <% piece_image = @game.render_piece(col, row) %>
+                    <% if piece_image.present? %>
+                      <% piece = @game.get_piece_at_coor(col, row) %>
+                      <%= image_tag piece_image, :id => "piece", :data => {
+                          :id => piece.id,
+                          :type => piece.type,
+                          :color => (piece.is_white ? "white" : "black"),
+                          :x => piece.x_position,
+                          :y => piece.y_position
+                        }
+                      %>
+                    <% end %>
+                  </td>
                 <% end %>
-              </td>
+              </tr>
             <% end %>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-
-    <br />
-    <%= button_to "Go back to index of games", root_path, :method => :get, :class => "btn btn-success" %>        
-    <br /><br /><br /><br /><br /><br />
-    <% if @game.state == Game::IN_PLAY && @game.user_black != nil %>
-      <%= button_to "Forfeit", forfeit_game_path(@game), :class => "btn btn-success", :method => :patch %>
-    <% end %> 
+          </tbody>
+        </table>
+      </div>
+      <div class="col-12 text-center">
+        <% if @game.state == Game::IN_PLAY && @game.user_black != nil %>
+          <%= button_to "Forfeit", forfeit_game_path(@game), :class => "btn btn-success", :method => :patch %>
+        <% end %> 
+      </div>
+    </div>
   </div>
+  <br />
 
 </body>

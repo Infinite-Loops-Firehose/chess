@@ -1,16 +1,18 @@
 @import "bootstrap";
 
 body{
-  background: image_url("chess-by-water.jpg");
-  background-repeat: no-repeat;
-  color: white;
-  font-family: Helvetica, Times;
-  font-weight: bold;
+    background: linear-gradient(0deg,rgba(20,20,40,0.2),rgba(20,20,40,0.9)),url("chess-by-water.jpg");
+    background-color: rgba(20,20,40,1);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    color: #ddddee;
+    font-family: Helvetica, Times;
+    font-weight: bold;
 }
 
 #chessboard {
-    width: 720px;
-    height: 720px;
+    max-width: 100%;
+    height: 100%;
     margin: auto;
 }
 
@@ -22,11 +24,14 @@ table td {
     padding: 2px 0 5px 0;
 
     img {
-      width: 83px;
-      height: 83px;
+        width: 83px;
+        height: 83px;
     }
 }
 
+.nav-item {
+    margin-left: 20px;
+}
 
 
 .white {
@@ -42,27 +47,27 @@ table td {
 }
 
 .center {
-  margin: auto;
-  width: 50%;
-  padding: 5px;
+    margin: auto;
+    width: 50%;
+    padding: 5px;
 }
 
 #selected_square {
-  border: 3px solid red;
+    border: 3px solid red;
 }
 
 .selected_square {
-  border: 3px solid red;
+    border: 3px solid red;
 }
 
 span#piece {
-  margin: auto;
+    margin: auto;
 }
 
 #messages {
-  font-family: Helvetica, Times;
-  font-size: 36px;
-  text-align: center;
-  color: white;
+    font-family: Helvetica, Times;
+    font-size: 36px;
+    text-align: center;
+    color: white;
 }
 
