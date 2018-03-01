@@ -24,8 +24,8 @@ class Pawn < Piece
     game.move_number == turn_pawn_moved_twice && piece_move_number == 1 && (y_position == 4 || y_position == 5)
   end
 
-  def can_attack_square?(new_x, new_y) # returns true if pawn can capture hypothetical enemy in new_x, new_y in event enemy piece (like enemy king) 
-  # moves to new_x, new_y, not to be confused with capture_move? which returns true if there currently enemy in new_x, new_y.
+  def can_attack_square?(new_x, new_y) # returns true if pawn can capture hypothetical enemy in new_x, new_y in event enemy piece (like enemy king)
+    # moves to new_x, new_y, not to be confused with capture_move? which returns true if there currently enemy in new_x, new_y.
     x_difference = (new_x - x_position).abs
     y_difference = (new_y - y_position).abs
     return true if x_difference == 1 && y_difference == 1

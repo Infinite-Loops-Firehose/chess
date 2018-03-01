@@ -10,7 +10,6 @@ class King < Piece
   end
 
   def can_move_out_of_check?
-    # this loop never goes past first x/y coor of (2,3), why? 
     ((x_position - 1)..(x_position + 1)).each do |x|
       next if x < 1 || x > 8
       ((y_position - 1)..(y_position + 1)).each do |y|
@@ -20,5 +19,4 @@ class King < Piece
     end
     false
   end
-
 end
