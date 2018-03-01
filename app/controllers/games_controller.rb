@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-  before_action :authenticate_user!, only: %i[new create show update forfeit]
+  before_action :authenticate_user!, only: %i[new create show update forfeit destroy]
   helper_method :game
 
   def index
@@ -35,6 +35,12 @@ class GamesController < ApplicationController
     end
     redirect_to game_path(@game)
     GameChannel.broadcast_game_change('game_id' => @game.id, 'user_black_id' => @game.user_black_id)
+  end
+
+  def destroy
+    @game = Game.find(params[:id])
+    @game.destroy
+    redirect_to root_path
   end
 
   def forfeit

@@ -12,7 +12,9 @@ class King < Piece
   def can_move_out_of_check?
     # this loop never goes past first x/y coor of (2,3), why? 
     ((x_position - 1)..(x_position + 1)).each do |x|
+      next if x < 1 || x > 8
       ((y_position - 1)..(y_position + 1)).each do |y|
+        next if y < 1 || y > 8
         return true if legal_move?(x, y) && !game.under_attack?(is_white, x, y)
       end
     end
