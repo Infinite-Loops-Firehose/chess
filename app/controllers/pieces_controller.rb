@@ -21,7 +21,8 @@ class PiecesController < ApplicationController
     if @game.stalemate?(!piece_to_move.is_white)
       @game.update_attributes(state: Game::STALEMATE)
       @game.update_attributes(is_white_turn: nil)
-    elsif @game.checkmate?(!piece_to_move.is_white)
+    end
+    if @game.checkmate?(!piece_to_move.is_white)
       @game.update_attributes(state: Game::CHECKMATE)
       @game.update_attributes(is_white_turn: nil)
     end

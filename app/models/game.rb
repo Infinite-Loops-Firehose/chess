@@ -54,9 +54,13 @@ class Game < ApplicationRecord
   end
 
   def under_attack?(is_white, x, y)
-    pieces.where(is_white: !is_white).where.not(x_position: nil, y_position: nil).find_each do |piece|
+    pieces.where.not(is_white: is_white, x_position: nil).find_each do |piece|
       return true if piece.valid_move?(x, y)
+      return true if piece.type == PAWN && piece.can_attack_square?(x, y)
     end
+    # if (enemy_king(is_white).x_position - x).abs <= 1 && (enemy_king(is_white).y_position - y).abs <= 1
+    #   return true
+    # end
     false
   end
 
@@ -72,7 +76,9 @@ class Game < ApplicationRecord
 
   def checkmate?(is_white) # is_white is the is_white value of the king that may be in checkmate
     return false unless check?(is_white)
-    return false if under_attack?(!is_white, attacking_piece(is_white).x_position, attacking_piece(is_white).y_position)
+    # return false if the piece attacking the king is also under attack / can be captured.
+    return false if under_attack?(attacking_piece(is_white).is_white, attacking_piece(is_white).x_position, attacking_piece(is_white).y_position)
+    # currently only the method can_move_out_of_check? is not working correctly.
     return false if friendly_king(is_white).can_move_out_of_check?
     return false if attacking_piece(is_white).can_be_blocked?(friendly_king(is_white).x_position, friendly_king(is_white).y_position)
     update_attributes!(player_win: user_black_id, player_lose: user_white_id) if is_white == true

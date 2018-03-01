@@ -53,6 +53,7 @@ class Piece < ApplicationRecord
   end
 
   def obstructed?(new_x, new_y)
+    return false if type == KNIGHT
     # errors.add(:base, 'Pieces cannot be moved off the board: invalid move')
     return true if off_board?(new_x, new_y)
     # errors.add(:base, 'There is an obstruction: invalid move')
@@ -72,7 +73,7 @@ class Piece < ApplicationRecord
     update_attributes(has_moved: false) if piece_move_number.zero?
   end
 
-  def legal_move?(new_x, new_y) # used only when checking for stalemate in a particular game, not when making permanent moves in game
+  def legal_move?(new_x, new_y) # used only when checking for stalemate and checkmate in a particular game, not when making permanent moves in game
     return false unless actual_move?(new_x, new_y)
     return_val = false
     piece_moved_start_x = x_position
@@ -156,6 +157,7 @@ class Piece < ApplicationRecord
         return true if piece.valid_move?(coords.first, coords.last)
       end
     end
+    false
   end
 
   def off_board?(new_x, new_y)

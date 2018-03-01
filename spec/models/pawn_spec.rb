@@ -72,6 +72,7 @@ RSpec.describe Pawn, type: :model do
     it 'should return true when capturing piece using en passant' do
       game = FactoryGirl.create(:game)
       FactoryGirl.create(:king, x_position: 5, y_position: 8, is_white: false, game: game)
+      FactoryGirl.create(:king, x_position: 1, y_position: 1, is_white: true, game: game)
       pawn_captured = FactoryGirl.create(:pawn, x_position: 5, y_position: 7, is_white: false, game: game)
       pawn_captured.move_to!(5, 5)
       pawn_moved = FactoryGirl.create(:pawn, x_position: 4, y_position: 5, is_white: true, game: game)
