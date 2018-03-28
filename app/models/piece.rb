@@ -26,7 +26,7 @@ class Piece < ApplicationRecord
         raise ArgumentError, 'That is an invalid move. Cannot capture your own piece.' if (occupying_piece.is_white && is_white?) || (!occupying_piece.is_white && !is_white?)
         capture_piece(occupying_piece)
       end
-      update_attributes(x_position: new_x, y_position: new_y)
+      update(x_position: new_x, y_position: new_y)
       raise ArgumentError, 'That is an invalid move that leaves your king in check.' if game.under_attack?(is_white, game.friendly_king(is_white).x_position, game.friendly_king(is_white).y_position)
       increment_move
       # if game.state != IN_PLAY
@@ -49,7 +49,7 @@ class Piece < ApplicationRecord
   end
 
   def capture_piece(piece_captured)
-    piece_captured.update_attributes(x_position: nil, y_position: nil)
+    piece_captured.update(x_position: nil, y_position: nil)
   end
 
   def obstructed?(new_x, new_y)
@@ -62,18 +62,19 @@ class Piece < ApplicationRecord
   end
 
   def increment_move
-    game.update_attributes(move_number: game.move_number + 1)
-    update_attributes(game_move_number: game.move_number, piece_move_number: piece_move_number + 1)
-    update_attributes(has_moved: true)
+    game.update(move_number: game.move_number + 1)
+    update(game_move_number: game.move_number, piece_move_number: piece_move_number + 1)
+    update(has_moved: true)
   end
 
   def decrement_move
-    game.update_attributes(move_number: game.move_number - 1)
-    update_attributes(game_move_number: game.move_number, piece_move_number: piece_move_number - 1)
-    update_attributes(has_moved: false) if piece_move_number.zero?
+    game.update(move_number: game.move_number - 1)
+    update(game_move_number: game.move_number, piece_move_number: piece_move_number - 1)
+    update(has_moved: false) if piece_move_number.zero?
   end
 
-  def legal_move?(new_x, new_y) # used only when checking for stalemate and checkmate in a particular game, not when making permanent moves in game
+  # used only when checking for stalemate and checkmate in a particular game, not when making permanent moves in game
+  def legal_move?(new_x, new_y)
     return false unless actual_move?(new_x, new_y)
     return_val = false
     piece_moved_start_x = x_position
@@ -102,11 +103,11 @@ class Piece < ApplicationRecord
       capture_piece(occupying_piece)
     end
     # only here do we update coordinates of piece moved, once we have saved all starting coordinates of piece moved and any piece it captured
-    update_attributes(x_position: new_x, y_position: new_y)
+    update(x_position: new_x, y_position: new_y)
     increment_move
     return_val = true unless game.check?(is_white)
-    update_attributes(x_position: piece_moved_start_x, y_position: piece_moved_start_y)
-    piece_captured.update_attributes(x_position: piece_captured_x, y_position: piece_captured_y) unless piece_captured.nil?
+    update(x_position: piece_moved_start_x, y_position: piece_moved_start_y)
+    piece_captured.update(x_position: piece_captured_x, y_position: piece_captured_y) unless piece_captured.nil?
     decrement_move
     return_val
   end
@@ -121,11 +122,14 @@ class Piece < ApplicationRecord
     false
   end
 
-  def trimmed_coordinates_array(x_values, y_values) # x_values = [1, 1, 1, 1], y_values = [2, 3, 4, 5]
-    coordinates_array = x_values.zip(y_values) # [[1, 2], [1, 3], [1, 4], [1, 5]]
+  # x_values = [1, 1, 1, 1], y_values = [2, 3, 4, 5]
+  def trimmed_coordinates_array(x_values, y_values)
+    coordinates_array = x_values.zip(y_values)
+    # [[1, 2], [1, 3], [1, 4], [1, 5]]
     coordinates_array.shift
     coordinates_array.pop
-    coordinates_array # [[1, 3], [1, 4]]
+    coordinates_array
+    # [[1, 3], [1, 4]]
   end
 
   def straight_obstruction_array(new_x, new_y)
@@ -150,8 +154,9 @@ class Piece < ApplicationRecord
     trimmed_coordinates_array(x_values, y_values)
   end
 
-  def can_be_blocked?(new_x, new_y) # used for determining checkmate. Our piece is the attacking piece in this case.
-    # this method works for all pieces except a knight, which doesn't have a straight path.
+  # used for determining checkmate. Our piece is the attacking piece in this case.
+  # this method works for all pieces except a knight, which doesn't have a straight path.
+  def can_be_blocked?(new_x, new_y)
     game.pieces.where(is_white: !is_white).where.not(x_position: nil, y_position: nil, type: KING).find_each do |piece|
       straight_obstruction_array(new_x, new_y).each do |coords|
         return true if piece.valid_move?(coords.first, coords.last)

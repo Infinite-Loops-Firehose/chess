@@ -17,14 +17,14 @@ class PiecesController < ApplicationController
     # params[:piece] #{x_position: 5, y_position: 4}
     # params[:piece][:x_position] = #5
     piece_to_move.move_to!(params[:piece][:x_position], params[:piece][:y_position])
-    @game.update_attributes(is_white_turn: !@game.is_white_turn)
+    @game.update(is_white_turn: !@game.is_white_turn)
     if @game.stalemate?(!piece_to_move.is_white)
-      @game.update_attributes(state: Game::STALEMATE)
-      @game.update_attributes(is_white_turn: nil)
+      @game.update(state: Game::STALEMATE)
+      @game.update(is_white_turn: nil)
     end
     if @game.checkmate?(!piece_to_move.is_white)
-      @game.update_attributes(state: Game::CHECKMATE)
-      @game.update_attributes(is_white_turn: nil)
+      @game.update(state: Game::CHECKMATE)
+      @game.update(is_white_turn: nil)
     end
   rescue ArgumentError => e
     render json: { error: e.message }, status: :bad_request
