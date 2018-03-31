@@ -14,7 +14,7 @@ class Pawn < Piece
     return true if capture_move?(new_x.to_i, new_y.to_i)
     return true if en_passant_capture?(new_x.to_i, new_y.to_i)
     if allowed_to_move?(new_x.to_i, new_y.to_i) && !square_occupied?(new_x.to_i, new_y.to_i)
-      update_attributes(turn_pawn_moved_twice: game.move_number + 1) if moving_two_squares?(new_x.to_i, new_y.to_i)
+      update(turn_pawn_moved_twice: game.move_number + 1) if moving_two_squares?(new_x.to_i, new_y.to_i)
       return true
     end
     false
@@ -24,8 +24,9 @@ class Pawn < Piece
     game.move_number == turn_pawn_moved_twice && piece_move_number == 1 && (y_position == 4 || y_position == 5)
   end
 
-  def can_attack_square?(new_x, new_y) # returns true if pawn can capture hypothetical enemy in new_x, new_y in event enemy piece (like enemy king)
-    # moves to new_x, new_y, not to be confused with capture_move? which returns true if there currently enemy in new_x, new_y.
+  # returns true if pawn can capture hypothetical enemy in new_x, new_y in event enemy piece (like enemy king)
+  # moves to new_x, new_y, not to be confused with capture_move? which returns true if there currently enemy in new_x, new_y.
+  def can_attack_square?(new_x, new_y)
     x_difference = (new_x - x_position).abs
     y_difference = (new_y - y_position).abs
     return true if x_difference == 1 && y_difference == 1
@@ -34,8 +35,7 @@ class Pawn < Piece
 
   private
 
-  def capture_move?(new_x, new_y) # What if enemy king in check moves to new_x, new_y, which is currently empty or has friendly piece? We need method to test if
-    # that king can be captured by the pawn even if king is currently not in that square!
+  def capture_move?(new_x, new_y)
     x_difference = (new_x - x_position).abs
     y_difference = (new_y - y_position).abs
     enemy_in_dest = Piece.exists?(x_position: new_x, y_position: new_y, is_white: !is_white, game: game)

@@ -1,6 +1,6 @@
 class Game < ApplicationRecord
-  belongs_to :user_black, class_name: 'User', optional: true
-  belongs_to :user_white, class_name: 'User'
+  belongs_to :user_black, inverse_of: 'games', class_name: 'User', optional: true
+  belongs_to :user_white, inverse_of: 'games', class_name: 'User'
   has_many :pieces, dependent: :destroy
   scope :available, -> { where('user_white_id IS NULL OR user_black_id IS NULL') }
   scope :in_progress, -> { where.not('user_white_id IS NULL OR user_black_id IS NULL').where(state: IN_PLAY) }
@@ -44,19 +44,19 @@ class Game < ApplicationRecord
     Piece.create(game_id: id, is_white: false, type: QUEEN, x_position: 4, y_position: 8)
   end
 
-  def render_piece(x, y)
-    piece = get_piece_at_coor(x, y)
+  def render_piece(x_pos, y_pos)
+    piece = get_piece_at_coor(x_pos, y_pos)
     piece.render if piece.present?
   end
 
-  def get_piece_at_coor(x, y)
-    pieces.find_by(x_position: x, y_position: y)
+  def get_piece_at_coor(x_pos, y_pos)
+    pieces.find_by(x_position: x_pos, y_position: y_pos)
   end
 
-  def under_attack?(is_white, x, y)
+  def under_attack?(is_white, x_pos, y_pos)
     pieces.where.not(is_white: is_white, x_position: nil).find_each do |piece|
-      return true if piece.valid_move?(x, y)
-      return true if piece.type == PAWN && piece.can_attack_square?(x, y)
+      return true if piece.valid_move?(x_pos, y_pos)
+      return true if piece.type == PAWN && piece.can_attack_square?(x_pos, y_pos)
     end
     # if (enemy_king(is_white).x_position - x).abs <= 1 && (enemy_king(is_white).y_position - y).abs <= 1
     #   return true
@@ -64,7 +64,8 @@ class Game < ApplicationRecord
     false
   end
 
-  def attacking_piece(is_white) # is_white is the value of the friendly_king, NOT the attacking_piece
+  # is_white is the value of the friendly_king, NOT the attacking_piece
+  def attacking_piece(is_white)
     pieces.where(is_white: !is_white).where.not(x_position: nil, y_position: nil).find_each do |piece|
       return piece if piece.valid_move?(friendly_king(is_white).x_position, friendly_king(is_white).y_position)
     end
@@ -74,15 +75,16 @@ class Game < ApplicationRecord
     under_attack?(is_white, friendly_king(is_white).x_position, friendly_king(is_white).y_position)
   end
 
-  def checkmate?(is_white) # is_white is the is_white value of the king that may be in checkmate
+  # is_white is the is_white value of the king that may be in checkmate
+  def checkmate?(is_white)
     return false unless check?(is_white)
     # return false if the piece attacking the king is also under attack / can be captured.
     return false if under_attack?(attacking_piece(is_white).is_white, attacking_piece(is_white).x_position, attacking_piece(is_white).y_position)
     # currently only the method can_move_out_of_check? is not working correctly.
     return false if friendly_king(is_white).can_move_out_of_check?
     return false if attacking_piece(is_white).can_be_blocked?(friendly_king(is_white).x_position, friendly_king(is_white).y_position)
-    update_attributes!(player_win: user_black_id, player_lose: user_white_id) if is_white == true
-    update_attributes!(player_win: user_white_id, player_lose: user_black_id) if is_white == false
+    update!(player_win: user_black_id, player_lose: user_white_id) if is_white == true
+    update!(player_win: user_white_id, player_lose: user_black_id) if is_white == false
     true
   end
 
@@ -96,9 +98,9 @@ class Game < ApplicationRecord
 
   def forfeit(current_user)
     if current_user.id == user_white_id
-      update_attributes!(player_win: user_black_id, player_lose: user_white_id)
+      update!(player_win: user_black_id, player_lose: user_white_id)
     elsif current_user.id == user_black_id
-      update_attributes!(player_win: user_white_id, player_lose: user_black_id)
+      update!(player_win: user_white_id, player_lose: user_black_id)
     end
   end
 

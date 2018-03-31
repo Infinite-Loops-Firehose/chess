@@ -5,7 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, omniauth_providers: [:facebook]
 
-  has_many :games, dependent: :destroy, foreign_key: :user_white_id
+  has_many :games, inverse_of: 'user', dependent: :destroy, foreign_key: :user_white_id
 
   validates :name, presence: true
 
