@@ -6,7 +6,7 @@ git_source(:github) do |repo_name|
 end
 
 # adding rake gem to fix problem of rake routes not working due to rake version 12.1.0 being activated but gemfile requires 12.0
-gem 'rake', '~> 12.0'
+gem 'rake', '~> 12.3'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0.4'
 # Use postgresql as the database for Active Record
